@@ -1,0 +1,44 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL_LOCAL")
+  extensions = [postgis(version: "3.4.2")]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+}
+
+//|code|c1|c2|c3|c4|order|created_at|deleted_at|prev_code|eng_name|name|geometry|geo_g|p_center|g_center
+model address {
+  id   Int     @id @default(autoincrement())
+  code String  @unique
+  c1   String
+  c2   String?
+  c3   String?
+  c4   String?
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  geoP    Unsupported("geometry(Geometry, 5179)") @map("geo_p")
+  geoS    Unsupported("geometry(Geometry, 4326)") @map("geo_s")
+  centerP Unsupported("geometry(Point, 5179)")    @map("center_p")
+  centerS Unsupported("geometry(Point, 4326)")    @map("center_s")
+
+  @@index([centerP], type: Gist)
+  @@index([centerS], type: Gist)
+}

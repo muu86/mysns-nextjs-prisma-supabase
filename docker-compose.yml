@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  postgres-prisma:
+    image: postgis/postgis:16-3.4-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - '5432:5432'
