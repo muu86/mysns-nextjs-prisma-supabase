@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions"]
+  previewFeatures = ["postgresqlExtensions", "relationJoins"]
 }
 
 generator pothos {
@@ -13,17 +13,17 @@ datasource db {
   extensions = [postgis(version: "3.4.2")]
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model spatial_ref_sys {
-  srid      Int     @id
-  auth_name String? @db.VarChar(256)
-  auth_srid Int?
-  srtext    String? @db.VarChar(2048)
-  proj4text String? @db.VarChar(2048)
+model Post {
+  id        Int     @id @default(autoincrement())
+  content   String
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int     @map("address_id")
+
+  @@map("post")
 }
 
 //|code|c1|c2|c3|c4|order|created_at|deleted_at|prev_code|eng_name|name|geometry|geo_g|p_center|g_center
-model address {
+model Address {
   id   Int     @id @default(autoincrement())
   code String  @unique
   c1   String
@@ -38,7 +38,9 @@ model address {
   geoS    Unsupported("geometry(Geometry, 4326)") @map("geo_s")
   centerP Unsupported("geometry(Point, 5179)")    @map("center_p")
   centerS Unsupported("geometry(Point, 4326)")    @map("center_s")
+  Post    Post[]
 
   @@index([centerP], type: Gist)
   @@index([centerS], type: Gist)
+  @@map("address")
 }
