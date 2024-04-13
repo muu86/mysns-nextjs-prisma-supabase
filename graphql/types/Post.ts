@@ -6,6 +6,7 @@ builder.prismaObject('Post', {
     id: t.exposeID('id'),
     content: t.exposeString('content'),
     address: t.relation('address'),
+    files: t.relation('files'),
   }),
 });
 
@@ -30,24 +31,37 @@ builder.mutationField('createPost', (t) =>
   t.prismaField({
     type: 'Post',
     args: {
-      content: t.arg.string(),
-      addressCode: t.arg.string(),
+      content: t.arg.string({ required: true }),
+      addressCode: t.arg.string({ required: true }),
+      fileKeys: t.arg.stringList({ required: true }),
     },
     resolve: async (q, r, a) => {
-      const address = await prisma.address.findUnique({
-        where: {
-          code: a.addressCode!,
+      return prisma.post.create({
+        data: {
+          content: a.content,
+          address: {
+            connect: {
+              code: a.addressCode,
+            },
+          },
+          files: {
+            create: a.fileKeys.map((fk) => ({
+              file: {
+                create: {
+                  location: fk,
+                },
+              },
+            })),
+          },
         },
-      });
-      if (!address) throw new Error('주소를 찾을 수 없습니다.');
-
-      const post = {
-        content: a.content!,
-        addressId: address.id!,
-      };
-
-      return await prisma.post.create({
-        data: post,
+        include: {
+          address: true,
+          files: {
+            include: {
+              file: true,
+            },
+          },
+        },
       });
     },
   })

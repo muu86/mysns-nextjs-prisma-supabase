@@ -14,12 +14,45 @@ datasource db {
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   content   String
-  address   Address @relation(fields: [addressId], references: [id])
-  addressId Int     @map("address_id")
+  address   Address    @relation(fields: [addressId], references: [id])
+  addressId Int        @map("address_id")
+  files     PostFile[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@map("post")
+}
+
+model PostFile {
+  id     Int  @id @default(autoincrement())
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int  @map("post_id")
+  file   File @relation(fields: [fileId], references: [id])
+  fileId Int  @map("file_id")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("post_file")
+}
+
+model File {
+  id       Int             @id @default(autoincrement())
+  location String
+  type     FileStorageType @default(S3)
+  posts    PostFile[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("file")
+}
+
+enum FileStorageType {
+  S3
 }
 
 //|code|c1|c2|c3|c4|order|created_at|deleted_at|prev_code|eng_name|name|geometry|geo_g|p_center|g_center
