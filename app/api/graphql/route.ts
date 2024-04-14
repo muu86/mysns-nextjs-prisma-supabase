@@ -1,6 +1,7 @@
 // Next.js Custom Route Handler: https://nextjs.org/docs/app/building-your-application/routing/router-handlers
 import { schema } from '@/graphql/schema';
 import { createYoga } from 'graphql-yoga';
+import prisma from '@/lib/prisma';
 
 const { handleRequest } = createYoga({
   schema: schema,
@@ -10,6 +11,12 @@ const { handleRequest } = createYoga({
 
   // Yoga needs to know how to create a valid Next response
   fetchAPI: { Response },
+
+  context: () => {
+    return {
+      prisma,
+    };
+  },
 });
 
 export { handleRequest as GET, handleRequest as OPTIONS, handleRequest as POST };
