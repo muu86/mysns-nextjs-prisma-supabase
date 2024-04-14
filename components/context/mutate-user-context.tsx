@@ -3,13 +3,20 @@
 import { getPresignedUrl } from '@/actions/file';
 import { ImageFile } from '@/lib/types';
 import { gql, useMutation } from '@apollo/client';
-import { Address } from '@prisma/client';
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useState } from 'react';
 import { z } from 'zod';
 import { formatRFC3339 } from 'date-fns';
+import { Address } from '@/gql/graphql';
+import { graphql } from '@/gql';
 
-const createUserMutation = gql`
-  mutation ($username: String!, $content: String!, $babyBirth: Date, $addressIds: [Int!]!, $fileKeys: [String!]!) {
+const createUserMutation = graphql(`
+  mutation createUser(
+    $username: String!
+    $content: String
+    $babyBirth: Date
+    $addressIds: [ID!]!
+    $fileKeys: [String!]!
+  ) {
     createUser(
       username: $username
       content: $content
@@ -33,13 +40,13 @@ const createUserMutation = gql`
       }
     }
   }
-`;
+`);
 
 const CreateUserSchema = z.object({
   username: z.string(),
   babyBirth: z.string().optional(),
   content: z.string().optional(),
-  addressIds: z.number().array(),
+  addressIds: z.string().array(),
   fileKeys: z.string().uuid().array(),
 });
 
@@ -67,15 +74,12 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
 
   const submit = async () => {
     if (isUploading) return;
-    console.log(formatRFC3339(birthDate!, { fractionDigits: 2 }));
 
-    console.log(address);
-    console.log(typeof birthDate);
     const variables = {
       username,
       babyBirth: formatRFC3339(birthDate!, { fractionDigits: 2 }),
       content,
-      addressIds: address.map((a) => parseInt(a.id)),
+      addressIds: address.map((a) => a.id),
       fileKeys: file ? [file.s3Key] : [],
     };
 
@@ -85,10 +89,8 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
       return;
     }
 
-    console.log(variables);
-
     const result = await createUser({
-      variables,
+      variables: validate.data,
     });
     console.log(result);
   };

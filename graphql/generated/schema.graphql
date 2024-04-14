@@ -1,0 +1,65 @@
+type Address {
+  c1: String!
+  c2: String
+  c3: String
+  c4: String
+  code: String!
+  id: ID!
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+type File {
+  id: ID!
+  location: String!
+  type: String!
+}
+
+type Mutation {
+  createPost(addressCode: String!, content: String!, fileKeys: [String!]!): Post!
+  createUser(addressIds: [ID!]!, babyBirth: Date, content: String, fileKeys: [String!]!, username: String!): User!
+}
+
+type Post {
+  address: Address!
+  content: String!
+  files: [PostFile!]!
+  id: ID!
+}
+
+type PostFile {
+  file: File!
+  id: ID!
+  post: Post!
+}
+
+type Query {
+  getAddress: [Address!]!
+  getPosts: [Post!]!
+  getUser(username: String!): User!
+  ok: Boolean!
+}
+
+type User {
+  addresses: [UserAddress!]!
+  babyBirth: Date
+  content: String
+  files: [UserFile!]!
+  id: ID!
+  username: String!
+}
+
+type UserAddress {
+  address: Address!
+  id: ID!
+  user: User!
+}
+
+type UserFile {
+  file: File!
+  id: ID!
+  user: User!
+}

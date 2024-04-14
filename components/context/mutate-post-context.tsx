@@ -1,12 +1,14 @@
 'use client';
 
 import { getPresignedUrl } from '@/actions/file';
+import { graphql } from '@/gql';
 import { ImageFile } from '@/lib/types';
 import { gql, useMutation } from '@apollo/client';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
+import { z } from 'zod';
 
-const createPostMutation = gql`
-  mutation ($content: String!, $addressCode: String!, $fileKeys: [String!]!) {
+const createPostMutation = graphql(`
+  mutation createPost($content: String!, $addressCode: String!, $fileKeys: [String!]!) {
     createPost(content: $content, addressCode: $addressCode, fileKeys: $fileKeys) {
       id
       content
@@ -22,7 +24,13 @@ const createPostMutation = gql`
       }
     }
   }
-`;
+`);
+
+const CreatePostSchema = z.object({
+  content: z.string(),
+  addressCode: z.string(),
+  fileKeys: z.string().array(),
+});
 
 export default function MutatePostContextProvider({ children }: PropsWithChildren) {
   const [createPost, { data, loading, error }] = useMutation(createPostMutation);
@@ -51,12 +59,18 @@ export default function MutatePostContextProvider({ children }: PropsWithChildre
     const tempAddressCode = '1111010100';
     const fileKeyList = files.map((f) => f.s3Key);
     console.log(fileKeyList);
+    const variables = {
+      content,
+      addressCode: tempAddressCode,
+      fileKeys: fileKeyList,
+    };
+    const validate = CreatePostSchema.safeParse(variables);
+    if (!validate.success) {
+      throw new Error(validate.error.message);
+    }
+
     const post = await createPost({
-      variables: {
-        content,
-        addressCode: tempAddressCode,
-        fileKeys: fileKeyList,
-      },
+      variables: validate.data,
     });
     console.log(post);
   };

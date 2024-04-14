@@ -6,12 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.9.11",
     "@apollo/experimental-nextjs-app-support": "^0.10.0",
     "@auth/prisma-adapter": "^1.6.0",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/schema-ast": "^4.0.2",
     "@pothos/core": "^3.41.0",
     "@pothos/plugin-prisma": "^3.65.0",
     "@prisma/client": "^5.12.1",
@@ -47,6 +50,8 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "4.2.5",
     "@ts-safeql/eslint-plugin": "^2.0.3",
     "@types/node": "^20",
     "@types/react": "^18",

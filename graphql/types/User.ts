@@ -57,7 +57,7 @@ builder.mutationField('createUser', (t) =>
         type: 'Date',
       }),
       content: t.arg.string(),
-      addressIds: t.arg.intList({ required: true }),
+      addressIds: t.arg.idList({ required: true }),
       fileKeys: t.arg.stringList({ required: true }),
     },
     resolve: async (q, r, a) => {
@@ -68,7 +68,7 @@ builder.mutationField('createUser', (t) =>
           addresses: {
             create: a.addressIds.map((aid) => ({
               address: {
-                connect: { id: aid },
+                connect: { id: +aid },
               },
             })),
           },

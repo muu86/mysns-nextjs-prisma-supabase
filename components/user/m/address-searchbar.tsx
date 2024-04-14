@@ -1,7 +1,6 @@
 'use client';
 
 import { MutateUserContext } from '@/components/context/mutate-user-context';
-import { Address } from '@prisma/client';
 import { MapPin } from 'lucide-react';
 import { useContext, useState } from 'react';
 
@@ -15,9 +14,10 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
+import { Address } from '@/gql/graphql';
 
 type SimpleAddress = {
-  id: number;
+  id: string;
   c: string;
 };
 

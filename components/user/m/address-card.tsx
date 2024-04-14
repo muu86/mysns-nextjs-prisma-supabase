@@ -1,13 +1,25 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { getClient } from '@/lib/apollo';
 import { gql } from '@apollo/client';
 import AddressSearchBar from './address-searchbar';
 import AddressSelectedBadges from './address-selected-badges';
+import { graphql } from '@/gql';
 
-const AllAddress = gql`
-  query {
+// const AllAddress = gql`
+//   query {
+//     getAddress {
+//       id
+//       code
+//       c1
+//       c2
+//       c3
+//       c4
+//     }
+//   }
+// `;
+
+const AllAddress = graphql(`
+  query getAllAddress {
     getAddress {
       id
       code
@@ -17,7 +29,7 @@ const AllAddress = gql`
       c4
     }
   }
-`;
+`);
 
 export default async function AddressCard() {
   const { data, loading, error } = await getClient().query({ query: AllAddress });
