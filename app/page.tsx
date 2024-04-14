@@ -1,22 +1,60 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import { getClient } from '@/lib/apollo';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { Suspense } from 'react';
+import { Post as PostType } from '@prisma/client';
 
-const AllLinksQuery = gql`
-  query {
-    links {
-      id
-      title
-      url
-      description
-      imageUrl
-      category
-    }
-  }
-`;
+// const AllPostsQuery = gql`
+//   query {
+//     getPosts {
+//       id
+//       content
+//       address {
+//         c3
+//       }
+//       files {
+//         file {
+//           location
+//         }
+//       }
+//     }
+//   }
+// `;
 
 export default async function Home() {
-  const { data, loading, error } = await getClient().query({ query: AllLinksQuery });
-  if (loading) return <p>loading...</p>;
-  if (error) return <p>{error.message}</p>;
-  return <main className="flex min-h-screen flex-col items-center justify-between p-24"></main>;
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <Suspense fallback={<Skeleton className="w-full min-h-screen bg-black">스켈레톤입니다</Skeleton>}>
+        <Post />
+      </Suspense>
+    </main>
+  );
+}
+
+async function Post() {
+  // const { data, error } = await getClient().query({ query: AllPostsQuery });
+
+  // // if (error) throw new Error(error.message);
+  // console.log('data is ========> ', data);
+  // console.log(error);
+  // const result: string = await new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     resolve('끝');
+  //   }, 2000);
+  // });
+
+  // throw new Error('에러다');
+
+  return (
+    <div>
+      {/* {data.getPosts.map((p: PostType) => (
+          <div>
+            <p>{p.id}</p>
+          </div>
+        ))} */}
+      {/* {data.getPosts.map((p: PostType) => (
+        <p>p.id</p>
+      ))} */}
+    </div>
+  );
 }

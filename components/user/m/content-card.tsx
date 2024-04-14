@@ -1,22 +1,22 @@
 'use client';
 
-import { MutatePostContext } from '@/components/context/mutate-post-context';
+import { MutateUserContext } from '@/components/context/mutate-user-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { ChangeEvent, useContext } from 'react';
 
-export default function Content() {
-  const { states, actions } = useContext(MutatePostContext);
+export default function ContentCard() {
+  const { states, actions } = useContext(MutateUserContext);
 
   function changeEventHandler(event: ChangeEvent<HTMLTextAreaElement>): void {
     actions.setContent(event.target.value);
   }
 
   return (
-    <Card x-chunk="dashboard-07-chunk-0">
+    <Card>
       <CardHeader>
-        <CardTitle>코멘트</CardTitle>
-        <CardDescription>코멘트 등록입니다</CardDescription>
+        {/* <CardTitle>소개</CardTitle> */}
+        <CardDescription>소개글을 작성해주세요</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-6">

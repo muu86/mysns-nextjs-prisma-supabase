@@ -10,3 +10,12 @@ builder.prismaObject('Address', {
     c4: t.exposeString('c4', { nullable: true }),
   }),
 });
+
+builder.queryField('getAddress', (t) =>
+  t.prismaField({
+    type: ['Address'],
+    resolve(q, p, a, c) {
+      return prisma.address.findMany();
+    },
+  })
+);

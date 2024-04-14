@@ -1,13 +1,18 @@
 import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import PrismaTypes from '@pothos/plugin-prisma/generated';
-import prisma from '@/lib/prisma';
+import prisma from '../lib/prisma';
+import { DateResolver } from 'graphql-scalars';
 
 export const builder = new SchemaBuilder<{
-  // 3.
   PrismaTypes: PrismaTypes;
+  Scalars: {
+    Date: {
+      Input: String;
+      Output: Date;
+    };
+  };
 }>({
-  // 4.
   plugins: [PrismaPlugin],
   prisma: {
     client: prisma,
@@ -23,3 +28,5 @@ builder.queryType({
 });
 
 builder.mutationType({});
+
+builder.addScalarType('Date', DateResolver);

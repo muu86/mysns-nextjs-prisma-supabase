@@ -10,7 +10,15 @@ builder.prismaObject('Post', {
   }),
 });
 
-builder.queryField('posts', (t) =>
+builder.prismaObject('PostFile', {
+  fields: (t) => ({
+    id: t.exposeID('id'),
+    post: t.relation('post'),
+    file: t.relation('file'),
+  }),
+});
+
+builder.queryField('getPosts', (t) =>
   t.prismaField({
     type: ['Post'],
     resolve: async (q, p, a, c, i) => {

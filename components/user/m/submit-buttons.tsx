@@ -1,11 +1,12 @@
 'use client';
 
-import { MutatePostContext } from '@/components/context/mutate-post-context';
+import { MutateUserContext } from '@/components/context/mutate-user-context';
 import { Button } from '@/components/ui/button';
-import { Context, MouseEvent, useContext } from 'react';
+import { LoaderCircle } from 'lucide-react';
+import { MouseEvent, useContext } from 'react';
 
 export default function SubmitButtons() {
-  const { states, actions } = useContext(MutatePostContext);
+  const { states, actions } = useContext(MutateUserContext);
 
   function saveHandler(event: MouseEvent<HTMLButtonElement>): void {
     event.preventDefault();
@@ -21,8 +22,8 @@ export default function SubmitButtons() {
       <Button onClick={cancelHandler} variant="outline" size="sm">
         취소
       </Button>
-      <Button onClick={saveHandler} size="sm">
-        저장
+      <Button onClick={saveHandler} disabled={states.isUploading} size="sm">
+        {states.isUploading ? <LoaderCircle className="animate-spin" /> : '저장'}
       </Button>
     </>
   );

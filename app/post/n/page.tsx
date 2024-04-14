@@ -1,61 +1,40 @@
-'use client';
-
-import { gql } from '@apollo/client';
+import { auth } from '@/auth';
+import MutatePostContextProvider from '@/components/context/mutate-post-context';
+import Content from '@/components/post/n/content';
+import SubmitButtons from '@/components/post/n/submit-buttons';
+import Upload from '@/components/post/n/upload';
 
 export default async function Page() {
-  const formActionHandler = () => {
-    createPost({
-      content: content,
-      fileKeys: imageFiles.filter((f) => !!f.s3Key).map((f) => f.s3Key!),
-    });
-  };
+  const session = await auth();
+
   return (
-    <div className="flex flex-col w-full py-4">
-      <form action={formActionHandler}>
-        {/* 이미지, 미디어 파일 */}
-        <div className="w-full mb-4 flex flex-row justify-end gap-2">
-          <div className="hover:myhover">
-            <label className="w-20 flex flex-col justify-center items-center hover:cursor-pointer">
-              <PlusCircleIcon className="w-8" />
-              <input
-                disabled={uploading}
-                className="hidden"
-                type="file"
-                accept="image/**"
-                multiple
-                name="files"
-                onChange={handleFileInput}
-              />
-              <span className="text-xs">이미지 추가</span>
-            </label>
+    <MutatePostContextProvider>
+      <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+        <div className="mx-auto grid w-full sm:w-[30rem] flex-1 auto-rows-max gap-4">
+          <div className="flex items-center gap-4">
+            {/* <Button variant="outline" size="icon" className="h-7 w-7">
+            <ChevronLeft className="h-4 w-4" />
+            <span className="sr-only">Back</span>
+            </Button> */}
+            <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">프로필</h1>
+            {/* <Badge variant="outline" className="ml-auto sm:ml-0">
+              In stock
+            </Badge> */}
+            <div className="flex items-center gap-2 md:ml-auto">
+              <SubmitButtons />
+            </div>
           </div>
-          {/* 저장 */}
-          <div className="hover:myhover">
-            <button disabled={uploading} type="submit" className="w-20 flex flex-col items-center justify-center">
-              <CheckCircleIcon className="w-8" />
-              <span className="text-xs">저장</span>
-            </button>
-          </div>
-        </div>
-        {imageFiles && (
-          <Preview
-            imageFiles={imageFiles}
-            handleClearPreview={handleClearPreview}
-            selectedFileUrl={selectedFileUrl}
-            setSelectedFileUrl={setSelectedFileUrl}
-          />
-        )}
-        {/* 텍스트 */}
-        <div className="py-3">
-          <div className="border rounded-lg has-[:focus]:border-neutral-800">
-            <textarea
-              name="content"
-              className="w-full rounded-lg min-h-56 p-6 resize-none focus:outline-none"
-              onChange={(e) => setContent(e.target.value)}
-            ></textarea>
+
+          <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
+            <div className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">
+              <Content />
+            </div>
+            <div className="col-span-3 grid auto-rows-max items-start gap-4 lg:gap-8">
+              <Upload />
+            </div>
           </div>
         </div>
-      </form>
-    </div>
+      </main>
+    </MutatePostContextProvider>
   );
 }

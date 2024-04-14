@@ -5,6 +5,7 @@ generator client {
 
 generator pothos {
   provider = "prisma-pothos-types"
+  output   = "./pothos-types.ts"
 }
 
 datasource db {
@@ -13,12 +14,54 @@ datasource db {
   extensions = [postgis(version: "3.4.2")]
 }
 
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  content   String?
+  babyBirth DateTime? @map("baby_birth") @db.Timestamptz()
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  addresses UserAddress[]
+  files     UserFile[]
+
+  @@map("users")
+}
+
+model UserFile {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @map("user_id")
+  file   File @relation(fields: [fileId], references: [id])
+  fileId Int  @map("file_id")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("user_file")
+}
+
+model UserAddress {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int     @map("user_id")
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int     @map("address_id")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("user_address")
+}
+
 model Post {
-  id        Int        @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   content   String
-  address   Address    @relation(fields: [addressId], references: [id])
-  addressId Int        @map("address_id")
-  files     PostFile[]
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int     @map("address_id")
+
+  files PostFile[]
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
@@ -43,7 +86,9 @@ model File {
   id       Int             @id @default(autoincrement())
   location String
   type     FileStorageType @default(S3)
+
   posts    PostFile[]
+  UserFile UserFile[]
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
@@ -71,7 +116,9 @@ model Address {
   geoS    Unsupported("geometry(Geometry, 4326)") @map("geo_s")
   centerP Unsupported("geometry(Point, 5179)")    @map("center_p")
   centerS Unsupported("geometry(Point, 4326)")    @map("center_s")
-  Post    Post[]
+
+  Post  Post[]
+  users UserAddress[]
 
   @@index([centerP], type: Gist)
   @@index([centerS], type: Gist)

@@ -1,6 +1,6 @@
 'use client';
 
-import { getPresignedUrl } from '@/lib/actions/file';
+import { getPresignedUrl } from '@/actions/file';
 import { ImageFile } from '@/lib/types';
 import { gql, useMutation } from '@apollo/client';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
