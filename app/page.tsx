@@ -1,8 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { getClient } from '@/lib/apollo';
-import { gql } from '@apollo/client';
 import { Suspense } from 'react';
-import { Post as PostType } from '@prisma/client';
 
 // const AllPostsQuery = gql`
 //   query {

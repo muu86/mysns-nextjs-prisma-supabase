@@ -3,9 +3,16 @@ generator client {
   previewFeatures = ["postgresqlExtensions", "relationJoins"]
 }
 
-generator pothos {
-  provider = "prisma-pothos-types"
-  output   = "./pothos-types.ts"
+// generator pothos {
+//   provider = "prisma-pothos-types"
+//   output   = "./pothos-types.ts"
+// }
+
+generator typegraphql {
+  provider            = "typegraphql-prisma"
+  output              = "../graphql/generated/type-graphql"
+  formatGeneratedCode = "prettier"
+  emitIdAsIDType      = true
 }
 
 datasource db {

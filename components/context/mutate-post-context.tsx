@@ -2,19 +2,17 @@
 
 import { getPresignedUrl } from '@/actions/file';
 import { graphql } from '@/gql';
+import { PostCreateInput } from '@/gql/graphql';
 import { ImageFile } from '@/lib/types';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
-import { z } from 'zod';
 
 const createPostMutation = graphql(`
-  mutation createPost($content: String!, $addressCode: String!, $fileKeys: [String!]!) {
-    createPost(content: $content, addressCode: $addressCode, fileKeys: $fileKeys) {
+  mutation createPost($data: PostCreateInput!, $strategy: RelationLoadStrategy) {
+    createOnePost(data: $data, relationLoadStrategy: $strategy) {
       id
       content
       address {
-        id
-        code
         c3
       }
       files {
@@ -25,12 +23,6 @@ const createPostMutation = graphql(`
     }
   }
 `);
-
-const CreatePostSchema = z.object({
-  content: z.string(),
-  addressCode: z.string(),
-  fileKeys: z.string().array(),
-});
 
 export default function MutatePostContextProvider({ children }: PropsWithChildren) {
   const [createPost, { data, loading, error }] = useMutation(createPostMutation);
@@ -54,25 +46,35 @@ export default function MutatePostContextProvider({ children }: PropsWithChildre
   }, []);
 
   const submit = async () => {
-    console.log(files);
     // 임시 주소 코드
     const tempAddressCode = '1111010100';
-    const fileKeyList = files.map((f) => f.s3Key);
-    console.log(fileKeyList);
-    const variables = {
+
+    const data: PostCreateInput = {
       content,
-      addressCode: tempAddressCode,
-      fileKeys: fileKeyList,
+      address: {
+        connect: {
+          code: tempAddressCode,
+        },
+      },
+      files: {
+        create: files
+          .filter((f) => !!f.s3Key)
+          .map((f) => f.s3Key!)
+          .map((k) => ({
+            file: {
+              create: {
+                location: k,
+              },
+            },
+          })),
+      },
     };
-    const validate = CreatePostSchema.safeParse(variables);
-    if (!validate.success) {
-      throw new Error(validate.error.message);
-    }
 
     const post = await createPost({
-      variables: validate.data,
+      variables: {
+        data,
+      },
     });
-    console.log(post);
   };
 
   const value = {

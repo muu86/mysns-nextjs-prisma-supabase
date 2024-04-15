@@ -1,29 +1,15 @@
 'use client';
 
 import { getPresignedUrl } from '@/actions/file';
-import { ImageFile } from '@/lib/types';
-import { gql, useMutation } from '@apollo/client';
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useState } from 'react';
-import { z } from 'zod';
-import { formatRFC3339 } from 'date-fns';
-import { Address } from '@/gql/graphql';
 import { graphql } from '@/gql';
+import { GetAllAddressQuery, UserCreateInput } from '@/gql/graphql';
+import { ImageFile } from '@/lib/types';
+import { useMutation } from '@apollo/client';
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useState } from 'react';
 
 const createUserMutation = graphql(`
-  mutation createUser(
-    $username: String!
-    $content: String
-    $babyBirth: Date
-    $addressIds: [ID!]!
-    $fileKeys: [String!]!
-  ) {
-    createUser(
-      username: $username
-      content: $content
-      babyBirth: $babyBirth
-      addressIds: $addressIds
-      fileKeys: $fileKeys
-    ) {
+  mutation createUser($data: UserCreateInput!, $strategy: RelationLoadStrategy) {
+    createOneUser(data: $data, relationLoadStrategy: $strategy) {
       id
       username
       babyBirth
@@ -42,14 +28,6 @@ const createUserMutation = graphql(`
   }
 `);
 
-const CreateUserSchema = z.object({
-  username: z.string(),
-  babyBirth: z.string().optional(),
-  content: z.string().optional(),
-  addressIds: z.string().array(),
-  fileKeys: z.string().uuid().array(),
-});
-
 export default function MutateUserContextProvider({ children }: PropsWithChildren) {
   const [createUser, { data, loading, error }] = useMutation(createUserMutation);
 
@@ -58,7 +36,7 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
   const [file, setFile] = useState<ImageFile | undefined>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [birthDate, setBirthDate] = useState<Date | undefined>();
-  const [address, setAddress] = useState<Address[]>([]);
+  const [address, setAddress] = useState<GetAllAddressQuery['addresses']>([]);
 
   const fileUploadHandler = useCallback(async (file: File) => {
     setIsUploading(true);
@@ -74,23 +52,40 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
 
   const submit = async () => {
     if (isUploading) return;
+    if (!username) return;
 
-    const variables = {
+    const data: UserCreateInput = {
       username,
-      babyBirth: formatRFC3339(birthDate!, { fractionDigits: 2 }),
+      babyBirth: birthDate,
       content,
-      addressIds: address.map((a) => a.id),
-      fileKeys: file ? [file.s3Key] : [],
+      addresses: {
+        create: address.map((a) => ({
+          address: {
+            connect: {
+              id: a.id,
+            },
+          },
+        })),
+      },
+      files: file?.s3Key
+        ? {
+            create: [
+              {
+                file: {
+                  create: {
+                    location: file?.s3Key,
+                  },
+                },
+              },
+            ],
+          }
+        : undefined,
     };
 
-    const validate = CreateUserSchema.safeParse(variables);
-    if (!validate.success) {
-      console.log(validate.error);
-      return;
-    }
-
     const result = await createUser({
-      variables: validate.data,
+      variables: {
+        data,
+      },
     });
     console.log(result);
   };
@@ -125,14 +120,14 @@ export type MutateUserContextStates = {
   file: ImageFile | undefined;
   isUploading: boolean;
   birthDate: Date | undefined;
-  address: Address[];
+  address: GetAllAddressQuery['addresses'];
 };
 
 export type MutateUserContextActions = {
   setUsername: Dispatch<SetStateAction<string | undefined>>;
   setContent: Dispatch<SetStateAction<string | undefined>>;
   setBirthDate: Dispatch<SetStateAction<Date | undefined>>;
-  setAddress: Dispatch<SetStateAction<Address[]>>;
+  setAddress: Dispatch<SetStateAction<GetAllAddressQuery['addresses']>>;
   fileUploadHandler: (file: File) => void;
   submit: () => void;
 };

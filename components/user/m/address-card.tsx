@@ -1,9 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
+import { graphql } from '@/gql';
 import { getClient } from '@/lib/apollo';
-import { gql } from '@apollo/client';
 import AddressSearchBar from './address-searchbar';
 import AddressSelectedBadges from './address-selected-badges';
-import { graphql } from '@/gql';
 
 // const AllAddress = gql`
 //   query {
@@ -20,7 +19,7 @@ import { graphql } from '@/gql';
 
 const AllAddress = graphql(`
   query getAllAddress {
-    getAddress {
+    addresses {
       id
       code
       c1
@@ -32,7 +31,9 @@ const AllAddress = graphql(`
 `);
 
 export default async function AddressCard() {
-  const { data, loading, error } = await getClient().query({ query: AllAddress });
+  const { data, loading, error } = await getClient().query({
+    query: AllAddress,
+  });
   return (
     <Card>
       <CardHeader>
@@ -47,7 +48,7 @@ export default async function AddressCard() {
           </div>
           <div className="grid gap-3">
             {/* <Label htmlFor="description">주소 검색</Label> */}
-            <AddressSearchBar address={data.getAddress} />
+            <AddressSearchBar address={data.addresses} />
           </div>
         </div>
       </CardContent>

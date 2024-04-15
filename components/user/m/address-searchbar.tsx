@@ -2,9 +2,7 @@
 
 import { MutateUserContext } from '@/components/context/mutate-user-context';
 import { MapPin } from 'lucide-react';
-import { useContext, useState } from 'react';
-
-import * as React from 'react';
+import { useContext } from 'react';
 
 import {
   Command,
@@ -14,14 +12,14 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { Address } from '@/gql/graphql';
+import { GetAllAddressQuery } from '@/gql/graphql';
 
 type SimpleAddress = {
-  id: string;
+  id: number;
   c: string;
 };
 
-export default function AddressSearchBar({ address }: { address: Address[] }) {
+export default function AddressSearchBar({ address }: { address: GetAllAddressQuery['addresses'] }) {
   const { states, actions } = useContext(MutateUserContext);
 
   const simpleAddress = address.map((a) => ({
