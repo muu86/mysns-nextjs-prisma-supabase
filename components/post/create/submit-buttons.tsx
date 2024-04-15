@@ -2,9 +2,11 @@
 
 import { MutatePostContext } from '@/components/context/mutate-post-context';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 import { Context, MouseEvent, useContext } from 'react';
 
 export default function SubmitButtons() {
+  const route = useRouter();
   const { states, actions } = useContext(MutatePostContext);
 
   function saveHandler(event: MouseEvent<HTMLButtonElement>): void {
@@ -13,7 +15,7 @@ export default function SubmitButtons() {
   }
 
   function cancelHandler(event: MouseEvent<HTMLButtonElement>): void {
-    throw new Error('Function not implemented.');
+    route.push('/');
   }
 
   return (

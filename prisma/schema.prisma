@@ -3,11 +3,6 @@ generator client {
   previewFeatures = ["postgresqlExtensions", "relationJoins"]
 }
 
-// generator pothos {
-//   provider = "prisma-pothos-types"
-//   output   = "./pothos-types.ts"
-// }
-
 generator typegraphql {
   provider            = "typegraphql-prisma"
   output              = "../graphql/generated/type-graphql"
@@ -23,15 +18,22 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  username  String    @unique
+  name      String?
+  username  String?
   content   String?
   babyBirth DateTime? @map("baby_birth") @db.Timestamptz()
+
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified") @db.Timestamptz()
+  image         String?
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
   addresses UserAddress[]
   files     UserFile[]
+  Account   Account[]
+  Session   Session[]
 
   @@map("users")
 }
@@ -46,7 +48,7 @@ model UserFile {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
-  @@map("user_file")
+  @@map("user_files")
 }
 
 model UserAddress {
@@ -59,7 +61,7 @@ model UserAddress {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
-  @@map("user_address")
+  @@map("user_addresses")
 }
 
 model Post {
@@ -73,7 +75,7 @@ model Post {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
-  @@map("post")
+  @@map("posts")
 }
 
 model PostFile {
@@ -86,7 +88,7 @@ model PostFile {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
-  @@map("post_file")
+  @@map("post_files")
 }
 
 model File {
@@ -100,7 +102,7 @@ model File {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
-  @@map("file")
+  @@map("files")
 }
 
 enum FileStorageType {
@@ -129,5 +131,48 @@ model Address {
 
   @@index([centerP], type: Gist)
   @@index([centerS], type: Gist)
-  @@map("address")
+  @@map("addresses")
+}
+
+model Account {
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  expires      DateTime @db.Timestamptz()
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  userId    Int
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime @db.Timestamptz()
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
 }

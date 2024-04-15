@@ -19,38 +19,40 @@ export default function ImageCard() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        {/* <CardTitle>이미지</CardTitle> */}
-        <CardDescription>이미지를 업로드하세요</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div>
-          <input
-            onChange={changeEventHandler}
-            id="profile-image-upload"
-            type="file"
-            accept="image/*"
-            className="hidden"
-          />
-          <label htmlFor="profile-image-upload">
-            {states.file ? (
-              <Image
-                alt="profile image"
-                className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
-                height="300"
-                width="300"
-                src={`${states.file.tempUrl}`}
-              />
-            ) : (
-              <Skeleton className="mx-auto w-1/2 rounded-full aspect-square flex items-center justify-center hover:cursor-pointer">
-                <UploadIcon className="h-4 w-4 text-muted-foreground" />
-                <span className="sr-only">업로드</span>
-              </Skeleton>
-            )}
-          </label>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">
+      <Card>
+        <CardHeader>
+          {/* <CardTitle>이미지</CardTitle> */}
+          <CardDescription>이미지를 업로드하세요</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div>
+            <input
+              onChange={changeEventHandler}
+              id="profile-image-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+            />
+            <label htmlFor="profile-image-upload">
+              {states.file ? (
+                <Image
+                  alt="profile image"
+                  className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
+                  height="300"
+                  width="300"
+                  src={`${states.file.tempUrl}`}
+                />
+              ) : (
+                <Skeleton className="mx-auto w-1/2 rounded-full aspect-square flex items-center justify-center hover:cursor-pointer">
+                  <UploadIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="sr-only">업로드</span>
+                </Skeleton>
+              )}
+            </label>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

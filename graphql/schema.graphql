@@ -3,6 +3,464 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Account {
+  access_token: String
+  createdAt: DateTimeISO!
+  expires_at: Int
+  id_token: String
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String!
+  updatedAt: DateTimeISO!
+  user: User!
+  userId: Int!
+}
+
+type AccountAvgAggregate {
+  expires_at: Float
+  userId: Float
+}
+
+input AccountAvgOrderByAggregateInput {
+  expires_at: SortOrder
+  userId: SortOrder
+}
+
+type AccountCountAggregate {
+  _all: Int!
+  access_token: Int!
+  createdAt: Int!
+  expires_at: Int!
+  id_token: Int!
+  provider: Int!
+  providerAccountId: Int!
+  refresh_token: Int!
+  scope: Int!
+  session_state: Int!
+  token_type: Int!
+  type: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+input AccountCountOrderByAggregateInput {
+  access_token: SortOrder
+  createdAt: SortOrder
+  expires_at: SortOrder
+  id_token: SortOrder
+  provider: SortOrder
+  providerAccountId: SortOrder
+  refresh_token: SortOrder
+  scope: SortOrder
+  session_state: SortOrder
+  token_type: SortOrder
+  type: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input AccountCreateInput {
+  access_token: String
+  createdAt: DateTimeISO
+  expires_at: Int
+  id_token: String
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String!
+  updatedAt: DateTimeISO
+  user: UserCreateNestedOneWithoutAccountInput!
+}
+
+input AccountCreateManyInput {
+  access_token: String
+  createdAt: DateTimeISO
+  expires_at: Int
+  id_token: String
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String!
+  updatedAt: DateTimeISO
+  userId: Int!
+}
+
+input AccountCreateManyUserInput {
+  access_token: String
+  createdAt: DateTimeISO
+  expires_at: Int
+  id_token: String
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String!
+  updatedAt: DateTimeISO
+}
+
+input AccountCreateManyUserInputEnvelope {
+  data: [AccountCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input AccountCreateNestedManyWithoutUserInput {
+  connect: [AccountWhereUniqueInput!]
+  connectOrCreate: [AccountCreateOrConnectWithoutUserInput!]
+  create: [AccountCreateWithoutUserInput!]
+  createMany: AccountCreateManyUserInputEnvelope
+}
+
+input AccountCreateOrConnectWithoutUserInput {
+  create: AccountCreateWithoutUserInput!
+  where: AccountWhereUniqueInput!
+}
+
+input AccountCreateWithoutUserInput {
+  access_token: String
+  createdAt: DateTimeISO
+  expires_at: Int
+  id_token: String
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String!
+  updatedAt: DateTimeISO
+}
+
+type AccountGroupBy {
+  _avg: AccountAvgAggregate
+  _count: AccountCountAggregate
+  _max: AccountMaxAggregate
+  _min: AccountMinAggregate
+  _sum: AccountSumAggregate
+  access_token: String
+  createdAt: DateTimeISO!
+  expires_at: Int
+  id_token: String
+  provider: String!
+  providerAccountId: String!
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String!
+  updatedAt: DateTimeISO!
+  userId: Int!
+}
+
+input AccountListRelationFilter {
+  every: AccountWhereInput
+  none: AccountWhereInput
+  some: AccountWhereInput
+}
+
+type AccountMaxAggregate {
+  access_token: String
+  createdAt: DateTimeISO
+  expires_at: Int
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  updatedAt: DateTimeISO
+  userId: Int
+}
+
+input AccountMaxOrderByAggregateInput {
+  access_token: SortOrder
+  createdAt: SortOrder
+  expires_at: SortOrder
+  id_token: SortOrder
+  provider: SortOrder
+  providerAccountId: SortOrder
+  refresh_token: SortOrder
+  scope: SortOrder
+  session_state: SortOrder
+  token_type: SortOrder
+  type: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+type AccountMinAggregate {
+  access_token: String
+  createdAt: DateTimeISO
+  expires_at: Int
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  updatedAt: DateTimeISO
+  userId: Int
+}
+
+input AccountMinOrderByAggregateInput {
+  access_token: SortOrder
+  createdAt: SortOrder
+  expires_at: SortOrder
+  id_token: SortOrder
+  provider: SortOrder
+  providerAccountId: SortOrder
+  refresh_token: SortOrder
+  scope: SortOrder
+  session_state: SortOrder
+  token_type: SortOrder
+  type: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input AccountOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input AccountOrderByWithAggregationInput {
+  _avg: AccountAvgOrderByAggregateInput
+  _count: AccountCountOrderByAggregateInput
+  _max: AccountMaxOrderByAggregateInput
+  _min: AccountMinOrderByAggregateInput
+  _sum: AccountSumOrderByAggregateInput
+  access_token: SortOrderInput
+  createdAt: SortOrder
+  expires_at: SortOrderInput
+  id_token: SortOrderInput
+  provider: SortOrder
+  providerAccountId: SortOrder
+  refresh_token: SortOrderInput
+  scope: SortOrderInput
+  session_state: SortOrderInput
+  token_type: SortOrderInput
+  type: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input AccountOrderByWithRelationInput {
+  access_token: SortOrderInput
+  createdAt: SortOrder
+  expires_at: SortOrderInput
+  id_token: SortOrderInput
+  provider: SortOrder
+  providerAccountId: SortOrder
+  refresh_token: SortOrderInput
+  scope: SortOrderInput
+  session_state: SortOrderInput
+  token_type: SortOrderInput
+  type: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+input AccountProviderProviderAccountIdCompoundUniqueInput {
+  provider: String!
+  providerAccountId: String!
+}
+
+enum AccountScalarFieldEnum {
+  access_token
+  createdAt
+  expires_at
+  id_token
+  provider
+  providerAccountId
+  refresh_token
+  scope
+  session_state
+  token_type
+  type
+  updatedAt
+  userId
+}
+
+input AccountScalarWhereInput {
+  AND: [AccountScalarWhereInput!]
+  NOT: [AccountScalarWhereInput!]
+  OR: [AccountScalarWhereInput!]
+  access_token: StringNullableFilter
+  createdAt: DateTimeFilter
+  expires_at: IntNullableFilter
+  id_token: StringNullableFilter
+  provider: StringFilter
+  providerAccountId: StringFilter
+  refresh_token: StringNullableFilter
+  scope: StringNullableFilter
+  session_state: StringNullableFilter
+  token_type: StringNullableFilter
+  type: StringFilter
+  updatedAt: DateTimeFilter
+  userId: IntFilter
+}
+
+input AccountScalarWhereWithAggregatesInput {
+  AND: [AccountScalarWhereWithAggregatesInput!]
+  NOT: [AccountScalarWhereWithAggregatesInput!]
+  OR: [AccountScalarWhereWithAggregatesInput!]
+  access_token: StringNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  expires_at: IntNullableWithAggregatesFilter
+  id_token: StringNullableWithAggregatesFilter
+  provider: StringWithAggregatesFilter
+  providerAccountId: StringWithAggregatesFilter
+  refresh_token: StringNullableWithAggregatesFilter
+  scope: StringNullableWithAggregatesFilter
+  session_state: StringNullableWithAggregatesFilter
+  token_type: StringNullableWithAggregatesFilter
+  type: StringWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+  userId: IntWithAggregatesFilter
+}
+
+type AccountSumAggregate {
+  expires_at: Int
+  userId: Int
+}
+
+input AccountSumOrderByAggregateInput {
+  expires_at: SortOrder
+  userId: SortOrder
+}
+
+input AccountUpdateInput {
+  access_token: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expires_at: NullableIntFieldUpdateOperationsInput
+  id_token: NullableStringFieldUpdateOperationsInput
+  provider: StringFieldUpdateOperationsInput
+  providerAccountId: StringFieldUpdateOperationsInput
+  refresh_token: NullableStringFieldUpdateOperationsInput
+  scope: NullableStringFieldUpdateOperationsInput
+  session_state: NullableStringFieldUpdateOperationsInput
+  token_type: NullableStringFieldUpdateOperationsInput
+  type: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAccountNestedInput
+}
+
+input AccountUpdateManyMutationInput {
+  access_token: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expires_at: NullableIntFieldUpdateOperationsInput
+  id_token: NullableStringFieldUpdateOperationsInput
+  provider: StringFieldUpdateOperationsInput
+  providerAccountId: StringFieldUpdateOperationsInput
+  refresh_token: NullableStringFieldUpdateOperationsInput
+  scope: NullableStringFieldUpdateOperationsInput
+  session_state: NullableStringFieldUpdateOperationsInput
+  token_type: NullableStringFieldUpdateOperationsInput
+  type: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input AccountUpdateManyWithWhereWithoutUserInput {
+  data: AccountUpdateManyMutationInput!
+  where: AccountScalarWhereInput!
+}
+
+input AccountUpdateManyWithoutUserNestedInput {
+  connect: [AccountWhereUniqueInput!]
+  connectOrCreate: [AccountCreateOrConnectWithoutUserInput!]
+  create: [AccountCreateWithoutUserInput!]
+  createMany: AccountCreateManyUserInputEnvelope
+  delete: [AccountWhereUniqueInput!]
+  deleteMany: [AccountScalarWhereInput!]
+  disconnect: [AccountWhereUniqueInput!]
+  set: [AccountWhereUniqueInput!]
+  update: [AccountUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AccountUpdateManyWithWhereWithoutUserInput!]
+  upsert: [AccountUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AccountUpdateWithWhereUniqueWithoutUserInput {
+  data: AccountUpdateWithoutUserInput!
+  where: AccountWhereUniqueInput!
+}
+
+input AccountUpdateWithoutUserInput {
+  access_token: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expires_at: NullableIntFieldUpdateOperationsInput
+  id_token: NullableStringFieldUpdateOperationsInput
+  provider: StringFieldUpdateOperationsInput
+  providerAccountId: StringFieldUpdateOperationsInput
+  refresh_token: NullableStringFieldUpdateOperationsInput
+  scope: NullableStringFieldUpdateOperationsInput
+  session_state: NullableStringFieldUpdateOperationsInput
+  token_type: NullableStringFieldUpdateOperationsInput
+  type: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input AccountUpsertWithWhereUniqueWithoutUserInput {
+  create: AccountCreateWithoutUserInput!
+  update: AccountUpdateWithoutUserInput!
+  where: AccountWhereUniqueInput!
+}
+
+input AccountWhereInput {
+  AND: [AccountWhereInput!]
+  NOT: [AccountWhereInput!]
+  OR: [AccountWhereInput!]
+  access_token: StringNullableFilter
+  createdAt: DateTimeFilter
+  expires_at: IntNullableFilter
+  id_token: StringNullableFilter
+  provider: StringFilter
+  providerAccountId: StringFilter
+  refresh_token: StringNullableFilter
+  scope: StringNullableFilter
+  session_state: StringNullableFilter
+  token_type: StringNullableFilter
+  type: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  userId: IntFilter
+}
+
+input AccountWhereUniqueInput {
+  AND: [AccountWhereInput!]
+  NOT: [AccountWhereInput!]
+  OR: [AccountWhereInput!]
+  access_token: StringNullableFilter
+  createdAt: DateTimeFilter
+  expires_at: IntNullableFilter
+  id_token: StringNullableFilter
+  provider: StringFilter
+  providerAccountId: StringFilter
+  provider_providerAccountId: AccountProviderProviderAccountIdCompoundUniqueInput
+  refresh_token: StringNullableFilter
+  scope: StringNullableFilter
+  session_state: StringNullableFilter
+  token_type: StringNullableFilter
+  type: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  userId: IntFilter
+}
+
 type Address {
   Post(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
   _count: AddressCount
@@ -12,7 +470,7 @@ type Address {
   c4: String
   code: String!
   createdAt: DateTimeISO!
-  id: Int!
+  id: ID!
   updatedAt: DateTimeISO!
   users(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], skip: Int, take: Int, where: UserAddressWhereInput): [UserAddress!]!
 }
@@ -288,6 +746,14 @@ type AffectedRowsOutput {
   count: Int!
 }
 
+type AggregateAccount {
+  _avg: AccountAvgAggregate
+  _count: AccountCountAggregate
+  _max: AccountMaxAggregate
+  _min: AccountMinAggregate
+  _sum: AccountSumAggregate
+}
+
 type AggregateAddress {
   _avg: AddressAvgAggregate
   _count: AddressCountAggregate
@@ -320,6 +786,14 @@ type AggregatePostFile {
   _sum: PostFileSumAggregate
 }
 
+type AggregateSession {
+  _avg: SessionAvgAggregate
+  _count: SessionCountAggregate
+  _max: SessionMaxAggregate
+  _min: SessionMinAggregate
+  _sum: SessionSumAggregate
+}
+
 type AggregateUser {
   _avg: UserAvgAggregate
   _count: UserCountAggregate
@@ -342,6 +816,12 @@ type AggregateUserFile {
   _max: UserFileMaxAggregate
   _min: UserFileMinAggregate
   _sum: UserFileSumAggregate
+}
+
+type AggregateVerificationToken {
+  _count: VerificationTokenCountAggregate
+  _max: VerificationTokenMaxAggregate
+  _min: VerificationTokenMinAggregate
 }
 
 input DateTimeFieldUpdateOperationsInput {
@@ -428,7 +908,7 @@ type File {
   UserFile(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], skip: Int, take: Int, where: UserFileWhereInput): [UserFile!]!
   _count: FileCount
   createdAt: DateTimeISO!
-  id: Int!
+  id: ID!
   location: String!
   posts(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFile!]!
   type: FileStorageType!
@@ -731,6 +1211,33 @@ input IntFilter {
   notIn: [Int!]
 }
 
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+input IntNullableWithAggregatesFilter {
+  _avg: NestedFloatNullableFilter
+  _count: NestedIntNullableFilter
+  _max: NestedIntNullableFilter
+  _min: NestedIntNullableFilter
+  _sum: NestedIntNullableFilter
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableWithAggregatesFilter
+  notIn: [Int!]
+}
+
 input IntWithAggregatesFilter {
   _avg: NestedFloatFilter
   _count: NestedIntFilter
@@ -748,52 +1255,73 @@ input IntWithAggregatesFilter {
 }
 
 type Mutation {
+  createManyAccount(data: [AccountCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyFile(data: [FileCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyPost(data: [PostCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyPostFile(data: [PostFileCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManySession(data: [SessionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUser(data: [UserCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserAddress(data: [UserAddressCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserFile(data: [UserFileCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManyVerificationToken(data: [VerificationTokenCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createOneAccount(data: AccountCreateInput!, relationLoadStrategy: RelationLoadStrategy): Account!
   createOneFile(data: FileCreateInput!, relationLoadStrategy: RelationLoadStrategy): File!
   createOnePost(data: PostCreateInput!, relationLoadStrategy: RelationLoadStrategy): Post!
   createOnePostFile(data: PostFileCreateInput!, relationLoadStrategy: RelationLoadStrategy): PostFile!
+  createOneSession(data: SessionCreateInput!, relationLoadStrategy: RelationLoadStrategy): Session!
   createOneUser(data: UserCreateInput!, relationLoadStrategy: RelationLoadStrategy): User!
   createOneUserAddress(data: UserAddressCreateInput!, relationLoadStrategy: RelationLoadStrategy): UserAddress!
   createOneUserFile(data: UserFileCreateInput!, relationLoadStrategy: RelationLoadStrategy): UserFile!
+  createOneVerificationToken(data: VerificationTokenCreateInput!, relationLoadStrategy: RelationLoadStrategy): VerificationToken!
+  deleteManyAccount(where: AccountWhereInput): AffectedRowsOutput!
   deleteManyAddress(where: AddressWhereInput): AffectedRowsOutput!
   deleteManyFile(where: FileWhereInput): AffectedRowsOutput!
   deleteManyPost(where: PostWhereInput): AffectedRowsOutput!
   deleteManyPostFile(where: PostFileWhereInput): AffectedRowsOutput!
+  deleteManySession(where: SessionWhereInput): AffectedRowsOutput!
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
   deleteManyUserAddress(where: UserAddressWhereInput): AffectedRowsOutput!
   deleteManyUserFile(where: UserFileWhereInput): AffectedRowsOutput!
+  deleteManyVerificationToken(where: VerificationTokenWhereInput): AffectedRowsOutput!
+  deleteOneAccount(relationLoadStrategy: RelationLoadStrategy, where: AccountWhereUniqueInput!): Account
   deleteOneAddress(relationLoadStrategy: RelationLoadStrategy, where: AddressWhereUniqueInput!): Address
   deleteOneFile(relationLoadStrategy: RelationLoadStrategy, where: FileWhereUniqueInput!): File
   deleteOnePost(relationLoadStrategy: RelationLoadStrategy, where: PostWhereUniqueInput!): Post
   deleteOnePostFile(relationLoadStrategy: RelationLoadStrategy, where: PostFileWhereUniqueInput!): PostFile
+  deleteOneSession(relationLoadStrategy: RelationLoadStrategy, where: SessionWhereUniqueInput!): Session
   deleteOneUser(relationLoadStrategy: RelationLoadStrategy, where: UserWhereUniqueInput!): User
   deleteOneUserAddress(relationLoadStrategy: RelationLoadStrategy, where: UserAddressWhereUniqueInput!): UserAddress
   deleteOneUserFile(relationLoadStrategy: RelationLoadStrategy, where: UserFileWhereUniqueInput!): UserFile
+  deleteOneVerificationToken(relationLoadStrategy: RelationLoadStrategy, where: VerificationTokenWhereUniqueInput!): VerificationToken
+  updateManyAccount(data: AccountUpdateManyMutationInput!, where: AccountWhereInput): AffectedRowsOutput!
   updateManyAddress(data: AddressUpdateManyMutationInput!, where: AddressWhereInput): AffectedRowsOutput!
   updateManyFile(data: FileUpdateManyMutationInput!, where: FileWhereInput): AffectedRowsOutput!
   updateManyPost(data: PostUpdateManyMutationInput!, where: PostWhereInput): AffectedRowsOutput!
   updateManyPostFile(data: PostFileUpdateManyMutationInput!, where: PostFileWhereInput): AffectedRowsOutput!
+  updateManySession(data: SessionUpdateManyMutationInput!, where: SessionWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
   updateManyUserAddress(data: UserAddressUpdateManyMutationInput!, where: UserAddressWhereInput): AffectedRowsOutput!
   updateManyUserFile(data: UserFileUpdateManyMutationInput!, where: UserFileWhereInput): AffectedRowsOutput!
+  updateManyVerificationToken(data: VerificationTokenUpdateManyMutationInput!, where: VerificationTokenWhereInput): AffectedRowsOutput!
+  updateOneAccount(data: AccountUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: AccountWhereUniqueInput!): Account
   updateOneAddress(data: AddressUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: AddressWhereUniqueInput!): Address
   updateOneFile(data: FileUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: FileWhereUniqueInput!): File
   updateOnePost(data: PostUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: PostWhereUniqueInput!): Post
   updateOnePostFile(data: PostFileUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: PostFileWhereUniqueInput!): PostFile
+  updateOneSession(data: SessionUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: SessionWhereUniqueInput!): Session
   updateOneUser(data: UserUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: UserWhereUniqueInput!): User
   updateOneUserAddress(data: UserAddressUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: UserAddressWhereUniqueInput!): UserAddress
   updateOneUserFile(data: UserFileUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: UserFileWhereUniqueInput!): UserFile
+  updateOneVerificationToken(data: VerificationTokenUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: VerificationTokenWhereUniqueInput!): VerificationToken
+  upsertOneAccount(create: AccountCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account!
   upsertOneFile(create: FileCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: FileUpdateInput!, where: FileWhereUniqueInput!): File!
   upsertOnePost(create: PostCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: PostUpdateInput!, where: PostWhereUniqueInput!): Post!
   upsertOnePostFile(create: PostFileCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: PostFileUpdateInput!, where: PostFileWhereUniqueInput!): PostFile!
+  upsertOneSession(create: SessionCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session!
   upsertOneUser(create: UserCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   upsertOneUserAddress(create: UserAddressCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: UserAddressUpdateInput!, where: UserAddressWhereUniqueInput!): UserAddress!
   upsertOneUserFile(create: UserFileCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: UserFileUpdateInput!, where: UserFileWhereUniqueInput!): UserFile!
+  upsertOneVerificationToken(create: VerificationTokenCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: VerificationTokenUpdateInput!, where: VerificationTokenWhereUniqueInput!): VerificationToken!
 }
 
 input NestedDateTimeFilter {
@@ -874,6 +1402,17 @@ input NestedFloatFilter {
   notIn: [Float!]
 }
 
+input NestedFloatNullableFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: NestedFloatNullableFilter
+  notIn: [Float!]
+}
+
 input NestedIntFilter {
   equals: Int
   gt: Int
@@ -893,6 +1432,22 @@ input NestedIntNullableFilter {
   lt: Int
   lte: Int
   not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+input NestedIntNullableWithAggregatesFilter {
+  _avg: NestedFloatNullableFilter
+  _count: NestedIntNullableFilter
+  _max: NestedIntNullableFilter
+  _min: NestedIntNullableFilter
+  _sum: NestedIntNullableFilter
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableWithAggregatesFilter
   notIn: [Int!]
 }
 
@@ -978,6 +1533,14 @@ input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTimeISO
 }
 
+input NullableIntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
+}
+
 input NullableStringFieldUpdateOperationsInput {
   set: String
 }
@@ -994,7 +1557,7 @@ type Post {
   content: String!
   createdAt: DateTimeISO!
   files(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFile!]!
-  id: Int!
+  id: ID!
   updatedAt: DateTimeISO!
 }
 
@@ -1091,7 +1654,7 @@ type PostFile {
   createdAt: DateTimeISO!
   file: File!
   fileId: Int!
-  id: Int!
+  id: ID!
   post: Post!
   postId: Int!
   updatedAt: DateTimeISO!
@@ -1658,17 +2221,24 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  account(relationLoadStrategy: RelationLoadStrategy, where: AccountWhereUniqueInput!): Account
+  accounts(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: AccountWhereInput): [Account!]!
   address(relationLoadStrategy: RelationLoadStrategy, where: AddressWhereUniqueInput!): Address
   addresses(cursor: AddressWhereUniqueInput, distinct: [AddressScalarFieldEnum!], orderBy: [AddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: AddressWhereInput): [Address!]!
+  aggregateAccount(cursor: AccountWhereUniqueInput, orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): AggregateAccount!
   aggregateAddress(cursor: AddressWhereUniqueInput, orderBy: [AddressOrderByWithRelationInput!], skip: Int, take: Int, where: AddressWhereInput): AggregateAddress!
   aggregateFile(cursor: FileWhereUniqueInput, orderBy: [FileOrderByWithRelationInput!], skip: Int, take: Int, where: FileWhereInput): AggregateFile!
   aggregatePost(cursor: PostWhereUniqueInput, orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): AggregatePost!
   aggregatePostFile(cursor: PostFileWhereUniqueInput, orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): AggregatePostFile!
+  aggregateSession(cursor: SessionWhereUniqueInput, orderBy: [SessionOrderByWithRelationInput!], skip: Int, take: Int, where: SessionWhereInput): AggregateSession!
   aggregateUser(cursor: UserWhereUniqueInput, orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): AggregateUser!
   aggregateUserAddress(cursor: UserAddressWhereUniqueInput, orderBy: [UserAddressOrderByWithRelationInput!], skip: Int, take: Int, where: UserAddressWhereInput): AggregateUserAddress!
   aggregateUserFile(cursor: UserFileWhereUniqueInput, orderBy: [UserFileOrderByWithRelationInput!], skip: Int, take: Int, where: UserFileWhereInput): AggregateUserFile!
+  aggregateVerificationToken(cursor: VerificationTokenWhereUniqueInput, orderBy: [VerificationTokenOrderByWithRelationInput!], skip: Int, take: Int, where: VerificationTokenWhereInput): AggregateVerificationToken!
   file(relationLoadStrategy: RelationLoadStrategy, where: FileWhereUniqueInput!): File
   files(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: FileWhereInput): [File!]!
+  findFirstAccount(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: AccountWhereInput): Account
+  findFirstAccountOrThrow(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: AccountWhereInput): Account
   findFirstAddress(cursor: AddressWhereUniqueInput, distinct: [AddressScalarFieldEnum!], orderBy: [AddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: AddressWhereInput): Address
   findFirstAddressOrThrow(cursor: AddressWhereUniqueInput, distinct: [AddressScalarFieldEnum!], orderBy: [AddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: AddressWhereInput): Address
   findFirstFile(cursor: FileWhereUniqueInput, distinct: [FileScalarFieldEnum!], orderBy: [FileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: FileWhereInput): File
@@ -1677,36 +2247,50 @@ type Query {
   findFirstPostFile(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: PostFileWhereInput): PostFile
   findFirstPostFileOrThrow(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: PostFileWhereInput): PostFile
   findFirstPostOrThrow(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: PostWhereInput): Post
+  findFirstSession(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: SessionWhereInput): Session
+  findFirstSessionOrThrow(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: SessionWhereInput): Session
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserWhereInput): User
   findFirstUserAddress(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserAddressWhereInput): UserAddress
   findFirstUserAddressOrThrow(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserAddressWhereInput): UserAddress
   findFirstUserFile(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserFileWhereInput): UserFile
   findFirstUserFileOrThrow(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserFileWhereInput): UserFile
   findFirstUserOrThrow(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserWhereInput): User
+  findFirstVerificationToken(cursor: VerificationTokenWhereUniqueInput, distinct: [VerificationTokenScalarFieldEnum!], orderBy: [VerificationTokenOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: VerificationTokenWhereInput): VerificationToken
+  findFirstVerificationTokenOrThrow(cursor: VerificationTokenWhereUniqueInput, distinct: [VerificationTokenScalarFieldEnum!], orderBy: [VerificationTokenOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: VerificationTokenWhereInput): VerificationToken
+  getAccount(relationLoadStrategy: RelationLoadStrategy, where: AccountWhereUniqueInput!): Account
   getAddress(relationLoadStrategy: RelationLoadStrategy, where: AddressWhereUniqueInput!): Address
   getFile(relationLoadStrategy: RelationLoadStrategy, where: FileWhereUniqueInput!): File
   getPost(relationLoadStrategy: RelationLoadStrategy, where: PostWhereUniqueInput!): Post
   getPostFile(relationLoadStrategy: RelationLoadStrategy, where: PostFileWhereUniqueInput!): PostFile
+  getSession(relationLoadStrategy: RelationLoadStrategy, where: SessionWhereUniqueInput!): Session
   getUser(relationLoadStrategy: RelationLoadStrategy, where: UserWhereUniqueInput!): User
   getUserAddress(relationLoadStrategy: RelationLoadStrategy, where: UserAddressWhereUniqueInput!): UserAddress
   getUserFile(relationLoadStrategy: RelationLoadStrategy, where: UserFileWhereUniqueInput!): UserFile
+  getVerificationToken(relationLoadStrategy: RelationLoadStrategy, where: VerificationTokenWhereUniqueInput!): VerificationToken
+  groupByAccount(by: [AccountScalarFieldEnum!]!, having: AccountScalarWhereWithAggregatesInput, orderBy: [AccountOrderByWithAggregationInput!], skip: Int, take: Int, where: AccountWhereInput): [AccountGroupBy!]!
   groupByAddress(by: [AddressScalarFieldEnum!]!, having: AddressScalarWhereWithAggregatesInput, orderBy: [AddressOrderByWithAggregationInput!], skip: Int, take: Int, where: AddressWhereInput): [AddressGroupBy!]!
   groupByFile(by: [FileScalarFieldEnum!]!, having: FileScalarWhereWithAggregatesInput, orderBy: [FileOrderByWithAggregationInput!], skip: Int, take: Int, where: FileWhereInput): [FileGroupBy!]!
   groupByPost(by: [PostScalarFieldEnum!]!, having: PostScalarWhereWithAggregatesInput, orderBy: [PostOrderByWithAggregationInput!], skip: Int, take: Int, where: PostWhereInput): [PostGroupBy!]!
   groupByPostFile(by: [PostFileScalarFieldEnum!]!, having: PostFileScalarWhereWithAggregatesInput, orderBy: [PostFileOrderByWithAggregationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFileGroupBy!]!
+  groupBySession(by: [SessionScalarFieldEnum!]!, having: SessionScalarWhereWithAggregatesInput, orderBy: [SessionOrderByWithAggregationInput!], skip: Int, take: Int, where: SessionWhereInput): [SessionGroupBy!]!
   groupByUser(by: [UserScalarFieldEnum!]!, having: UserScalarWhereWithAggregatesInput, orderBy: [UserOrderByWithAggregationInput!], skip: Int, take: Int, where: UserWhereInput): [UserGroupBy!]!
   groupByUserAddress(by: [UserAddressScalarFieldEnum!]!, having: UserAddressScalarWhereWithAggregatesInput, orderBy: [UserAddressOrderByWithAggregationInput!], skip: Int, take: Int, where: UserAddressWhereInput): [UserAddressGroupBy!]!
   groupByUserFile(by: [UserFileScalarFieldEnum!]!, having: UserFileScalarWhereWithAggregatesInput, orderBy: [UserFileOrderByWithAggregationInput!], skip: Int, take: Int, where: UserFileWhereInput): [UserFileGroupBy!]!
+  groupByVerificationToken(by: [VerificationTokenScalarFieldEnum!]!, having: VerificationTokenScalarWhereWithAggregatesInput, orderBy: [VerificationTokenOrderByWithAggregationInput!], skip: Int, take: Int, where: VerificationTokenWhereInput): [VerificationTokenGroupBy!]!
   post(relationLoadStrategy: RelationLoadStrategy, where: PostWhereUniqueInput!): Post
   postFile(relationLoadStrategy: RelationLoadStrategy, where: PostFileWhereUniqueInput!): PostFile
   postFiles(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: PostFileWhereInput): [PostFile!]!
   posts(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: PostWhereInput): [Post!]!
+  session(relationLoadStrategy: RelationLoadStrategy, where: SessionWhereUniqueInput!): Session
+  sessions(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: SessionWhereInput): [Session!]!
   user(relationLoadStrategy: RelationLoadStrategy, where: UserWhereUniqueInput!): User
   userAddress(relationLoadStrategy: RelationLoadStrategy, where: UserAddressWhereUniqueInput!): UserAddress
   userAddresses(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserAddressWhereInput): [UserAddress!]!
   userFile(relationLoadStrategy: RelationLoadStrategy, where: UserFileWhereUniqueInput!): UserFile
   userFiles(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserFileWhereInput): [UserFile!]!
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserWhereInput): [User!]!
+  verificationToken(relationLoadStrategy: RelationLoadStrategy, where: VerificationTokenWhereUniqueInput!): VerificationToken
+  verificationTokens(cursor: VerificationTokenWhereUniqueInput, distinct: [VerificationTokenScalarFieldEnum!], orderBy: [VerificationTokenOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: VerificationTokenWhereInput): [VerificationToken!]!
 }
 
 enum QueryMode {
@@ -1717,6 +2301,278 @@ enum QueryMode {
 enum RelationLoadStrategy {
   join
   query
+}
+
+type Session {
+  createdAt: DateTimeISO!
+  expires: DateTimeISO!
+  sessionToken: String!
+  updatedAt: DateTimeISO!
+  user: User!
+  userId: Int!
+}
+
+type SessionAvgAggregate {
+  userId: Float
+}
+
+input SessionAvgOrderByAggregateInput {
+  userId: SortOrder
+}
+
+type SessionCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  expires: Int!
+  sessionToken: Int!
+  updatedAt: Int!
+  userId: Int!
+}
+
+input SessionCountOrderByAggregateInput {
+  createdAt: SortOrder
+  expires: SortOrder
+  sessionToken: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input SessionCreateInput {
+  createdAt: DateTimeISO
+  expires: DateTimeISO!
+  sessionToken: String!
+  updatedAt: DateTimeISO
+  user: UserCreateNestedOneWithoutSessionInput!
+}
+
+input SessionCreateManyInput {
+  createdAt: DateTimeISO
+  expires: DateTimeISO!
+  sessionToken: String!
+  updatedAt: DateTimeISO
+  userId: Int!
+}
+
+input SessionCreateManyUserInput {
+  createdAt: DateTimeISO
+  expires: DateTimeISO!
+  sessionToken: String!
+  updatedAt: DateTimeISO
+}
+
+input SessionCreateManyUserInputEnvelope {
+  data: [SessionCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input SessionCreateNestedManyWithoutUserInput {
+  connect: [SessionWhereUniqueInput!]
+  connectOrCreate: [SessionCreateOrConnectWithoutUserInput!]
+  create: [SessionCreateWithoutUserInput!]
+  createMany: SessionCreateManyUserInputEnvelope
+}
+
+input SessionCreateOrConnectWithoutUserInput {
+  create: SessionCreateWithoutUserInput!
+  where: SessionWhereUniqueInput!
+}
+
+input SessionCreateWithoutUserInput {
+  createdAt: DateTimeISO
+  expires: DateTimeISO!
+  sessionToken: String!
+  updatedAt: DateTimeISO
+}
+
+type SessionGroupBy {
+  _avg: SessionAvgAggregate
+  _count: SessionCountAggregate
+  _max: SessionMaxAggregate
+  _min: SessionMinAggregate
+  _sum: SessionSumAggregate
+  createdAt: DateTimeISO!
+  expires: DateTimeISO!
+  sessionToken: String!
+  updatedAt: DateTimeISO!
+  userId: Int!
+}
+
+input SessionListRelationFilter {
+  every: SessionWhereInput
+  none: SessionWhereInput
+  some: SessionWhereInput
+}
+
+type SessionMaxAggregate {
+  createdAt: DateTimeISO
+  expires: DateTimeISO
+  sessionToken: String
+  updatedAt: DateTimeISO
+  userId: Int
+}
+
+input SessionMaxOrderByAggregateInput {
+  createdAt: SortOrder
+  expires: SortOrder
+  sessionToken: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+type SessionMinAggregate {
+  createdAt: DateTimeISO
+  expires: DateTimeISO
+  sessionToken: String
+  updatedAt: DateTimeISO
+  userId: Int
+}
+
+input SessionMinOrderByAggregateInput {
+  createdAt: SortOrder
+  expires: SortOrder
+  sessionToken: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input SessionOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input SessionOrderByWithAggregationInput {
+  _avg: SessionAvgOrderByAggregateInput
+  _count: SessionCountOrderByAggregateInput
+  _max: SessionMaxOrderByAggregateInput
+  _min: SessionMinOrderByAggregateInput
+  _sum: SessionSumOrderByAggregateInput
+  createdAt: SortOrder
+  expires: SortOrder
+  sessionToken: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input SessionOrderByWithRelationInput {
+  createdAt: SortOrder
+  expires: SortOrder
+  sessionToken: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum SessionScalarFieldEnum {
+  createdAt
+  expires
+  sessionToken
+  updatedAt
+  userId
+}
+
+input SessionScalarWhereInput {
+  AND: [SessionScalarWhereInput!]
+  NOT: [SessionScalarWhereInput!]
+  OR: [SessionScalarWhereInput!]
+  createdAt: DateTimeFilter
+  expires: DateTimeFilter
+  sessionToken: StringFilter
+  updatedAt: DateTimeFilter
+  userId: IntFilter
+}
+
+input SessionScalarWhereWithAggregatesInput {
+  AND: [SessionScalarWhereWithAggregatesInput!]
+  NOT: [SessionScalarWhereWithAggregatesInput!]
+  OR: [SessionScalarWhereWithAggregatesInput!]
+  createdAt: DateTimeWithAggregatesFilter
+  expires: DateTimeWithAggregatesFilter
+  sessionToken: StringWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+  userId: IntWithAggregatesFilter
+}
+
+type SessionSumAggregate {
+  userId: Int
+}
+
+input SessionSumOrderByAggregateInput {
+  userId: SortOrder
+}
+
+input SessionUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expires: DateTimeFieldUpdateOperationsInput
+  sessionToken: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutSessionNestedInput
+}
+
+input SessionUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expires: DateTimeFieldUpdateOperationsInput
+  sessionToken: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input SessionUpdateManyWithWhereWithoutUserInput {
+  data: SessionUpdateManyMutationInput!
+  where: SessionScalarWhereInput!
+}
+
+input SessionUpdateManyWithoutUserNestedInput {
+  connect: [SessionWhereUniqueInput!]
+  connectOrCreate: [SessionCreateOrConnectWithoutUserInput!]
+  create: [SessionCreateWithoutUserInput!]
+  createMany: SessionCreateManyUserInputEnvelope
+  delete: [SessionWhereUniqueInput!]
+  deleteMany: [SessionScalarWhereInput!]
+  disconnect: [SessionWhereUniqueInput!]
+  set: [SessionWhereUniqueInput!]
+  update: [SessionUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [SessionUpdateManyWithWhereWithoutUserInput!]
+  upsert: [SessionUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input SessionUpdateWithWhereUniqueWithoutUserInput {
+  data: SessionUpdateWithoutUserInput!
+  where: SessionWhereUniqueInput!
+}
+
+input SessionUpdateWithoutUserInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  expires: DateTimeFieldUpdateOperationsInput
+  sessionToken: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input SessionUpsertWithWhereUniqueWithoutUserInput {
+  create: SessionCreateWithoutUserInput!
+  update: SessionUpdateWithoutUserInput!
+  where: SessionWhereUniqueInput!
+}
+
+input SessionWhereInput {
+  AND: [SessionWhereInput!]
+  NOT: [SessionWhereInput!]
+  OR: [SessionWhereInput!]
+  createdAt: DateTimeFilter
+  expires: DateTimeFilter
+  sessionToken: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  userId: IntFilter
+}
+
+input SessionWhereUniqueInput {
+  AND: [SessionWhereInput!]
+  NOT: [SessionWhereInput!]
+  OR: [SessionWhereInput!]
+  createdAt: DateTimeFilter
+  expires: DateTimeFilter
+  sessionToken: String
+  updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  userId: IntFilter
 }
 
 enum SortOrder {
@@ -1800,22 +2656,28 @@ input StringWithAggregatesFilter {
 }
 
 type User {
+  Account(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): [Account!]!
+  Session(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], skip: Int, take: Int, where: SessionWhereInput): [Session!]!
   _count: UserCount
   addresses(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], skip: Int, take: Int, where: UserAddressWhereInput): [UserAddress!]!
   babyBirth: DateTimeISO
   content: String
   createdAt: DateTimeISO!
+  email: String!
+  emailVerified: DateTimeISO
   files(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], skip: Int, take: Int, where: UserFileWhereInput): [UserFile!]!
-  id: Int!
+  id: ID!
+  image: String
+  name: String
   updatedAt: DateTimeISO!
-  username: String!
+  username: String
 }
 
 type UserAddress {
   address: Address!
   addressId: Int!
   createdAt: DateTimeISO!
-  id: Int!
+  id: ID!
   updatedAt: DateTimeISO!
   user: User!
   userId: Int!
@@ -2157,6 +3019,8 @@ input UserAvgOrderByAggregateInput {
 }
 
 type UserCount {
+  Account(where: AccountWhereInput): Int!
+  Session(where: SessionWhereInput): Int!
   addresses(where: UserAddressWhereInput): Int!
   files(where: UserFileWhereInput): Int!
 }
@@ -2166,7 +3030,11 @@ type UserCountAggregate {
   babyBirth: Int!
   content: Int!
   createdAt: Int!
+  email: Int!
+  emailVerified: Int!
   id: Int!
+  image: Int!
+  name: Int!
   updatedAt: Int!
   username: Int!
 }
@@ -2175,28 +3043,48 @@ input UserCountOrderByAggregateInput {
   babyBirth: SortOrder
   content: SortOrder
   createdAt: SortOrder
+  email: SortOrder
+  emailVerified: SortOrder
   id: SortOrder
+  image: SortOrder
+  name: SortOrder
   updatedAt: SortOrder
   username: SortOrder
 }
 
 input UserCreateInput {
+  Account: AccountCreateNestedManyWithoutUserInput
+  Session: SessionCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
   content: String
   createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
   files: UserFileCreateNestedManyWithoutUserInput
+  image: String
+  name: String
   updatedAt: DateTimeISO
-  username: String!
+  username: String
 }
 
 input UserCreateManyInput {
   babyBirth: DateTimeISO
   content: String
   createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
   id: Int
+  image: String
+  name: String
   updatedAt: DateTimeISO
-  username: String!
+  username: String
+}
+
+input UserCreateNestedOneWithoutAccountInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutAccountInput
+  create: UserCreateWithoutAccountInput
 }
 
 input UserCreateNestedOneWithoutAddressesInput {
@@ -2211,6 +3099,17 @@ input UserCreateNestedOneWithoutFilesInput {
   create: UserCreateWithoutFilesInput
 }
 
+input UserCreateNestedOneWithoutSessionInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutSessionInput
+  create: UserCreateWithoutSessionInput
+}
+
+input UserCreateOrConnectWithoutAccountInput {
+  create: UserCreateWithoutAccountInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateOrConnectWithoutAddressesInput {
   create: UserCreateWithoutAddressesInput!
   where: UserWhereUniqueInput!
@@ -2221,29 +3120,76 @@ input UserCreateOrConnectWithoutFilesInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateWithoutAddressesInput {
-  babyBirth: DateTimeISO
-  content: String
-  createdAt: DateTimeISO
-  files: UserFileCreateNestedManyWithoutUserInput
-  updatedAt: DateTimeISO
-  username: String!
+input UserCreateOrConnectWithoutSessionInput {
+  create: UserCreateWithoutSessionInput!
+  where: UserWhereUniqueInput!
 }
 
-input UserCreateWithoutFilesInput {
+input UserCreateWithoutAccountInput {
+  Session: SessionCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
   content: String
   createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
+  files: UserFileCreateNestedManyWithoutUserInput
+  image: String
+  name: String
   updatedAt: DateTimeISO
-  username: String!
+  username: String
+}
+
+input UserCreateWithoutAddressesInput {
+  Account: AccountCreateNestedManyWithoutUserInput
+  Session: SessionCreateNestedManyWithoutUserInput
+  babyBirth: DateTimeISO
+  content: String
+  createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
+  files: UserFileCreateNestedManyWithoutUserInput
+  image: String
+  name: String
+  updatedAt: DateTimeISO
+  username: String
+}
+
+input UserCreateWithoutFilesInput {
+  Account: AccountCreateNestedManyWithoutUserInput
+  Session: SessionCreateNestedManyWithoutUserInput
+  addresses: UserAddressCreateNestedManyWithoutUserInput
+  babyBirth: DateTimeISO
+  content: String
+  createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
+  image: String
+  name: String
+  updatedAt: DateTimeISO
+  username: String
+}
+
+input UserCreateWithoutSessionInput {
+  Account: AccountCreateNestedManyWithoutUserInput
+  addresses: UserAddressCreateNestedManyWithoutUserInput
+  babyBirth: DateTimeISO
+  content: String
+  createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
+  files: UserFileCreateNestedManyWithoutUserInput
+  image: String
+  name: String
+  updatedAt: DateTimeISO
+  username: String
 }
 
 type UserFile {
   createdAt: DateTimeISO!
   file: File!
   fileId: Int!
-  id: Int!
+  id: ID!
   updatedAt: DateTimeISO!
   user: User!
   userId: Int!
@@ -2592,16 +3538,24 @@ type UserGroupBy {
   babyBirth: DateTimeISO
   content: String
   createdAt: DateTimeISO!
+  email: String!
+  emailVerified: DateTimeISO
   id: Int!
+  image: String
+  name: String
   updatedAt: DateTimeISO!
-  username: String!
+  username: String
 }
 
 type UserMaxAggregate {
   babyBirth: DateTimeISO
   content: String
   createdAt: DateTimeISO
+  email: String
+  emailVerified: DateTimeISO
   id: Int
+  image: String
+  name: String
   updatedAt: DateTimeISO
   username: String
 }
@@ -2610,7 +3564,11 @@ input UserMaxOrderByAggregateInput {
   babyBirth: SortOrder
   content: SortOrder
   createdAt: SortOrder
+  email: SortOrder
+  emailVerified: SortOrder
   id: SortOrder
+  image: SortOrder
+  name: SortOrder
   updatedAt: SortOrder
   username: SortOrder
 }
@@ -2619,7 +3577,11 @@ type UserMinAggregate {
   babyBirth: DateTimeISO
   content: String
   createdAt: DateTimeISO
+  email: String
+  emailVerified: DateTimeISO
   id: Int
+  image: String
+  name: String
   updatedAt: DateTimeISO
   username: String
 }
@@ -2628,7 +3590,11 @@ input UserMinOrderByAggregateInput {
   babyBirth: SortOrder
   content: SortOrder
   createdAt: SortOrder
+  email: SortOrder
+  emailVerified: SortOrder
   id: SortOrder
+  image: SortOrder
+  name: SortOrder
   updatedAt: SortOrder
   username: SortOrder
 }
@@ -2642,20 +3608,30 @@ input UserOrderByWithAggregationInput {
   babyBirth: SortOrderInput
   content: SortOrderInput
   createdAt: SortOrder
+  email: SortOrder
+  emailVerified: SortOrderInput
   id: SortOrder
+  image: SortOrderInput
+  name: SortOrderInput
   updatedAt: SortOrder
-  username: SortOrder
+  username: SortOrderInput
 }
 
 input UserOrderByWithRelationInput {
+  Account: AccountOrderByRelationAggregateInput
+  Session: SessionOrderByRelationAggregateInput
   addresses: UserAddressOrderByRelationAggregateInput
   babyBirth: SortOrderInput
   content: SortOrderInput
   createdAt: SortOrder
+  email: SortOrder
+  emailVerified: SortOrderInput
   files: UserFileOrderByRelationAggregateInput
   id: SortOrder
+  image: SortOrderInput
+  name: SortOrderInput
   updatedAt: SortOrder
-  username: SortOrder
+  username: SortOrderInput
 }
 
 input UserRelationFilter {
@@ -2667,7 +3643,11 @@ enum UserScalarFieldEnum {
   babyBirth
   content
   createdAt
+  email
+  emailVerified
   id
+  image
+  name
   updatedAt
   username
 }
@@ -2679,9 +3659,13 @@ input UserScalarWhereWithAggregatesInput {
   babyBirth: DateTimeNullableWithAggregatesFilter
   content: StringNullableWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
+  email: StringWithAggregatesFilter
+  emailVerified: DateTimeNullableWithAggregatesFilter
   id: IntWithAggregatesFilter
+  image: StringNullableWithAggregatesFilter
+  name: StringNullableWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
-  username: StringWithAggregatesFilter
+  username: StringNullableWithAggregatesFilter
 }
 
 type UserSumAggregate {
@@ -2693,21 +3677,39 @@ input UserSumOrderByAggregateInput {
 }
 
 input UserUpdateInput {
+  Account: AccountUpdateManyWithoutUserNestedInput
+  Session: SessionUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
   files: UserFileUpdateManyWithoutUserNestedInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  username: StringFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateManyMutationInput {
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  username: StringFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpdateOneRequiredWithoutAccountNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutAccountInput
+  create: UserCreateWithoutAccountInput
+  update: UserUpdateToOneWithWhereWithoutAccountInput
+  upsert: UserUpsertWithoutAccountInput
 }
 
 input UserUpdateOneRequiredWithoutAddressesNestedInput {
@@ -2726,6 +3728,19 @@ input UserUpdateOneRequiredWithoutFilesNestedInput {
   upsert: UserUpsertWithoutFilesInput
 }
 
+input UserUpdateOneRequiredWithoutSessionNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutSessionInput
+  create: UserCreateWithoutSessionInput
+  update: UserUpdateToOneWithWhereWithoutSessionInput
+  upsert: UserUpsertWithoutSessionInput
+}
+
+input UserUpdateToOneWithWhereWithoutAccountInput {
+  data: UserUpdateWithoutAccountInput!
+  where: UserWhereInput
+}
+
 input UserUpdateToOneWithWhereWithoutAddressesInput {
   data: UserUpdateWithoutAddressesInput!
   where: UserWhereInput
@@ -2736,22 +3751,75 @@ input UserUpdateToOneWithWhereWithoutFilesInput {
   where: UserWhereInput
 }
 
-input UserUpdateWithoutAddressesInput {
-  babyBirth: NullableDateTimeFieldUpdateOperationsInput
-  content: NullableStringFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  files: UserFileUpdateManyWithoutUserNestedInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  username: StringFieldUpdateOperationsInput
+input UserUpdateToOneWithWhereWithoutSessionInput {
+  data: UserUpdateWithoutSessionInput!
+  where: UserWhereInput
 }
 
-input UserUpdateWithoutFilesInput {
+input UserUpdateWithoutAccountInput {
+  Session: SessionUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutUserNestedInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  username: StringFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutAddressesInput {
+  Account: AccountUpdateManyWithoutUserNestedInput
+  Session: SessionUpdateManyWithoutUserNestedInput
+  babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutUserNestedInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutFilesInput {
+  Account: AccountUpdateManyWithoutUserNestedInput
+  Session: SessionUpdateManyWithoutUserNestedInput
+  addresses: UserAddressUpdateManyWithoutUserNestedInput
+  babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutSessionInput {
+  Account: AccountUpdateManyWithoutUserNestedInput
+  addresses: UserAddressUpdateManyWithoutUserNestedInput
+  babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutUserNestedInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpsertWithoutAccountInput {
+  create: UserCreateWithoutAccountInput!
+  update: UserUpdateWithoutAccountInput!
+  where: UserWhereInput
 }
 
 input UserUpsertWithoutAddressesInput {
@@ -2766,30 +3834,178 @@ input UserUpsertWithoutFilesInput {
   where: UserWhereInput
 }
 
+input UserUpsertWithoutSessionInput {
+  create: UserCreateWithoutSessionInput!
+  update: UserUpdateWithoutSessionInput!
+  where: UserWhereInput
+}
+
 input UserWhereInput {
   AND: [UserWhereInput!]
+  Account: AccountListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  Session: SessionListRelationFilter
   addresses: UserAddressListRelationFilter
   babyBirth: DateTimeNullableFilter
   content: StringNullableFilter
   createdAt: DateTimeFilter
+  email: StringFilter
+  emailVerified: DateTimeNullableFilter
   files: UserFileListRelationFilter
   id: IntFilter
+  image: StringNullableFilter
+  name: StringNullableFilter
   updatedAt: DateTimeFilter
-  username: StringFilter
+  username: StringNullableFilter
 }
 
 input UserWhereUniqueInput {
   AND: [UserWhereInput!]
+  Account: AccountListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  Session: SessionListRelationFilter
   addresses: UserAddressListRelationFilter
   babyBirth: DateTimeNullableFilter
   content: StringNullableFilter
   createdAt: DateTimeFilter
+  email: String
+  emailVerified: DateTimeNullableFilter
   files: UserFileListRelationFilter
   id: Int
+  image: StringNullableFilter
+  name: StringNullableFilter
   updatedAt: DateTimeFilter
-  username: String
+  username: StringNullableFilter
+}
+
+type VerificationToken {
+  expires: DateTimeISO!
+  identifier: String!
+  token: String!
+}
+
+type VerificationTokenCountAggregate {
+  _all: Int!
+  expires: Int!
+  identifier: Int!
+  token: Int!
+}
+
+input VerificationTokenCountOrderByAggregateInput {
+  expires: SortOrder
+  identifier: SortOrder
+  token: SortOrder
+}
+
+input VerificationTokenCreateInput {
+  expires: DateTimeISO!
+  identifier: String!
+  token: String!
+}
+
+input VerificationTokenCreateManyInput {
+  expires: DateTimeISO!
+  identifier: String!
+  token: String!
+}
+
+type VerificationTokenGroupBy {
+  _count: VerificationTokenCountAggregate
+  _max: VerificationTokenMaxAggregate
+  _min: VerificationTokenMinAggregate
+  expires: DateTimeISO!
+  identifier: String!
+  token: String!
+}
+
+input VerificationTokenIdentifierTokenCompoundUniqueInput {
+  identifier: String!
+  token: String!
+}
+
+type VerificationTokenMaxAggregate {
+  expires: DateTimeISO
+  identifier: String
+  token: String
+}
+
+input VerificationTokenMaxOrderByAggregateInput {
+  expires: SortOrder
+  identifier: SortOrder
+  token: SortOrder
+}
+
+type VerificationTokenMinAggregate {
+  expires: DateTimeISO
+  identifier: String
+  token: String
+}
+
+input VerificationTokenMinOrderByAggregateInput {
+  expires: SortOrder
+  identifier: SortOrder
+  token: SortOrder
+}
+
+input VerificationTokenOrderByWithAggregationInput {
+  _count: VerificationTokenCountOrderByAggregateInput
+  _max: VerificationTokenMaxOrderByAggregateInput
+  _min: VerificationTokenMinOrderByAggregateInput
+  expires: SortOrder
+  identifier: SortOrder
+  token: SortOrder
+}
+
+input VerificationTokenOrderByWithRelationInput {
+  expires: SortOrder
+  identifier: SortOrder
+  token: SortOrder
+}
+
+enum VerificationTokenScalarFieldEnum {
+  expires
+  identifier
+  token
+}
+
+input VerificationTokenScalarWhereWithAggregatesInput {
+  AND: [VerificationTokenScalarWhereWithAggregatesInput!]
+  NOT: [VerificationTokenScalarWhereWithAggregatesInput!]
+  OR: [VerificationTokenScalarWhereWithAggregatesInput!]
+  expires: DateTimeWithAggregatesFilter
+  identifier: StringWithAggregatesFilter
+  token: StringWithAggregatesFilter
+}
+
+input VerificationTokenUpdateInput {
+  expires: DateTimeFieldUpdateOperationsInput
+  identifier: StringFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+}
+
+input VerificationTokenUpdateManyMutationInput {
+  expires: DateTimeFieldUpdateOperationsInput
+  identifier: StringFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+}
+
+input VerificationTokenWhereInput {
+  AND: [VerificationTokenWhereInput!]
+  NOT: [VerificationTokenWhereInput!]
+  OR: [VerificationTokenWhereInput!]
+  expires: DateTimeFilter
+  identifier: StringFilter
+  token: StringFilter
+}
+
+input VerificationTokenWhereUniqueInput {
+  AND: [VerificationTokenWhereInput!]
+  NOT: [VerificationTokenWhereInput!]
+  OR: [VerificationTokenWhereInput!]
+  expires: DateTimeFilter
+  identifier: StringFilter
+  identifier_token: VerificationTokenIdentifierTokenCompoundUniqueInput
+  token: StringFilter
 }

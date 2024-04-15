@@ -1,23 +1,15 @@
 'use client';
 
-import { MutateUserContext } from '@/components/context/mutate-user-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { ChangeEvent, useContext } from 'react';
 
-export default function ContentCard() {
-  const { states, actions } = useContext(MutateUserContext);
-
-  function changeEventHandler(event: ChangeEvent<HTMLTextAreaElement>): void {
-    actions.setContent(event.target.value);
-  }
-
+export default function PostCard() {
   return (
     <div className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">
-      <Card>
+      <Card x-chunk="dashboard-07-chunk-0">
         <CardHeader>
-          {/* <CardTitle>소개</CardTitle> */}
-          <CardDescription>소개글을 작성해주세요</CardDescription>
+          <CardTitle>코멘트</CardTitle>
+          <CardDescription>코멘트 등록입니다</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6">
@@ -27,7 +19,7 @@ export default function ContentCard() {
           </div> */}
             <div className="grid gap-3">
               {/* <Label htmlFor="description">글</Label> */}
-              <Textarea id="description" className="min-h-32" value={states.content} onChange={changeEventHandler} />
+              {/* <Textarea id="description" className="min-h-32" value={states.content} onChange={changeEventHandler} /> */}
             </div>
           </div>
         </CardContent>

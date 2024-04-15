@@ -12,7 +12,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { GetAllAddressQuery } from '@/gql/graphql';
+import { GetAllAddressQuery } from '@/graphql/generated/gql/graphql';
 
 type SimpleAddress = {
   id: number;

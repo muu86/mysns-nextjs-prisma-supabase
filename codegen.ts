@@ -4,9 +4,9 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: './graphql/schema.graphql',
   // schema: printSchema(schema),
-  documents: ['app/**/*.tsx', 'components/**/*.tsx'],
+  documents: ['actions/**/*.ts', 'app/**/*.tsx', 'components/**/*.tsx'],
   generates: {
-    'gql/': {
+    'graphql/generated/gql/': {
       preset: 'client',
       plugins: [],
     },

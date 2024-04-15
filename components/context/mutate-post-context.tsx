@@ -1,8 +1,8 @@
 'use client';
 
 import { getPresignedUrl } from '@/actions/file';
-import { graphql } from '@/gql';
-import { PostCreateInput } from '@/gql/graphql';
+import { graphql } from '@/graphql/generated/gql';
+import { PostCreateInput } from '@/graphql/generated/gql/graphql';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
@@ -82,6 +82,7 @@ export default function MutatePostContextProvider({ children }: PropsWithChildre
       content,
       files,
       selectedFile,
+      isUploading,
     },
     actions: {
       setContent,
@@ -99,6 +100,7 @@ export type MutatePostContextStates = {
   content: string;
   files: ImageFile[];
   selectedFile: ImageFile | undefined;
+  isUploading: boolean;
 };
 
 export type MutatePostContextActions = {

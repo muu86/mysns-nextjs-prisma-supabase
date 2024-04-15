@@ -29,47 +29,49 @@ export default function BabyBirthdayPicker() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        {/* <CardTitle>아기 생일</CardTitle> */}
-        <CardDescription>아기는 몇 개월인가요</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-3 gap-6">
-          {/* <div className="grid gap-3">
+    <div className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">
+      <Card>
+        <CardHeader>
+          {/* <CardTitle>아기 생일</CardTitle> */}
+          <CardDescription>아기는 몇 개월인가요</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-6">
+            {/* <div className="grid gap-3">
             <Label htmlFor="name">제목</Label>
             <Input id="name" type="text" className="w-full" defaultValue="Gamer Gear Pro Controller" />
           </div> */}
-          <div className="grid gap-3 col-span-3">
-            {states.birthDate && (
-              <Badge className="mr-auto place-content-center">{`${describeBirth(states.birthDate)}`}</Badge>
-            )}
+            <div className="grid gap-3 col-span-3">
+              {states.birthDate && (
+                <Badge className="mr-auto place-content-center">{`${describeBirth(states.birthDate)}`}</Badge>
+              )}
+            </div>
+            <div className="grid gap-3 col-span-3">
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={'outline'}
+                    className={cn('w-full justify-start text-left font-normal', {
+                      'text-muted-foreground': !states.birthDate,
+                    })}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {states.birthDate ? (
+                      format(states.birthDate, 'PPP', { locale: ko })
+                    ) : (
+                      <span>아기 생일을 선택하세요</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent side="bottom" className="w-full p-0">
+                  <Calendar mode="single" selected={states.birthDate} onSelect={selectionChangeHandler} initialFocus />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
-          <div className="grid gap-3 col-span-3">
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={'outline'}
-                  className={cn('w-full justify-start text-left font-normal', {
-                    'text-muted-foreground': !states.birthDate,
-                  })}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {states.birthDate ? (
-                    format(states.birthDate, 'PPP', { locale: ko })
-                  ) : (
-                    <span>아기 생일을 선택하세요</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent side="bottom" className="w-full p-0">
-                <Calendar mode="single" selected={states.birthDate} onSelect={selectionChangeHandler} initialFocus />
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 

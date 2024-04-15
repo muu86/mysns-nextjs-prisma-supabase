@@ -1,5 +1,3 @@
-import { getClient } from '@/lib/apollo';
-import { gql } from '@apollo/client';
 import { Post as PostType } from '@prisma/client';
 
 // const AllPost = gql`

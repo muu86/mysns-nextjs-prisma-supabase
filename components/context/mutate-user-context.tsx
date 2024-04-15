@@ -1,8 +1,8 @@
 'use client';
 
 import { getPresignedUrl } from '@/actions/file';
-import { graphql } from '@/gql';
-import { GetAllAddressQuery, UserCreateInput } from '@/gql/graphql';
+import { graphql } from '@/graphql/generated/gql';
+import { GetAllAddressQuery, UserCreateInput } from '@/graphql/generated/gql/graphql';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
 import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useState } from 'react';

@@ -1,20 +1,7 @@
-import {
-  Baby,
-  Home,
-  LineChart,
-  LucideIcon,
-  MessageCircleMore,
-  Package,
-  Package2,
-  Settings,
-  ShoppingCart,
-  User,
-  Users2,
-} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Baby, FilePlus, Home, LucideIcon, MessageCircleMore, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import { Component } from 'react';
-import { cn } from '@/lib/utils';
 
 const menus = [
   {
@@ -22,6 +9,7 @@ const menus = [
     link: '/',
     Icon: Home,
   },
+  { name: '새 포스트', link: '/newpost', Icon: FilePlus },
   {
     name: '메시지',
     link: '/chat',
@@ -43,7 +31,7 @@ export default function Side() {
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primaryv2 text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Baby className="h-6 w-6 transition-all group-hover:scale-110" />
-          <span className="sr-only">Acme Inc</span>
+          <span className="sr-only">MySNS</span>
         </Link>
         {menus.map((m, i) => (
           <SideOne key={i} menu={m} />

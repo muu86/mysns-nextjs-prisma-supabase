@@ -1,19 +1,18 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import UsernameInput from './username-input';
 
 export default function UsernameCard() {
   return (
-    <Card x-chunk="dashboard-07-chunk-0">
-      <CardHeader>
-        {/* <CardTitle>닉네임</CardTitle> */}
-        <CardDescription>닉네임을 설정해주세요</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <UsernameInput />
-      </CardContent>
-    </Card>
+    <div className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">
+      <Card>
+        <CardHeader>
+          {/* <CardTitle>닉네임</CardTitle> */}
+          <CardDescription>닉네임을 설정해주세요</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <UsernameInput />
+        </CardContent>
+      </Card>
+    </div>
   );
 }

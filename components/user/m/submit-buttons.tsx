@@ -3,10 +3,12 @@
 import { MutateUserContext } from '@/components/context/mutate-user-context';
 import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
+import { redirect, useRouter } from 'next/navigation';
 import { MouseEvent, useContext } from 'react';
 
 export default function SubmitButtons() {
   const { states, actions } = useContext(MutateUserContext);
+  const route = useRouter();
 
   function saveHandler(event: MouseEvent<HTMLButtonElement>): void {
     event.preventDefault();
@@ -14,7 +16,7 @@ export default function SubmitButtons() {
   }
 
   function cancelHandler(event: MouseEvent<HTMLButtonElement>): void {
-    throw new Error('Function not implemented.');
+    route.push('/');
   }
 
   return (
