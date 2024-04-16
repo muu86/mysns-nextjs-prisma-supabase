@@ -1,21 +1,31 @@
 'use client';
 
-import { MutateUserContext } from '@/components/context/mutate-user-context';
+import { getPresignedUrl } from '@/actions/file';
+import { UpdateUserContext } from '@/components/context/update-user-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ImageFile } from '@/lib/types';
 import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';
 import { ChangeEvent, useContext } from 'react';
 
 export default function ImageCard() {
-  const { states, actions } = useContext(MutateUserContext);
-  function changeEventHandler(event: ChangeEvent<HTMLInputElement>): void {
+  const { state, dispatch } = useContext(UpdateUserContext);
+  async function changeEventHandler(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
 
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
-    actions.fileUploadHandler(file);
+    dispatch({ type: 'setIsUploading' });
+
+    const tempUrl = URL.createObjectURL(file);
+    const newFile: ImageFile = { tempUrl, file };
+    dispatch({ type: 'setFile', payload: { tempUrl, file } });
+
+    await uploadFile(newFile);
+
+    dispatch({ type: 'setIsUploading' });
   }
 
   return (
@@ -35,13 +45,13 @@ export default function ImageCard() {
               className="hidden"
             />
             <label htmlFor="profile-image-upload">
-              {states.file ? (
+              {state.file ? (
                 <Image
                   alt="profile image"
                   className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
                   height="300"
                   width="300"
-                  src={`${states.file.tempUrl}`}
+                  src={`${state.file.tempUrl}`}
                 />
               ) : (
                 <Skeleton className="mx-auto w-1/2 rounded-full aspect-square flex items-center justify-center hover:cursor-pointer">
@@ -55,4 +65,15 @@ export default function ImageCard() {
       </Card>
     </div>
   );
+}
+
+export async function uploadFile(newFile: ImageFile) {
+  const buffer = await newFile.file.arrayBuffer();
+  const { key, signedUrl } = await getPresignedUrl();
+
+  const response = await fetch(signedUrl, {
+    method: 'PUT',
+    body: buffer,
+  });
+  newFile.s3Key = key;
 }

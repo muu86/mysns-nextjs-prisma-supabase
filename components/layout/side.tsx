@@ -9,7 +9,7 @@ const menus = [
     link: '/',
     Icon: Home,
   },
-  { name: '새 포스트', link: '/newpost', Icon: FilePlus },
+  { name: '새 포스트', link: '/n/post', Icon: FilePlus },
   {
     name: '메시지',
     link: '/chat',
@@ -17,7 +17,7 @@ const menus = [
   },
   {
     name: '프로필',
-    link: `/user`,
+    link: `/n/user`,
     Icon: User,
   },
 ];

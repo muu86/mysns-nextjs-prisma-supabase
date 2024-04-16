@@ -1,40 +1,36 @@
 'use client';
 
-import { graphql } from '@/graphql/generated/gql';
-import { useQuery } from '@apollo/client';
-import { PropsWithChildren, createContext } from 'react';
-
-const QueryPosts = graphql(`
-  query getPosts {
-    posts {
-      id
-      content
-      address {
-        c3
-      }
-      files {
-        file {
-          location
-        }
-      }
-    }
-  }
-`);
+import { getPosts } from '@/actions/post';
+import { GetPostsQuery } from '@/graphql/generated/gql/graphql';
+import { PropsWithChildren, createContext, useEffect, useState } from 'react';
 
 export default function PostContextProvider({ children }: PropsWithChildren) {
-  const { data, loading, error } = useQuery(QueryPosts);
-  console.log(data);
+  const [posts, setPosts] = useState<GetPostsQuery['posts']>([]);
+
+  // useEffect(() => {
+  //   getNextPosts();
+  // }, []);
+
+  // async function getNextPosts() {
+  //   const data = await getPosts();
+  //   const filterDuplicated = data.filter((n) => posts.findIndex((p) => p.id === n.id) < 0);
+  //   setPosts([...posts, ...filterDuplicated]);
+  // }
+
   const value = {
-    states: {},
+    states: {
+      posts,
+    },
     actions: {},
   };
-
   return <PostContext.Provider value={value}>{children}</PostContext.Provider>;
 }
 
 export const PostContext = createContext<PostContextType>({} as PostContextType);
 
-export type PostContextStates = {};
+export type PostContextStates = {
+  posts: GetPostsQuery['posts'];
+};
 
 export type PostContextActions = {};
 

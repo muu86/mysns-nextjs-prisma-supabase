@@ -1,28 +1,32 @@
 'use client';
 
-import { MutateUserContext } from '@/components/context/mutate-user-context';
+import { UpdateUserContext } from '@/components/context/update-user-context';
 import { Badge } from '@/components/ui/badge';
-import { Address } from '@prisma/client';
+import { AddressesQuery } from '@/graphql/generated/gql/graphql';
 import { CircleX } from 'lucide-react';
 import { MouseEvent, useContext } from 'react';
 
 export default function AddressSelectedBadges() {
-  const { states, actions } = useContext(MutateUserContext);
+  console.log('[AddressSelectedBadges] ', 'rendered');
+  const { state, dispatch } = useContext(UpdateUserContext);
 
   return (
     <div className="flex flex-row flex-wrap gap-2">
-      {states.address.map((a, i) => (
+      {state.address.map((a, i) => (
         <AddressBadge key={i} address={a} />
       ))}
     </div>
   );
 }
 
-function AddressBadge({ address }: { address: Address }) {
-  const { states, actions } = useContext(MutateUserContext);
+function AddressBadge({ address }: { address: AddressesQuery['addresses'][number] }) {
+  const { state, dispatch } = useContext(UpdateUserContext);
 
   function badgeClickHandler(event: MouseEvent<HTMLDivElement>): void {
-    actions.setAddress((prev) => prev.filter((a) => a.id !== address.id));
+    dispatch({
+      type: 'removeAddress',
+      payload: address,
+    });
   }
 
   return (

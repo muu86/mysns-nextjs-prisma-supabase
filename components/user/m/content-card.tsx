@@ -1,15 +1,18 @@
 'use client';
 
-import { MutateUserContext } from '@/components/context/mutate-user-context';
+import { UpdateUserContext } from '@/components/context/update-user-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { ChangeEvent, useContext } from 'react';
 
 export default function ContentCard() {
-  const { states, actions } = useContext(MutateUserContext);
+  const { state, dispatch } = useContext(UpdateUserContext);
 
   function changeEventHandler(event: ChangeEvent<HTMLTextAreaElement>): void {
-    actions.setContent(event.target.value);
+    dispatch({
+      type: 'setContent',
+      payload: event.target.value,
+    });
   }
 
   return (
@@ -27,7 +30,7 @@ export default function ContentCard() {
           </div> */}
             <div className="grid gap-3">
               {/* <Label htmlFor="description">글</Label> */}
-              <Textarea id="description" className="min-h-32" value={states.content} onChange={changeEventHandler} />
+              <Textarea id="description" className="min-h-32" value={state.content} onChange={changeEventHandler} />
             </div>
           </div>
         </CardContent>

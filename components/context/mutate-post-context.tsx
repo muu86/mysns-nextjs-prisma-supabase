@@ -5,9 +5,11 @@ import { graphql } from '@/graphql/generated/gql';
 import { PostCreateInput } from '@/graphql/generated/gql/graphql';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
+import { Session } from 'next-auth';
+import { redirect } from 'next/navigation';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
 
-const createPostMutation = graphql(`
+const MutationCreateOnePost = graphql(`
   mutation createPost($data: PostCreateInput!, $strategy: RelationLoadStrategy) {
     createOnePost(data: $data, relationLoadStrategy: $strategy) {
       id
@@ -24,8 +26,8 @@ const createPostMutation = graphql(`
   }
 `);
 
-export default function MutatePostContextProvider({ children }: PropsWithChildren) {
-  const [createPost, { data, loading, error }] = useMutation(createPostMutation);
+export default function MutatePostContextProvider({ session, children }: PropsWithChildren<{ session: Session }>) {
+  const [createPost, { data, loading, error }] = useMutation(MutationCreateOnePost);
 
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<ImageFile[]>([]);
@@ -46,11 +48,17 @@ export default function MutatePostContextProvider({ children }: PropsWithChildre
   }, []);
 
   const submit = async () => {
+    // if (!session.user?.email) redirect('/login');
     // 임시 주소 코드
     const tempAddressCode = '1111010100';
 
-    const data: PostCreateInput = {
+    const input: PostCreateInput = {
       content,
+      user: {
+        connect: {
+          email: session.user?.email,
+        },
+      },
       address: {
         connect: {
           code: tempAddressCode,
@@ -70,9 +78,9 @@ export default function MutatePostContextProvider({ children }: PropsWithChildre
       },
     };
 
-    const post = await createPost({
+    const { data, errors } = await createPost({
       variables: {
-        data,
+        data: input,
       },
     });
   };

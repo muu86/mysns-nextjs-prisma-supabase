@@ -21,7 +21,7 @@ async function main() {
       const c4 = record[5];
 
       const result: number = await prisma.$executeRawUnsafe(`
-        INSERT INTO address (code, c1, c2, c3, c4, created_at, updated_at, geo_p, geo_s, center_p, center_s)
+        INSERT INTO addresses (code, c1, c2, c3, c4, created_at, updated_at, geo_p, geo_s, center_p, center_s)
         VALUES ('${record[1]}', '${c1}', '${c2}', '${c3}', '${c4}', now(), now(),
         st_geomfromewkt('${record[12]}'), st_geomfromewkt('${record[13]}'), st_centroid(st_geomfromewkt('${record[12]}')), st_centroid(st_geogfromtext('${record[13]}'), true)::geometry)
         `);

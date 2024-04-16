@@ -27,6 +27,8 @@ model User {
   emailVerified DateTime? @map("email_verified") @db.Timestamptz()
   image         String?
 
+  role Role @default(READ)
+
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
 
@@ -34,8 +36,14 @@ model User {
   files     UserFile[]
   Account   Account[]
   Session   Session[]
+  Post      Post[]
 
   @@map("users")
+}
+
+enum Role {
+  READ
+  WRITE
 }
 
 model UserFile {
@@ -65,8 +73,12 @@ model UserAddress {
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  content   String
+  id      Int    @id @default(autoincrement())
+  content String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @map("user_id")
+
   address   Address @relation(fields: [addressId], references: [id])
   addressId Int     @map("address_id")
 

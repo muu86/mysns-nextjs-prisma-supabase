@@ -7,7 +7,7 @@ export default async function Page() {
 
   async function keycloakAction() {
     'use server';
-    await signIn('keycloak', { redirectTo: '/' });
+    await signIn('keycloak', { redirectTo: '/login/start' });
   }
 
   return (
@@ -16,7 +16,7 @@ export default async function Page() {
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">로그인</h1>
-            <p className="text-balance text-muted-foreground">소셜 로그인만 가능합니다</p>
+            {/* <p className="text-balance text-muted-foreground">소셜 로그인만 가능합니다</p> */}
           </div>
           <div className="grid gap-4">
             <form action={keycloakAction}>

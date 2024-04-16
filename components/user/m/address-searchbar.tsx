@@ -1,9 +1,9 @@
 'use client';
 
-import { MutateUserContext } from '@/components/context/mutate-user-context';
 import { MapPin } from 'lucide-react';
-import { useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 
+import { UpdateUserContext } from '@/components/context/update-user-context';
 import {
   Command,
   CommandEmpty,
@@ -12,25 +12,32 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { GetAllAddressQuery } from '@/graphql/generated/gql/graphql';
+import { AddressesQuery } from '@/graphql/generated/gql/graphql';
 
 type SimpleAddress = {
-  id: number;
+  id: string;
   c: string;
 };
 
-export default function AddressSearchBar({ address }: { address: GetAllAddressQuery['addresses'] }) {
-  const { states, actions } = useContext(MutateUserContext);
+export default function AddressSearchBar({ address }: { address: AddressesQuery['addresses'] }) {
+  const { state, dispatch } = useContext(UpdateUserContext);
 
-  const simpleAddress = address.map((a) => ({
-    id: a.id,
-    c: [a.c1, a.c2, a.c3, a.c4].join(' '),
-  }));
+  const simpleAddress = useCallback(
+    () =>
+      address.map((a) => ({
+        id: a.id,
+        c: [a.c1, a.c2, a.c3, a.c4].join(' '),
+      })),
+    [address]
+  )();
 
-  function selectAddress(simpleAddress: SimpleAddress) {
+  function selectAddressHandler(simpleAddress: SimpleAddress) {
     const selectedAddress = address.find((a) => a.id === simpleAddress.id);
-    if (selectedAddress && !states.address.find((a) => a.id === selectedAddress.id)) {
-      actions.setAddress((prev) => [...prev, selectedAddress]);
+    if (selectedAddress && !state.address.find((a) => a.id === selectedAddress.id)) {
+      dispatch({
+        type: 'addAddress',
+        payload: selectedAddress,
+      });
     }
   }
 
@@ -40,7 +47,7 @@ export default function AddressSearchBar({ address }: { address: GetAllAddressQu
       <CommandList className="h-32">
         <CommandEmpty>조회 결과가 없습니다.</CommandEmpty>
         {simpleAddress.map((a, i) => (
-          <AddressItem key={i} address={a} selectAddress={selectAddress} />
+          <AddressItem key={i} address={a} selectAddressHandler={selectAddressHandler} />
         ))}
       </CommandList>
     </Command>
@@ -49,13 +56,13 @@ export default function AddressSearchBar({ address }: { address: GetAllAddressQu
 
 function AddressItem({
   address,
-  selectAddress,
+  selectAddressHandler,
 }: {
   address: SimpleAddress;
-  selectAddress: (simpleAddress: SimpleAddress) => void;
+  selectAddressHandler: (simpleAddress: SimpleAddress) => void;
 }) {
   function selectHandler(value: string): void {
-    selectAddress(address);
+    selectAddressHandler(address);
   }
 
   return (

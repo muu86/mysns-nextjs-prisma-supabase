@@ -4,8 +4,8 @@ import { getClient } from '@/lib/apollo';
 import AddressSearchBar from './address-searchbar';
 import AddressSelectedBadges from './address-selected-badges';
 
-const AllAddress = graphql(`
-  query getAllAddress {
+const QueryAddresses = graphql(`
+  query addresses {
     addresses {
       id
       code
@@ -19,7 +19,7 @@ const AllAddress = graphql(`
 
 export default async function AddressCard() {
   const { data, loading, error } = await getClient().query({
-    query: AllAddress,
+    query: QueryAddresses,
   });
   return (
     <div className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">

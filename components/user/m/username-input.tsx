@@ -1,6 +1,6 @@
 'use client';
 
-import { MutateUserContext } from '@/components/context/mutate-user-context';
+import { UpdateUserContext } from '@/components/context/update-user-context';
 import { Input } from '@/components/ui/input';
 import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { z } from 'zod';
@@ -15,7 +15,7 @@ const usernameSchema = z
   });
 
 export default function UsernameInput() {
-  const { states, actions } = useContext(MutateUserContext);
+  const { state, dispatch } = useContext(UpdateUserContext);
   const [usernameError, setUsernameError] = useState<string[]>([]);
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>): void {
@@ -27,13 +27,16 @@ export default function UsernameInput() {
     } else {
       setUsernameError([]);
     }
-    actions.setUsername(event.target.value);
+    dispatch({
+      type: 'setUsername',
+      payload: event.target.value,
+    });
   }
 
   return (
     <div className="grid gap-6">
       <div className="grid gap-3">
-        <Input type="text" className="w-full" value={states.username} onChange={changeHandler} />
+        <Input type="text" className="w-full" value={state.username} onChange={changeHandler} />
         <p className="text-xs min-h-4 text-destructive">{usernameError}</p>
       </div>
     </div>

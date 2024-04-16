@@ -2,10 +2,13 @@
 
 import { getPresignedUrl } from '@/actions/file';
 import { graphql } from '@/graphql/generated/gql';
-import { GetAllAddressQuery, UserCreateInput } from '@/graphql/generated/gql/graphql';
+import { GetAllAddressQuery } from '@/graphql/generated/gql/graphql';
+import { UserUpdateInput, UserWhereUniqueInput } from '@/graphql/generated/type-graphql';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useState } from 'react';
+import { Session } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useEffect, useState } from 'react';
 
 const createUserMutation = graphql(`
   mutation createUser($data: UserCreateInput!, $strategy: RelationLoadStrategy) {
@@ -27,9 +30,55 @@ const createUserMutation = graphql(`
     }
   }
 `);
+const QueryFindFirstUser = graphql(`
+  query findFirstUser($where: UserWhereInput) {
+    findFirstUser(where: $where) {
+      id
+      username
+      content
+      babyBirth
+      email
+      addresses {
+        address {
+          id
+          c1
+          c2
+          c3
+          c4
+        }
+      }
+      files {
+        file {
+          
+        }
+      }
+    }
+  }
+`);
+const MutationUpdateUser = graphql(`
+  mutation updateOneUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
+    updateOneUser(data: $data, where: $where) {
+      id
+      username
+      babyBirth
+      content
+      addresses {
+        address {
+          c3
+        }
+      }
+      files {
+        file {
+          location
+        }
+      }
+    }
+  }
+`);
 
-export default function MutateUserContextProvider({ children }: PropsWithChildren) {
-  const [createUser, { data, loading, error }] = useMutation(createUserMutation);
+function MutateUserContextProvider({ session, children }: PropsWithChildren<{ session: Session | null }>) {
+  // const [createUser, { data, loading, error }] = useMutation(createUserMutation);
+  const [updateOneUser, { data, loading, error }] = useMutation(MutationUpdateUser);
 
   const [username, setUsername] = useState<string | undefined>();
   const [content, setContent] = useState<string | undefined>();
@@ -37,6 +86,11 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [birthDate, setBirthDate] = useState<Date | undefined>();
   const [address, setAddress] = useState<GetAllAddressQuery['addresses']>([]);
+
+  // useEffect(() => {
+  //   setUsername(session?.user?.username);
+  //   setContent();
+  // }, [session]);
 
   const fileUploadHandler = useCallback(async (file: File) => {
     setIsUploading(true);
@@ -52,17 +106,24 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
 
   const submit = async () => {
     if (isUploading) return;
+    if (!session?.user?.email) redirect('/login');
     if (!username) return;
 
-    const data: UserCreateInput = {
-      username,
-      babyBirth: birthDate,
-      content,
+    const data = {
+      username: {
+        set: username,
+      },
+      babyBirth: {
+        set: birthDate,
+      },
+      content: {
+        set: content,
+      },
       addresses: {
         create: address.map((a) => ({
           address: {
             connect: {
-              id: a.id,
+              id: parseInt(a.id),
             },
           },
         })),
@@ -80,11 +141,20 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
             ],
           }
         : undefined,
-    };
+    } satisfies UserUpdateInput;
+    const where = {
+      email: session.user.email,
+    } satisfies UserWhereUniqueInput;
 
-    const result = await createUser({
+    // const result = await createUser({
+    //   variables: {
+    //     data,
+    //   },
+    // });
+    const result = await updateOneUser({
       variables: {
         data,
+        where,
       },
     });
     console.log(result);
@@ -112,7 +182,7 @@ export default function MutateUserContextProvider({ children }: PropsWithChildre
   return <MutateUserContext.Provider value={value}>{children}</MutateUserContext.Provider>;
 }
 
-export const MutateUserContext = createContext<MutateUserContextType>({} as MutateUserContextType);
+const MutateUserContext = createContext<MutateUserContextType>({} as MutateUserContextType);
 
 export type MutateUserContextStates = {
   username: string | undefined;

@@ -1,6 +1,5 @@
-import KeyCloak from 'next-auth/providers/keycloak';
 import type { NextAuthConfig } from 'next-auth';
-import { getUserByIssAndSub } from './actions/user';
+import KeyCloak from 'next-auth/providers/keycloak';
 
 export default {
   providers: [
@@ -16,24 +15,17 @@ export default {
   secret: process.env.AUTH_SECRET,
   session: { strategy: 'jwt' },
   callbacks: {
-    async signIn({ user, account, profile }) {
-      console.log('[signIn] user: ', user);
-      console.log('[signIn] account: ', account);
-      console.log('[signIn] profile: ', profile);
-
-      if (!account) return false;
-
-      // const found = await getUserByIssAndSub(account.provider, profile!.sub!);
-      // if (found) {
-      //   user.username = found.username;
-      // }
-
-      return true;
-    },
     jwt({ token, user }) {
-      console.log('[jwt] token: ', token);
-      console.log('[jwt] user: ', user);
+      if (user) {
+        token.role = user.role;
+        token.username = user.username;
+      }
       return token;
+    },
+    session({ session, token }) {
+      session.user.role = token.role;
+      session.user.username = token.username;
+      return session;
     },
   },
 } satisfies NextAuthConfig;
@@ -41,8 +33,13 @@ export default {
 declare module '@auth/core/types' {
   interface User {
     username?: string;
+    role?: string;
   }
-  // interface Session {
-  //   error?: 'RefreshAccessTokenError';
-  // }
+}
+
+declare module '@auth/core/jwt' {
+  interface JWT {
+    username?: string;
+    role?: string;
+  }
 }

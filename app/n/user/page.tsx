@@ -1,4 +1,5 @@
-import MutateUserContextProvider from '@/components/context/mutate-user-context';
+import { auth } from '@/auth';
+import UpdateUserContextProvider from '@/components/context/update-user-context';
 import DefaultCardContainer from '@/components/layout/default-card-container';
 import DefaultContainer from '@/components/layout/default-container';
 import AddressCard from '@/components/user/m/address-card';
@@ -9,8 +10,9 @@ import ImageCard from '@/components/user/m/image-card';
 import UsernameCard from '@/components/user/m/username-card';
 
 export default async function Page() {
+  const session = await auth();
   return (
-    <MutateUserContextProvider>
+    <UpdateUserContextProvider session={session}>
       <DefaultContainer>
         <CreateUserTitleAndButtons />
         <DefaultCardContainer>
@@ -21,6 +23,6 @@ export default async function Page() {
           <ContentCard />
         </DefaultCardContainer>
       </DefaultContainer>
-    </MutateUserContextProvider>
+    </UpdateUserContextProvider>
   );
 }

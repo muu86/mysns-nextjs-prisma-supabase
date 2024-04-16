@@ -1,20 +1,20 @@
 'use client';
 
-import { MutateUserContext } from '@/components/context/mutate-user-context';
+import { UpdateUserContext } from '@/components/context/update-user-context';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { format, differenceInMonths } from 'date-fns';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { differenceInMonths, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { MouseEvent, useContext, useState } from 'react';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
 import { ActiveModifiers } from 'react-day-picker';
-import { Badge } from '@/components/ui/badge';
 
 export default function BabyBirthdayPicker() {
-  const { states, actions } = useContext(MutateUserContext);
+  const { state, dispatch } = useContext(UpdateUserContext);
   const [open, setOpen] = useState(false);
 
   function selectionChangeHandler(
@@ -24,7 +24,10 @@ export default function BabyBirthdayPicker() {
     e: MouseEvent<Element>
   ): void {
     e.preventDefault();
-    actions.setBirthDate(selectedDay);
+    dispatch({
+      type: 'setBabyBirth',
+      payload: selectedDay,
+    });
     setOpen(false);
   }
 
@@ -42,8 +45,8 @@ export default function BabyBirthdayPicker() {
             <Input id="name" type="text" className="w-full" defaultValue="Gamer Gear Pro Controller" />
           </div> */}
             <div className="grid gap-3 col-span-3">
-              {states.birthDate && (
-                <Badge className="mr-auto place-content-center">{`${describeBirth(states.birthDate)}`}</Badge>
+              {state.babyBirth && (
+                <Badge className="mr-auto place-content-center">{`${describeBirth(state.babyBirth)}`}</Badge>
               )}
             </div>
             <div className="grid gap-3 col-span-3">
@@ -52,19 +55,19 @@ export default function BabyBirthdayPicker() {
                   <Button
                     variant={'outline'}
                     className={cn('w-full justify-start text-left font-normal', {
-                      'text-muted-foreground': !states.birthDate,
+                      'text-muted-foreground': !state.babyBirth,
                     })}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {states.birthDate ? (
-                      format(states.birthDate, 'PPP', { locale: ko })
+                    {state.babyBirth ? (
+                      format(state.babyBirth, 'PPP', { locale: ko })
                     ) : (
                       <span>아기 생일을 선택하세요</span>
                     )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent side="bottom" className="w-full p-0">
-                  <Calendar mode="single" selected={states.birthDate} onSelect={selectionChangeHandler} initialFocus />
+                  <Calendar mode="single" selected={state.babyBirth} onSelect={selectionChangeHandler} initialFocus />
                 </PopoverContent>
               </Popover>
             </div>

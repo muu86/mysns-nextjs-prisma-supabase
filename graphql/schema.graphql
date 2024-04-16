@@ -904,6 +904,27 @@ input EnumFileStorageTypeWithAggregatesFilter {
   notIn: [FileStorageType!]
 }
 
+input EnumRoleFieldUpdateOperationsInput {
+  set: Role
+}
+
+input EnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  not: NestedEnumRoleFilter
+  notIn: [Role!]
+}
+
+input EnumRoleWithAggregatesFilter {
+  _count: NestedIntFilter
+  _max: NestedEnumRoleFilter
+  _min: NestedEnumRoleFilter
+  equals: Role
+  in: [Role!]
+  not: NestedEnumRoleWithAggregatesFilter
+  notIn: [Role!]
+}
+
 type File {
   UserFile(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], skip: Int, take: Int, where: UserFileWhereInput): [UserFile!]!
   _count: FileCount
@@ -1391,6 +1412,23 @@ input NestedEnumFileStorageTypeWithAggregatesFilter {
   notIn: [FileStorageType!]
 }
 
+input NestedEnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  not: NestedEnumRoleFilter
+  notIn: [Role!]
+}
+
+input NestedEnumRoleWithAggregatesFilter {
+  _count: NestedIntFilter
+  _max: NestedEnumRoleFilter
+  _min: NestedEnumRoleFilter
+  equals: Role
+  in: [Role!]
+  not: NestedEnumRoleWithAggregatesFilter
+  notIn: [Role!]
+}
+
 input NestedFloatFilter {
   equals: Float
   gt: Float
@@ -1559,16 +1597,20 @@ type Post {
   files(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFile!]!
   id: ID!
   updatedAt: DateTimeISO!
+  user: User!
+  userId: Int!
 }
 
 type PostAvgAggregate {
   addressId: Float
   id: Float
+  userId: Float
 }
 
 input PostAvgOrderByAggregateInput {
   addressId: SortOrder
   id: SortOrder
+  userId: SortOrder
 }
 
 type PostCount {
@@ -1582,6 +1624,7 @@ type PostCountAggregate {
   createdAt: Int!
   id: Int!
   updatedAt: Int!
+  userId: Int!
 }
 
 input PostCountOrderByAggregateInput {
@@ -1590,6 +1633,7 @@ input PostCountOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
+  userId: SortOrder
 }
 
 input PostCreateInput {
@@ -1598,6 +1642,7 @@ input PostCreateInput {
   createdAt: DateTimeISO
   files: PostFileCreateNestedManyWithoutPostInput
   updatedAt: DateTimeISO
+  user: UserCreateNestedOneWithoutPostInput!
 }
 
 input PostCreateManyAddressInput {
@@ -1605,6 +1650,7 @@ input PostCreateManyAddressInput {
   createdAt: DateTimeISO
   id: Int
   updatedAt: DateTimeISO
+  userId: Int!
 }
 
 input PostCreateManyAddressInputEnvelope {
@@ -1618,6 +1664,27 @@ input PostCreateManyInput {
   createdAt: DateTimeISO
   id: Int
   updatedAt: DateTimeISO
+  userId: Int!
+}
+
+input PostCreateManyUserInput {
+  addressId: Int!
+  content: String!
+  createdAt: DateTimeISO
+  id: Int
+  updatedAt: DateTimeISO
+}
+
+input PostCreateManyUserInputEnvelope {
+  data: [PostCreateManyUserInput!]!
+  skipDuplicates: Boolean
+}
+
+input PostCreateNestedManyWithoutUserInput {
+  connect: [PostWhereUniqueInput!]
+  connectOrCreate: [PostCreateOrConnectWithoutUserInput!]
+  create: [PostCreateWithoutUserInput!]
+  createMany: PostCreateManyUserInputEnvelope
 }
 
 input PostCreateNestedOneWithoutFilesInput {
@@ -1636,17 +1703,32 @@ input PostCreateOrConnectWithoutFilesInput {
   where: PostWhereUniqueInput!
 }
 
+input PostCreateOrConnectWithoutUserInput {
+  create: PostCreateWithoutUserInput!
+  where: PostWhereUniqueInput!
+}
+
 input PostCreateWithoutAddressInput {
   content: String!
   createdAt: DateTimeISO
   files: PostFileCreateNestedManyWithoutPostInput
   updatedAt: DateTimeISO
+  user: UserCreateNestedOneWithoutPostInput!
 }
 
 input PostCreateWithoutFilesInput {
   address: AddressCreateNestedOneWithoutPostInput!
   content: String!
   createdAt: DateTimeISO
+  updatedAt: DateTimeISO
+  user: UserCreateNestedOneWithoutPostInput!
+}
+
+input PostCreateWithoutUserInput {
+  address: AddressCreateNestedOneWithoutPostInput!
+  content: String!
+  createdAt: DateTimeISO
+  files: PostFileCreateNestedManyWithoutPostInput
   updatedAt: DateTimeISO
 }
 
@@ -2005,6 +2087,7 @@ type PostGroupBy {
   createdAt: DateTimeISO!
   id: Int!
   updatedAt: DateTimeISO!
+  userId: Int!
 }
 
 input PostListRelationFilter {
@@ -2019,6 +2102,7 @@ type PostMaxAggregate {
   createdAt: DateTimeISO
   id: Int
   updatedAt: DateTimeISO
+  userId: Int
 }
 
 input PostMaxOrderByAggregateInput {
@@ -2027,6 +2111,7 @@ input PostMaxOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
+  userId: SortOrder
 }
 
 type PostMinAggregate {
@@ -2035,6 +2120,7 @@ type PostMinAggregate {
   createdAt: DateTimeISO
   id: Int
   updatedAt: DateTimeISO
+  userId: Int
 }
 
 input PostMinOrderByAggregateInput {
@@ -2043,6 +2129,7 @@ input PostMinOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
+  userId: SortOrder
 }
 
 input PostOrderByRelationAggregateInput {
@@ -2060,6 +2147,7 @@ input PostOrderByWithAggregationInput {
   createdAt: SortOrder
   id: SortOrder
   updatedAt: SortOrder
+  userId: SortOrder
 }
 
 input PostOrderByWithRelationInput {
@@ -2070,6 +2158,8 @@ input PostOrderByWithRelationInput {
   files: PostFileOrderByRelationAggregateInput
   id: SortOrder
   updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
 }
 
 input PostRelationFilter {
@@ -2083,6 +2173,7 @@ enum PostScalarFieldEnum {
   createdAt
   id
   updatedAt
+  userId
 }
 
 input PostScalarWhereInput {
@@ -2094,6 +2185,7 @@ input PostScalarWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   updatedAt: DateTimeFilter
+  userId: IntFilter
 }
 
 input PostScalarWhereWithAggregatesInput {
@@ -2105,16 +2197,19 @@ input PostScalarWhereWithAggregatesInput {
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
+  userId: IntWithAggregatesFilter
 }
 
 type PostSumAggregate {
   addressId: Int
   id: Int
+  userId: Int
 }
 
 input PostSumOrderByAggregateInput {
   addressId: SortOrder
   id: SortOrder
+  userId: SortOrder
 }
 
 input PostUpdateInput {
@@ -2123,6 +2218,7 @@ input PostUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   files: PostFileUpdateManyWithoutPostNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutPostNestedInput
 }
 
 input PostUpdateManyMutationInput {
@@ -2132,6 +2228,11 @@ input PostUpdateManyMutationInput {
 }
 
 input PostUpdateManyWithWhereWithoutAddressInput {
+  data: PostUpdateManyMutationInput!
+  where: PostScalarWhereInput!
+}
+
+input PostUpdateManyWithWhereWithoutUserInput {
   data: PostUpdateManyMutationInput!
   where: PostScalarWhereInput!
 }
@@ -2148,6 +2249,20 @@ input PostUpdateManyWithoutAddressNestedInput {
   update: [PostUpdateWithWhereUniqueWithoutAddressInput!]
   updateMany: [PostUpdateManyWithWhereWithoutAddressInput!]
   upsert: [PostUpsertWithWhereUniqueWithoutAddressInput!]
+}
+
+input PostUpdateManyWithoutUserNestedInput {
+  connect: [PostWhereUniqueInput!]
+  connectOrCreate: [PostCreateOrConnectWithoutUserInput!]
+  create: [PostCreateWithoutUserInput!]
+  createMany: PostCreateManyUserInputEnvelope
+  delete: [PostWhereUniqueInput!]
+  deleteMany: [PostScalarWhereInput!]
+  disconnect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [PostUpdateManyWithWhereWithoutUserInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutUserInput!]
 }
 
 input PostUpdateOneRequiredWithoutFilesNestedInput {
@@ -2168,11 +2283,17 @@ input PostUpdateWithWhereUniqueWithoutAddressInput {
   where: PostWhereUniqueInput!
 }
 
+input PostUpdateWithWhereUniqueWithoutUserInput {
+  data: PostUpdateWithoutUserInput!
+  where: PostWhereUniqueInput!
+}
+
 input PostUpdateWithoutAddressInput {
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   files: PostFileUpdateManyWithoutPostNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutPostNestedInput
 }
 
 input PostUpdateWithoutFilesInput {
@@ -2180,11 +2301,26 @@ input PostUpdateWithoutFilesInput {
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutPostNestedInput
+}
+
+input PostUpdateWithoutUserInput {
+  address: AddressUpdateOneRequiredWithoutPostNestedInput
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  files: PostFileUpdateManyWithoutPostNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input PostUpsertWithWhereUniqueWithoutAddressInput {
   create: PostCreateWithoutAddressInput!
   update: PostUpdateWithoutAddressInput!
+  where: PostWhereUniqueInput!
+}
+
+input PostUpsertWithWhereUniqueWithoutUserInput {
+  create: PostCreateWithoutUserInput!
+  update: PostUpdateWithoutUserInput!
   where: PostWhereUniqueInput!
 }
 
@@ -2205,6 +2341,8 @@ input PostWhereInput {
   files: PostFileListRelationFilter
   id: IntFilter
   updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  userId: IntFilter
 }
 
 input PostWhereUniqueInput {
@@ -2218,6 +2356,8 @@ input PostWhereUniqueInput {
   files: PostFileListRelationFilter
   id: Int
   updatedAt: DateTimeFilter
+  user: UserRelationFilter
+  userId: IntFilter
 }
 
 type Query {
@@ -2301,6 +2441,11 @@ enum QueryMode {
 enum RelationLoadStrategy {
   join
   query
+}
+
+enum Role {
+  READ
+  WRITE
 }
 
 type Session {
@@ -2657,6 +2802,7 @@ input StringWithAggregatesFilter {
 
 type User {
   Account(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): [Account!]!
+  Post(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
   Session(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], skip: Int, take: Int, where: SessionWhereInput): [Session!]!
   _count: UserCount
   addresses(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], skip: Int, take: Int, where: UserAddressWhereInput): [UserAddress!]!
@@ -2669,6 +2815,7 @@ type User {
   id: ID!
   image: String
   name: String
+  role: Role!
   updatedAt: DateTimeISO!
   username: String
 }
@@ -3020,6 +3167,7 @@ input UserAvgOrderByAggregateInput {
 
 type UserCount {
   Account(where: AccountWhereInput): Int!
+  Post(where: PostWhereInput): Int!
   Session(where: SessionWhereInput): Int!
   addresses(where: UserAddressWhereInput): Int!
   files(where: UserFileWhereInput): Int!
@@ -3035,6 +3183,7 @@ type UserCountAggregate {
   id: Int!
   image: Int!
   name: Int!
+  role: Int!
   updatedAt: Int!
   username: Int!
 }
@@ -3048,12 +3197,14 @@ input UserCountOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  role: SortOrder
   updatedAt: SortOrder
   username: SortOrder
 }
 
 input UserCreateInput {
   Account: AccountCreateNestedManyWithoutUserInput
+  Post: PostCreateNestedManyWithoutUserInput
   Session: SessionCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
@@ -3064,6 +3215,7 @@ input UserCreateInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
@@ -3077,6 +3229,7 @@ input UserCreateManyInput {
   id: Int
   image: String
   name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
@@ -3097,6 +3250,12 @@ input UserCreateNestedOneWithoutFilesInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutFilesInput
   create: UserCreateWithoutFilesInput
+}
+
+input UserCreateNestedOneWithoutPostInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutPostInput
+  create: UserCreateWithoutPostInput
 }
 
 input UserCreateNestedOneWithoutSessionInput {
@@ -3120,12 +3279,18 @@ input UserCreateOrConnectWithoutFilesInput {
   where: UserWhereUniqueInput!
 }
 
+input UserCreateOrConnectWithoutPostInput {
+  create: UserCreateWithoutPostInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserCreateOrConnectWithoutSessionInput {
   create: UserCreateWithoutSessionInput!
   where: UserWhereUniqueInput!
 }
 
 input UserCreateWithoutAccountInput {
+  Post: PostCreateNestedManyWithoutUserInput
   Session: SessionCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
@@ -3136,12 +3301,14 @@ input UserCreateWithoutAccountInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
 
 input UserCreateWithoutAddressesInput {
   Account: AccountCreateNestedManyWithoutUserInput
+  Post: PostCreateNestedManyWithoutUserInput
   Session: SessionCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
   content: String
@@ -3151,12 +3318,14 @@ input UserCreateWithoutAddressesInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
 
 input UserCreateWithoutFilesInput {
   Account: AccountCreateNestedManyWithoutUserInput
+  Post: PostCreateNestedManyWithoutUserInput
   Session: SessionCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
@@ -3166,12 +3335,14 @@ input UserCreateWithoutFilesInput {
   emailVerified: DateTimeISO
   image: String
   name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
 
-input UserCreateWithoutSessionInput {
+input UserCreateWithoutPostInput {
   Account: AccountCreateNestedManyWithoutUserInput
+  Session: SessionCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
   content: String
@@ -3181,6 +3352,24 @@ input UserCreateWithoutSessionInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  role: Role
+  updatedAt: DateTimeISO
+  username: String
+}
+
+input UserCreateWithoutSessionInput {
+  Account: AccountCreateNestedManyWithoutUserInput
+  Post: PostCreateNestedManyWithoutUserInput
+  addresses: UserAddressCreateNestedManyWithoutUserInput
+  babyBirth: DateTimeISO
+  content: String
+  createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
+  files: UserFileCreateNestedManyWithoutUserInput
+  image: String
+  name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
@@ -3543,6 +3732,7 @@ type UserGroupBy {
   id: Int!
   image: String
   name: String
+  role: Role!
   updatedAt: DateTimeISO!
   username: String
 }
@@ -3556,6 +3746,7 @@ type UserMaxAggregate {
   id: Int
   image: String
   name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
@@ -3569,6 +3760,7 @@ input UserMaxOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  role: SortOrder
   updatedAt: SortOrder
   username: SortOrder
 }
@@ -3582,6 +3774,7 @@ type UserMinAggregate {
   id: Int
   image: String
   name: String
+  role: Role
   updatedAt: DateTimeISO
   username: String
 }
@@ -3595,6 +3788,7 @@ input UserMinOrderByAggregateInput {
   id: SortOrder
   image: SortOrder
   name: SortOrder
+  role: SortOrder
   updatedAt: SortOrder
   username: SortOrder
 }
@@ -3613,12 +3807,14 @@ input UserOrderByWithAggregationInput {
   id: SortOrder
   image: SortOrderInput
   name: SortOrderInput
+  role: SortOrder
   updatedAt: SortOrder
   username: SortOrderInput
 }
 
 input UserOrderByWithRelationInput {
   Account: AccountOrderByRelationAggregateInput
+  Post: PostOrderByRelationAggregateInput
   Session: SessionOrderByRelationAggregateInput
   addresses: UserAddressOrderByRelationAggregateInput
   babyBirth: SortOrderInput
@@ -3630,6 +3826,7 @@ input UserOrderByWithRelationInput {
   id: SortOrder
   image: SortOrderInput
   name: SortOrderInput
+  role: SortOrder
   updatedAt: SortOrder
   username: SortOrderInput
 }
@@ -3648,6 +3845,7 @@ enum UserScalarFieldEnum {
   id
   image
   name
+  role
   updatedAt
   username
 }
@@ -3664,6 +3862,7 @@ input UserScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   image: StringNullableWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
+  role: EnumRoleWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
   username: StringNullableWithAggregatesFilter
 }
@@ -3678,6 +3877,7 @@ input UserSumOrderByAggregateInput {
 
 input UserUpdateInput {
   Account: AccountUpdateManyWithoutUserNestedInput
+  Post: PostUpdateManyWithoutUserNestedInput
   Session: SessionUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
@@ -3688,6 +3888,7 @@ input UserUpdateInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
@@ -3700,6 +3901,7 @@ input UserUpdateManyMutationInput {
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
@@ -3728,6 +3930,14 @@ input UserUpdateOneRequiredWithoutFilesNestedInput {
   upsert: UserUpsertWithoutFilesInput
 }
 
+input UserUpdateOneRequiredWithoutPostNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutPostInput
+  create: UserCreateWithoutPostInput
+  update: UserUpdateToOneWithWhereWithoutPostInput
+  upsert: UserUpsertWithoutPostInput
+}
+
 input UserUpdateOneRequiredWithoutSessionNestedInput {
   connect: UserWhereUniqueInput
   connectOrCreate: UserCreateOrConnectWithoutSessionInput
@@ -3751,12 +3961,18 @@ input UserUpdateToOneWithWhereWithoutFilesInput {
   where: UserWhereInput
 }
 
+input UserUpdateToOneWithWhereWithoutPostInput {
+  data: UserUpdateWithoutPostInput!
+  where: UserWhereInput
+}
+
 input UserUpdateToOneWithWhereWithoutSessionInput {
   data: UserUpdateWithoutSessionInput!
   where: UserWhereInput
 }
 
 input UserUpdateWithoutAccountInput {
+  Post: PostUpdateManyWithoutUserNestedInput
   Session: SessionUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
@@ -3767,12 +3983,14 @@ input UserUpdateWithoutAccountInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutAddressesInput {
   Account: AccountUpdateManyWithoutUserNestedInput
+  Post: PostUpdateManyWithoutUserNestedInput
   Session: SessionUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
   content: NullableStringFieldUpdateOperationsInput
@@ -3782,12 +4000,14 @@ input UserUpdateWithoutAddressesInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutFilesInput {
   Account: AccountUpdateManyWithoutUserNestedInput
+  Post: PostUpdateManyWithoutUserNestedInput
   Session: SessionUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
@@ -3797,12 +4017,14 @@ input UserUpdateWithoutFilesInput {
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutSessionInput {
+input UserUpdateWithoutPostInput {
   Account: AccountUpdateManyWithoutUserNestedInput
+  Session: SessionUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
   content: NullableStringFieldUpdateOperationsInput
@@ -3812,6 +4034,24 @@ input UserUpdateWithoutSessionInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutSessionInput {
+  Account: AccountUpdateManyWithoutUserNestedInput
+  Post: PostUpdateManyWithoutUserNestedInput
+  addresses: UserAddressUpdateManyWithoutUserNestedInput
+  babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutUserNestedInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  role: EnumRoleFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
@@ -3834,6 +4074,12 @@ input UserUpsertWithoutFilesInput {
   where: UserWhereInput
 }
 
+input UserUpsertWithoutPostInput {
+  create: UserCreateWithoutPostInput!
+  update: UserUpdateWithoutPostInput!
+  where: UserWhereInput
+}
+
 input UserUpsertWithoutSessionInput {
   create: UserCreateWithoutSessionInput!
   update: UserUpdateWithoutSessionInput!
@@ -3845,6 +4091,7 @@ input UserWhereInput {
   Account: AccountListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  Post: PostListRelationFilter
   Session: SessionListRelationFilter
   addresses: UserAddressListRelationFilter
   babyBirth: DateTimeNullableFilter
@@ -3856,6 +4103,7 @@ input UserWhereInput {
   id: IntFilter
   image: StringNullableFilter
   name: StringNullableFilter
+  role: EnumRoleFilter
   updatedAt: DateTimeFilter
   username: StringNullableFilter
 }
@@ -3865,6 +4113,7 @@ input UserWhereUniqueInput {
   Account: AccountListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  Post: PostListRelationFilter
   Session: SessionListRelationFilter
   addresses: UserAddressListRelationFilter
   babyBirth: DateTimeNullableFilter
@@ -3876,6 +4125,7 @@ input UserWhereUniqueInput {
   id: Int
   image: StringNullableFilter
   name: StringNullableFilter
+  role: EnumRoleFilter
   updatedAt: DateTimeFilter
   username: StringNullableFilter
 }
