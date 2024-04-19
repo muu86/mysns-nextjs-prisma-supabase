@@ -14,7 +14,7 @@ export type UpdateUserAction =
   | { type: 'setUsername'; payload: string }
   | { type: 'setContent'; payload: string }
   | { type: 'setFile'; payload: UserContextState['file'] }
-  | { type: 'setIsUploading' }
+  | { type: 'setIsUploading'; payload: boolean }
   | { type: 'setBabyBirth'; payload: UserContextState['babyBirth'] }
   | { type: 'addAddress'; payload: UserContextState['address'][number] }
   | { type: 'removeAddress'; payload: UserContextState['address'][number] };
@@ -34,7 +34,7 @@ export const updateUserReducer = produce((draft: UserContextState, action: Updat
       break;
     }
     case 'setIsUploading': {
-      draft.isUploading = !draft.isUploading;
+      draft.isUploading = action.payload;
       break;
     }
     case 'setBabyBirth': {

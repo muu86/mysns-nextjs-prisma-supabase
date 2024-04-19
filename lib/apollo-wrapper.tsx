@@ -1,13 +1,49 @@
 'use client';
 // ^ this file needs the "use client" pragma
 
-import { ApolloLink, HttpLink } from '@apollo/client';
+import { ApolloLink, FetchResult, HttpLink, Observable, Operation, split } from '@apollo/client';
+import { getMainDefinition } from '@apollo/client/utilities';
 import {
   ApolloNextAppProvider,
   NextSSRInMemoryCache,
   NextSSRApolloClient,
   SSRMultipartLink,
 } from '@apollo/experimental-nextjs-app-support/ssr';
+import { print } from 'graphql';
+import { Client, ClientOptions, createClient } from 'graphql-sse';
+
+class SSELink extends ApolloLink {
+  private client: Client;
+
+  constructor(options: ClientOptions) {
+    super();
+    this.client = createClient(options);
+  }
+
+  public request(operation: Operation): Observable<FetchResult> {
+    return new Observable((sink) => {
+      return this.client.subscribe<FetchResult>(
+        { ...operation, query: print(operation.query) },
+        {
+          next: sink.next.bind(sink),
+          complete: sink.complete.bind(sink),
+          error: sink.error.bind(sink),
+        }
+      );
+    });
+  }
+}
+
+export const sseLink = new SSELink({
+  url: 'http://localhost:3000/api/graphql',
+  // headers: () => {
+  // const session = getSession();
+  // if (!session) return {};
+  // return {
+  //   Authorization: `Bearer ${session.token}`,
+  // };
+  // },
+});
 
 // have a function to create a client for you
 function makeClient() {
@@ -23,6 +59,19 @@ function makeClient() {
     // const { data } = useSuspenseQuery(MY_QUERY, { context: { fetchOptions: { cache: "force-cache" }}});
   });
 
+  // const sseLink = new ServerSentEventsLink({
+  //   graphQlSubscriptionUrl: 'http://localhost:3000/api/graphql',
+  // });
+
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+    },
+    sseLink,
+    httpLink
+  );
+
   return new NextSSRApolloClient({
     // use the `NextSSRInMemoryCache`, not the normal `InMemoryCache`
     cache: new NextSSRInMemoryCache(),
@@ -35,9 +84,9 @@ function makeClient() {
             new SSRMultipartLink({
               stripDefer: true,
             }),
-            httpLink,
+            splitLink,
           ])
-        : httpLink,
+        : splitLink,
   });
 }
 

@@ -47,6 +47,7 @@ export default function MutatePostContextProvider({ session, children }: PropsWi
   }, []);
 
   const submit = async () => {
+    setIsUploading(true);
     // if (!session.user?.email) redirect('/login');
     // 임시 주소 코드
     const tempAddressCode = '1111010100';
@@ -82,6 +83,8 @@ export default function MutatePostContextProvider({ session, children }: PropsWi
         data: input,
       },
     });
+
+    setIsUploading(false);
   };
 
   const value = {

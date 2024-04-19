@@ -2,6 +2,7 @@
 
 import { MutatePostContext } from '@/components/context/mutate-post-context';
 import { Button } from '@/components/ui/button';
+import { LoaderCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Context, MouseEvent, useContext } from 'react';
 
@@ -23,8 +24,8 @@ export default function SubmitButtons() {
       <Button onClick={cancelHandler} variant="outline" size="sm">
         취소
       </Button>
-      <Button onClick={saveHandler} size="sm">
-        저장
+      <Button onClick={saveHandler} disabled={states.isUploading} size="sm">
+        {states.isUploading ? <LoaderCircle className="animate-spin" /> : '저장'}
       </Button>
     </>
   );

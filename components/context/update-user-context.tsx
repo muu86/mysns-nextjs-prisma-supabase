@@ -9,6 +9,7 @@ import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { Dispatch, PropsWithChildren, createContext, useReducer } from 'react';
 import { UpdateUserAction, updateUserReducer } from '../reducer/update-user-reducer';
+import { useSession } from 'next-auth/react';
 
 const MutationUpdateOneUser = graphql(`
   mutation updateOneUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
@@ -27,14 +28,16 @@ const MutationUpdateOneUser = graphql(`
           location
         }
       }
+      role
     }
   }
 `);
 
 export default function UpdateUserContextProvider({
-  session,
+  // session,
   children,
-}: PropsWithChildren<{ session: Session | null }>) {
+}: PropsWithChildren) {
+  const { data: session, status, update } = useSession();
   const [updateOneUser] = useMutation(MutationUpdateOneUser);
 
   const [state, dispatch] = useReducer(updateUserReducer, { session: session, isUploading: false, address: [] });
@@ -45,11 +48,27 @@ export default function UpdateUserContextProvider({
     if (!session?.user?.email) redirect('/login');
     if (!state.username) return;
 
+    dispatch({
+      type: 'setIsUploading',
+      payload: true,
+    });
     const variables = createVariables(state);
 
     const result = await updateOneUser({
       variables,
     });
+
+    dispatch({
+      type: 'setIsUploading',
+      payload: false,
+    });
+
+    if (!result.errors) {
+      update({
+        username: result.data?.updateOneUser?.username,
+        role: result.data?.updateOneUser?.role,
+      });
+    }
   };
 
   return <UpdateUserContext.Provider value={{ state, dispatch, submit }}>{children}</UpdateUserContext.Provider>;

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { graphql } from '@/graphql/generated/gql';
-import { getClient } from '@/lib/apollo';
+import { getClient } from '@/lib/apollo-client';
 import AddressSearchBar from './address-searchbar';
 import AddressSelectedBadges from './address-selected-badges';
 

@@ -37,6 +37,7 @@ model User {
   sessions      Session[]
   addresses     UserAddress[]
   files         UserFile[]
+  chatMessages  ChatMessage[]
 
   @@map("users")
   @@schema("public")
@@ -173,12 +174,12 @@ model ChatUser {
 
 model ChatMessage {
   id        Int      @id @default(autoincrement())
-  username  String
   message   String
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
   chatId    Int      @map("chat_id")
   userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
   chat      Chat     @relation(fields: [chatId], references: [id])
 
   @@map("chat_messages")

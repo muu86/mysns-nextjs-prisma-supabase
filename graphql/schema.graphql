@@ -76,7 +76,7 @@ input AccountCreateInput {
   token_type: String
   type: String!
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutAccountInput!
+  user: UserCreateNestedOneWithoutAccountsInput!
 }
 
 input AccountCreateManyInput {
@@ -357,7 +357,7 @@ input AccountUpdateInput {
   token_type: NullableStringFieldUpdateOperationsInput
   type: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutAccountNestedInput
+  user: UserUpdateOneRequiredWithoutAccountsNestedInput
 }
 
 input AccountUpdateManyMutationInput {
@@ -462,7 +462,6 @@ input AccountWhereUniqueInput {
 }
 
 type Address {
-  Post(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
   _count: AddressCount
   c1: String!
   c2: String
@@ -471,6 +470,7 @@ type Address {
   code: String!
   createdAt: DateTimeISO!
   id: ID!
+  posts(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
   updatedAt: DateTimeISO!
   users(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], skip: Int, take: Int, where: UserAddressWhereInput): [UserAddress!]!
 }
@@ -484,7 +484,7 @@ input AddressAvgOrderByAggregateInput {
 }
 
 type AddressCount {
-  Post(where: PostWhereInput): Int!
+  posts(where: PostWhereInput): Int!
   users(where: UserAddressWhereInput): Int!
 }
 
@@ -511,7 +511,7 @@ input AddressCountOrderByAggregateInput {
   updatedAt: SortOrder
 }
 
-input AddressCreateNestedOneWithoutPostInput {
+input AddressCreateNestedOneWithoutPostsInput {
   connect: AddressWhereUniqueInput
 }
 
@@ -596,7 +596,6 @@ input AddressOrderByWithAggregationInput {
 }
 
 input AddressOrderByWithRelationInput {
-  Post: PostOrderByRelationAggregateInput
   c1: SortOrder
   c2: SortOrderInput
   c3: SortOrderInput
@@ -604,6 +603,7 @@ input AddressOrderByWithRelationInput {
   code: SortOrder
   createdAt: SortOrder
   id: SortOrder
+  posts: PostOrderByRelationAggregateInput
   updatedAt: SortOrder
   users: UserAddressOrderByRelationAggregateInput
 }
@@ -647,13 +647,13 @@ input AddressSumOrderByAggregateInput {
 }
 
 input AddressUpdateInput {
-  Post: PostUpdateManyWithoutAddressNestedInput
   c1: StringFieldUpdateOperationsInput
   c2: NullableStringFieldUpdateOperationsInput
   c3: NullableStringFieldUpdateOperationsInput
   c4: NullableStringFieldUpdateOperationsInput
   code: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutAddressNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   users: UserAddressUpdateManyWithoutAddressNestedInput
 }
@@ -668,9 +668,9 @@ input AddressUpdateManyMutationInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input AddressUpdateOneRequiredWithoutPostNestedInput {
+input AddressUpdateOneRequiredWithoutPostsNestedInput {
   connect: AddressWhereUniqueInput
-  update: AddressUpdateToOneWithWhereWithoutPostInput
+  update: AddressUpdateToOneWithWhereWithoutPostsInput
 }
 
 input AddressUpdateOneRequiredWithoutUsersNestedInput {
@@ -678,8 +678,8 @@ input AddressUpdateOneRequiredWithoutUsersNestedInput {
   update: AddressUpdateToOneWithWhereWithoutUsersInput
 }
 
-input AddressUpdateToOneWithWhereWithoutPostInput {
-  data: AddressUpdateWithoutPostInput!
+input AddressUpdateToOneWithWhereWithoutPostsInput {
+  data: AddressUpdateWithoutPostsInput!
   where: AddressWhereInput
 }
 
@@ -688,7 +688,7 @@ input AddressUpdateToOneWithWhereWithoutUsersInput {
   where: AddressWhereInput
 }
 
-input AddressUpdateWithoutPostInput {
+input AddressUpdateWithoutPostsInput {
   c1: StringFieldUpdateOperationsInput
   c2: NullableStringFieldUpdateOperationsInput
   c3: NullableStringFieldUpdateOperationsInput
@@ -700,13 +700,13 @@ input AddressUpdateWithoutPostInput {
 }
 
 input AddressUpdateWithoutUsersInput {
-  Post: PostUpdateManyWithoutAddressNestedInput
   c1: StringFieldUpdateOperationsInput
   c2: NullableStringFieldUpdateOperationsInput
   c3: NullableStringFieldUpdateOperationsInput
   c4: NullableStringFieldUpdateOperationsInput
   code: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutAddressNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -714,7 +714,6 @@ input AddressWhereInput {
   AND: [AddressWhereInput!]
   NOT: [AddressWhereInput!]
   OR: [AddressWhereInput!]
-  Post: PostListRelationFilter
   c1: StringFilter
   c2: StringNullableFilter
   c3: StringNullableFilter
@@ -722,6 +721,7 @@ input AddressWhereInput {
   code: StringFilter
   createdAt: DateTimeFilter
   id: IntFilter
+  posts: PostListRelationFilter
   updatedAt: DateTimeFilter
   users: UserAddressListRelationFilter
 }
@@ -730,7 +730,6 @@ input AddressWhereUniqueInput {
   AND: [AddressWhereInput!]
   NOT: [AddressWhereInput!]
   OR: [AddressWhereInput!]
-  Post: PostListRelationFilter
   c1: StringFilter
   c2: StringNullableFilter
   c3: StringNullableFilter
@@ -738,6 +737,7 @@ input AddressWhereUniqueInput {
   code: String
   createdAt: DateTimeFilter
   id: Int
+  posts: PostListRelationFilter
   updatedAt: DateTimeFilter
   users: UserAddressListRelationFilter
 }
@@ -826,6 +826,14 @@ type AggregateSession {
   _sum: SessionSumAggregate
 }
 
+type AggregateSpatial_ref_sys {
+  _avg: Spatial_ref_sysAvgAggregate
+  _count: Spatial_ref_sysCountAggregate
+  _max: Spatial_ref_sysMaxAggregate
+  _min: Spatial_ref_sysMinAggregate
+  _sum: Spatial_ref_sysSumAggregate
+}
+
 type AggregateUser {
   _avg: UserAvgAggregate
   _count: UserCountAggregate
@@ -857,13 +865,13 @@ type AggregateVerificationToken {
 }
 
 type Chat {
-  ChatMessage(cursor: ChatMessageWhereUniqueInput, distinct: [ChatMessageScalarFieldEnum!], orderBy: [ChatMessageOrderByWithRelationInput!], skip: Int, take: Int, where: ChatMessageWhereInput): [ChatMessage!]!
-  ChatUser(cursor: ChatUserWhereUniqueInput, distinct: [ChatUserScalarFieldEnum!], orderBy: [ChatUserOrderByWithRelationInput!], skip: Int, take: Int, where: ChatUserWhereInput): [ChatUser!]!
   _count: ChatCount
   createdAt: DateTimeISO!
   id: ID!
+  messages(cursor: ChatMessageWhereUniqueInput, distinct: [ChatMessageScalarFieldEnum!], orderBy: [ChatMessageOrderByWithRelationInput!], skip: Int, take: Int, where: ChatMessageWhereInput): [ChatMessage!]!
   name: String
   updatedAt: DateTimeISO!
+  users(cursor: ChatUserWhereUniqueInput, distinct: [ChatUserScalarFieldEnum!], orderBy: [ChatUserOrderByWithRelationInput!], skip: Int, take: Int, where: ChatUserWhereInput): [ChatUser!]!
 }
 
 type ChatAvgAggregate {
@@ -875,8 +883,8 @@ input ChatAvgOrderByAggregateInput {
 }
 
 type ChatCount {
-  ChatMessage(where: ChatMessageWhereInput): Int!
-  ChatUser(where: ChatUserWhereInput): Int!
+  messages(where: ChatMessageWhereInput): Int!
+  users(where: ChatUserWhereInput): Int!
 }
 
 type ChatCountAggregate {
@@ -895,11 +903,11 @@ input ChatCountOrderByAggregateInput {
 }
 
 input ChatCreateInput {
-  ChatMessage: ChatMessageCreateNestedManyWithoutChatInput
-  ChatUser: ChatUserCreateNestedManyWithoutChatInput
   createdAt: DateTimeISO
+  messages: ChatMessageCreateNestedManyWithoutChatInput
   name: String
   updatedAt: DateTimeISO
+  users: ChatUserCreateNestedManyWithoutChatInput
 }
 
 input ChatCreateManyInput {
@@ -909,38 +917,38 @@ input ChatCreateManyInput {
   updatedAt: DateTimeISO
 }
 
-input ChatCreateNestedOneWithoutChatMessageInput {
+input ChatCreateNestedOneWithoutMessagesInput {
   connect: ChatWhereUniqueInput
-  connectOrCreate: ChatCreateOrConnectWithoutChatMessageInput
-  create: ChatCreateWithoutChatMessageInput
+  connectOrCreate: ChatCreateOrConnectWithoutMessagesInput
+  create: ChatCreateWithoutMessagesInput
 }
 
-input ChatCreateNestedOneWithoutChatUserInput {
+input ChatCreateNestedOneWithoutUsersInput {
   connect: ChatWhereUniqueInput
-  connectOrCreate: ChatCreateOrConnectWithoutChatUserInput
-  create: ChatCreateWithoutChatUserInput
+  connectOrCreate: ChatCreateOrConnectWithoutUsersInput
+  create: ChatCreateWithoutUsersInput
 }
 
-input ChatCreateOrConnectWithoutChatMessageInput {
-  create: ChatCreateWithoutChatMessageInput!
+input ChatCreateOrConnectWithoutMessagesInput {
+  create: ChatCreateWithoutMessagesInput!
   where: ChatWhereUniqueInput!
 }
 
-input ChatCreateOrConnectWithoutChatUserInput {
-  create: ChatCreateWithoutChatUserInput!
+input ChatCreateOrConnectWithoutUsersInput {
+  create: ChatCreateWithoutUsersInput!
   where: ChatWhereUniqueInput!
 }
 
-input ChatCreateWithoutChatMessageInput {
-  ChatUser: ChatUserCreateNestedManyWithoutChatInput
+input ChatCreateWithoutMessagesInput {
   createdAt: DateTimeISO
   name: String
   updatedAt: DateTimeISO
+  users: ChatUserCreateNestedManyWithoutChatInput
 }
 
-input ChatCreateWithoutChatUserInput {
-  ChatMessage: ChatMessageCreateNestedManyWithoutChatInput
+input ChatCreateWithoutUsersInput {
   createdAt: DateTimeISO
+  messages: ChatMessageCreateNestedManyWithoutChatInput
   name: String
   updatedAt: DateTimeISO
 }
@@ -978,8 +986,8 @@ type ChatMessage {
   id: ID!
   message: String!
   updatedAt: DateTimeISO!
+  user: User!
   userId: Int!
-  username: String!
 }
 
 type ChatMessageAvgAggregate {
@@ -1002,7 +1010,6 @@ type ChatMessageCountAggregate {
   message: Int!
   updatedAt: Int!
   userId: Int!
-  username: Int!
 }
 
 input ChatMessageCountOrderByAggregateInput {
@@ -1012,16 +1019,14 @@ input ChatMessageCountOrderByAggregateInput {
   message: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
-  username: SortOrder
 }
 
 input ChatMessageCreateInput {
-  chat: ChatCreateNestedOneWithoutChatMessageInput!
+  chat: ChatCreateNestedOneWithoutMessagesInput!
   createdAt: DateTimeISO
   message: String!
   updatedAt: DateTimeISO
-  userId: Int!
-  username: String!
+  user: UserCreateNestedOneWithoutChatMessagesInput!
 }
 
 input ChatMessageCreateManyChatInput {
@@ -1030,7 +1035,6 @@ input ChatMessageCreateManyChatInput {
   message: String!
   updatedAt: DateTimeISO
   userId: Int!
-  username: String!
 }
 
 input ChatMessageCreateManyChatInputEnvelope {
@@ -1045,7 +1049,19 @@ input ChatMessageCreateManyInput {
   message: String!
   updatedAt: DateTimeISO
   userId: Int!
-  username: String!
+}
+
+input ChatMessageCreateManyUserInput {
+  chatId: Int!
+  createdAt: DateTimeISO
+  id: Int
+  message: String!
+  updatedAt: DateTimeISO
+}
+
+input ChatMessageCreateManyUserInputEnvelope {
+  data: [ChatMessageCreateManyUserInput!]!
+  skipDuplicates: Boolean
 }
 
 input ChatMessageCreateNestedManyWithoutChatInput {
@@ -1055,8 +1071,20 @@ input ChatMessageCreateNestedManyWithoutChatInput {
   createMany: ChatMessageCreateManyChatInputEnvelope
 }
 
+input ChatMessageCreateNestedManyWithoutUserInput {
+  connect: [ChatMessageWhereUniqueInput!]
+  connectOrCreate: [ChatMessageCreateOrConnectWithoutUserInput!]
+  create: [ChatMessageCreateWithoutUserInput!]
+  createMany: ChatMessageCreateManyUserInputEnvelope
+}
+
 input ChatMessageCreateOrConnectWithoutChatInput {
   create: ChatMessageCreateWithoutChatInput!
+  where: ChatMessageWhereUniqueInput!
+}
+
+input ChatMessageCreateOrConnectWithoutUserInput {
+  create: ChatMessageCreateWithoutUserInput!
   where: ChatMessageWhereUniqueInput!
 }
 
@@ -1064,8 +1092,14 @@ input ChatMessageCreateWithoutChatInput {
   createdAt: DateTimeISO
   message: String!
   updatedAt: DateTimeISO
-  userId: Int!
-  username: String!
+  user: UserCreateNestedOneWithoutChatMessagesInput!
+}
+
+input ChatMessageCreateWithoutUserInput {
+  chat: ChatCreateNestedOneWithoutMessagesInput!
+  createdAt: DateTimeISO
+  message: String!
+  updatedAt: DateTimeISO
 }
 
 type ChatMessageGroupBy {
@@ -1080,7 +1114,6 @@ type ChatMessageGroupBy {
   message: String!
   updatedAt: DateTimeISO!
   userId: Int!
-  username: String!
 }
 
 input ChatMessageListRelationFilter {
@@ -1096,7 +1129,6 @@ type ChatMessageMaxAggregate {
   message: String
   updatedAt: DateTimeISO
   userId: Int
-  username: String
 }
 
 input ChatMessageMaxOrderByAggregateInput {
@@ -1106,7 +1138,6 @@ input ChatMessageMaxOrderByAggregateInput {
   message: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
-  username: SortOrder
 }
 
 type ChatMessageMinAggregate {
@@ -1116,7 +1147,6 @@ type ChatMessageMinAggregate {
   message: String
   updatedAt: DateTimeISO
   userId: Int
-  username: String
 }
 
 input ChatMessageMinOrderByAggregateInput {
@@ -1126,7 +1156,6 @@ input ChatMessageMinOrderByAggregateInput {
   message: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
-  username: SortOrder
 }
 
 input ChatMessageOrderByRelationAggregateInput {
@@ -1145,7 +1174,6 @@ input ChatMessageOrderByWithAggregationInput {
   message: SortOrder
   updatedAt: SortOrder
   userId: SortOrder
-  username: SortOrder
 }
 
 input ChatMessageOrderByWithRelationInput {
@@ -1155,8 +1183,8 @@ input ChatMessageOrderByWithRelationInput {
   id: SortOrder
   message: SortOrder
   updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
   userId: SortOrder
-  username: SortOrder
 }
 
 enum ChatMessageScalarFieldEnum {
@@ -1166,7 +1194,6 @@ enum ChatMessageScalarFieldEnum {
   message
   updatedAt
   userId
-  username
 }
 
 input ChatMessageScalarWhereInput {
@@ -1179,7 +1206,6 @@ input ChatMessageScalarWhereInput {
   message: StringFilter
   updatedAt: DateTimeFilter
   userId: IntFilter
-  username: StringFilter
 }
 
 input ChatMessageScalarWhereWithAggregatesInput {
@@ -1192,7 +1218,6 @@ input ChatMessageScalarWhereWithAggregatesInput {
   message: StringWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
   userId: IntWithAggregatesFilter
-  username: StringWithAggregatesFilter
 }
 
 type ChatMessageSumAggregate {
@@ -1208,23 +1233,25 @@ input ChatMessageSumOrderByAggregateInput {
 }
 
 input ChatMessageUpdateInput {
-  chat: ChatUpdateOneRequiredWithoutChatMessageNestedInput
+  chat: ChatUpdateOneRequiredWithoutMessagesNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   message: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
-  username: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutChatMessagesNestedInput
 }
 
 input ChatMessageUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   message: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
-  username: StringFieldUpdateOperationsInput
 }
 
 input ChatMessageUpdateManyWithWhereWithoutChatInput {
+  data: ChatMessageUpdateManyMutationInput!
+  where: ChatMessageScalarWhereInput!
+}
+
+input ChatMessageUpdateManyWithWhereWithoutUserInput {
   data: ChatMessageUpdateManyMutationInput!
   where: ChatMessageScalarWhereInput!
 }
@@ -1243,8 +1270,27 @@ input ChatMessageUpdateManyWithoutChatNestedInput {
   upsert: [ChatMessageUpsertWithWhereUniqueWithoutChatInput!]
 }
 
+input ChatMessageUpdateManyWithoutUserNestedInput {
+  connect: [ChatMessageWhereUniqueInput!]
+  connectOrCreate: [ChatMessageCreateOrConnectWithoutUserInput!]
+  create: [ChatMessageCreateWithoutUserInput!]
+  createMany: ChatMessageCreateManyUserInputEnvelope
+  delete: [ChatMessageWhereUniqueInput!]
+  deleteMany: [ChatMessageScalarWhereInput!]
+  disconnect: [ChatMessageWhereUniqueInput!]
+  set: [ChatMessageWhereUniqueInput!]
+  update: [ChatMessageUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ChatMessageUpdateManyWithWhereWithoutUserInput!]
+  upsert: [ChatMessageUpsertWithWhereUniqueWithoutUserInput!]
+}
+
 input ChatMessageUpdateWithWhereUniqueWithoutChatInput {
   data: ChatMessageUpdateWithoutChatInput!
+  where: ChatMessageWhereUniqueInput!
+}
+
+input ChatMessageUpdateWithWhereUniqueWithoutUserInput {
+  data: ChatMessageUpdateWithoutUserInput!
   where: ChatMessageWhereUniqueInput!
 }
 
@@ -1252,13 +1298,25 @@ input ChatMessageUpdateWithoutChatInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   message: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
-  username: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutChatMessagesNestedInput
+}
+
+input ChatMessageUpdateWithoutUserInput {
+  chat: ChatUpdateOneRequiredWithoutMessagesNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  message: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input ChatMessageUpsertWithWhereUniqueWithoutChatInput {
   create: ChatMessageCreateWithoutChatInput!
   update: ChatMessageUpdateWithoutChatInput!
+  where: ChatMessageWhereUniqueInput!
+}
+
+input ChatMessageUpsertWithWhereUniqueWithoutUserInput {
+  create: ChatMessageCreateWithoutUserInput!
+  update: ChatMessageUpdateWithoutUserInput!
   where: ChatMessageWhereUniqueInput!
 }
 
@@ -1272,8 +1330,8 @@ input ChatMessageWhereInput {
   id: IntFilter
   message: StringFilter
   updatedAt: DateTimeFilter
+  user: UserRelationFilter
   userId: IntFilter
-  username: StringFilter
 }
 
 input ChatMessageWhereUniqueInput {
@@ -1286,8 +1344,8 @@ input ChatMessageWhereUniqueInput {
   id: Int
   message: StringFilter
   updatedAt: DateTimeFilter
+  user: UserRelationFilter
   userId: IntFilter
-  username: StringFilter
 }
 
 type ChatMinAggregate {
@@ -1317,12 +1375,12 @@ input ChatOrderByWithAggregationInput {
 }
 
 input ChatOrderByWithRelationInput {
-  ChatMessage: ChatMessageOrderByRelationAggregateInput
-  ChatUser: ChatUserOrderByRelationAggregateInput
   createdAt: SortOrder
   id: SortOrder
+  messages: ChatMessageOrderByRelationAggregateInput
   name: SortOrderInput
   updatedAt: SortOrder
+  users: ChatUserOrderByRelationAggregateInput
 }
 
 input ChatRelationFilter {
@@ -1356,11 +1414,11 @@ input ChatSumOrderByAggregateInput {
 }
 
 input ChatUpdateInput {
-  ChatMessage: ChatMessageUpdateManyWithoutChatNestedInput
-  ChatUser: ChatUserUpdateManyWithoutChatNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  messages: ChatMessageUpdateManyWithoutChatNestedInput
   name: NullableStringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  users: ChatUserUpdateManyWithoutChatNestedInput
 }
 
 input ChatUpdateManyMutationInput {
@@ -1369,55 +1427,55 @@ input ChatUpdateManyMutationInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input ChatUpdateOneRequiredWithoutChatMessageNestedInput {
+input ChatUpdateOneRequiredWithoutMessagesNestedInput {
   connect: ChatWhereUniqueInput
-  connectOrCreate: ChatCreateOrConnectWithoutChatMessageInput
-  create: ChatCreateWithoutChatMessageInput
-  update: ChatUpdateToOneWithWhereWithoutChatMessageInput
-  upsert: ChatUpsertWithoutChatMessageInput
+  connectOrCreate: ChatCreateOrConnectWithoutMessagesInput
+  create: ChatCreateWithoutMessagesInput
+  update: ChatUpdateToOneWithWhereWithoutMessagesInput
+  upsert: ChatUpsertWithoutMessagesInput
 }
 
-input ChatUpdateOneRequiredWithoutChatUserNestedInput {
+input ChatUpdateOneRequiredWithoutUsersNestedInput {
   connect: ChatWhereUniqueInput
-  connectOrCreate: ChatCreateOrConnectWithoutChatUserInput
-  create: ChatCreateWithoutChatUserInput
-  update: ChatUpdateToOneWithWhereWithoutChatUserInput
-  upsert: ChatUpsertWithoutChatUserInput
+  connectOrCreate: ChatCreateOrConnectWithoutUsersInput
+  create: ChatCreateWithoutUsersInput
+  update: ChatUpdateToOneWithWhereWithoutUsersInput
+  upsert: ChatUpsertWithoutUsersInput
 }
 
-input ChatUpdateToOneWithWhereWithoutChatMessageInput {
-  data: ChatUpdateWithoutChatMessageInput!
+input ChatUpdateToOneWithWhereWithoutMessagesInput {
+  data: ChatUpdateWithoutMessagesInput!
   where: ChatWhereInput
 }
 
-input ChatUpdateToOneWithWhereWithoutChatUserInput {
-  data: ChatUpdateWithoutChatUserInput!
+input ChatUpdateToOneWithWhereWithoutUsersInput {
+  data: ChatUpdateWithoutUsersInput!
   where: ChatWhereInput
 }
 
-input ChatUpdateWithoutChatMessageInput {
-  ChatUser: ChatUserUpdateManyWithoutChatNestedInput
+input ChatUpdateWithoutMessagesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  users: ChatUserUpdateManyWithoutChatNestedInput
+}
+
+input ChatUpdateWithoutUsersInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  messages: ChatMessageUpdateManyWithoutChatNestedInput
   name: NullableStringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input ChatUpdateWithoutChatUserInput {
-  ChatMessage: ChatMessageUpdateManyWithoutChatNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input ChatUpsertWithoutChatMessageInput {
-  create: ChatCreateWithoutChatMessageInput!
-  update: ChatUpdateWithoutChatMessageInput!
+input ChatUpsertWithoutMessagesInput {
+  create: ChatCreateWithoutMessagesInput!
+  update: ChatUpdateWithoutMessagesInput!
   where: ChatWhereInput
 }
 
-input ChatUpsertWithoutChatUserInput {
-  create: ChatCreateWithoutChatUserInput!
-  update: ChatUpdateWithoutChatUserInput!
+input ChatUpsertWithoutUsersInput {
+  create: ChatCreateWithoutUsersInput!
+  update: ChatUpdateWithoutUsersInput!
   where: ChatWhereInput
 }
 
@@ -1461,10 +1519,10 @@ input ChatUserCountOrderByAggregateInput {
 }
 
 input ChatUserCreateInput {
-  chat: ChatCreateNestedOneWithoutChatUserInput!
+  chat: ChatCreateNestedOneWithoutUsersInput!
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutChatUserInput!
+  user: UserCreateNestedOneWithoutChatsInput!
 }
 
 input ChatUserCreateManyChatInput {
@@ -1526,11 +1584,11 @@ input ChatUserCreateOrConnectWithoutUserInput {
 input ChatUserCreateWithoutChatInput {
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutChatUserInput!
+  user: UserCreateNestedOneWithoutChatsInput!
 }
 
 input ChatUserCreateWithoutUserInput {
-  chat: ChatCreateNestedOneWithoutChatUserInput!
+  chat: ChatCreateNestedOneWithoutUsersInput!
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -1656,10 +1714,10 @@ input ChatUserSumOrderByAggregateInput {
 }
 
 input ChatUserUpdateInput {
-  chat: ChatUpdateOneRequiredWithoutChatUserNestedInput
+  chat: ChatUpdateOneRequiredWithoutUsersNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutChatUserNestedInput
+  user: UserUpdateOneRequiredWithoutChatsNestedInput
 }
 
 input ChatUserUpdateManyMutationInput {
@@ -1718,11 +1776,11 @@ input ChatUserUpdateWithWhereUniqueWithoutUserInput {
 input ChatUserUpdateWithoutChatInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutChatUserNestedInput
+  user: UserUpdateOneRequiredWithoutChatsNestedInput
 }
 
 input ChatUserUpdateWithoutUserInput {
-  chat: ChatUpdateOneRequiredWithoutChatUserNestedInput
+  chat: ChatUpdateOneRequiredWithoutUsersNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -1767,26 +1825,26 @@ input ChatUserWhereUniqueInput {
 
 input ChatWhereInput {
   AND: [ChatWhereInput!]
-  ChatMessage: ChatMessageListRelationFilter
-  ChatUser: ChatUserListRelationFilter
   NOT: [ChatWhereInput!]
   OR: [ChatWhereInput!]
   createdAt: DateTimeFilter
   id: IntFilter
+  messages: ChatMessageListRelationFilter
   name: StringNullableFilter
   updatedAt: DateTimeFilter
+  users: ChatUserListRelationFilter
 }
 
 input ChatWhereUniqueInput {
   AND: [ChatWhereInput!]
-  ChatMessage: ChatMessageListRelationFilter
-  ChatUser: ChatUserListRelationFilter
   NOT: [ChatWhereInput!]
   OR: [ChatWhereInput!]
   createdAt: DateTimeFilter
   id: Int
+  messages: ChatMessageListRelationFilter
   name: StringNullableFilter
   updatedAt: DateTimeFilter
+  users: ChatUserListRelationFilter
 }
 
 type Comment {
@@ -1834,9 +1892,9 @@ input CommentCountOrderByAggregateInput {
 input CommentCreateInput {
   content: String!
   createdAt: DateTimeISO
-  post: PostCreateNestedOneWithoutCommentInput!
+  post: PostCreateNestedOneWithoutCommentsInput!
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutCommentInput!
+  user: UserCreateNestedOneWithoutCommentsInput!
 }
 
 input CommentCreateManyInput {
@@ -1902,13 +1960,13 @@ input CommentCreateWithoutPostInput {
   content: String!
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutCommentInput!
+  user: UserCreateNestedOneWithoutCommentsInput!
 }
 
 input CommentCreateWithoutUserInput {
   content: String!
   createdAt: DateTimeISO
-  post: PostCreateNestedOneWithoutCommentInput!
+  post: PostCreateNestedOneWithoutCommentsInput!
   updatedAt: DateTimeISO
 }
 
@@ -2045,9 +2103,9 @@ input CommentSumOrderByAggregateInput {
 input CommentUpdateInput {
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  post: PostUpdateOneRequiredWithoutCommentNestedInput
+  post: PostUpdateOneRequiredWithoutCommentsNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutCommentNestedInput
+  user: UserUpdateOneRequiredWithoutCommentsNestedInput
 }
 
 input CommentUpdateManyMutationInput {
@@ -2108,13 +2166,13 @@ input CommentUpdateWithoutPostInput {
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutCommentNestedInput
+  user: UserUpdateOneRequiredWithoutCommentsNestedInput
 }
 
 input CommentUpdateWithoutUserInput {
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
-  post: PostUpdateOneRequiredWithoutCommentNestedInput
+  post: PostUpdateOneRequiredWithoutCommentsNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -2156,6 +2214,13 @@ input CommentWhereUniqueInput {
   updatedAt: DateTimeFilter
   user: UserRelationFilter
   userId: IntFilter
+}
+
+type CustomFileUrl {
+  lg: String
+  md: String
+  raw: String
+  sm: String
 }
 
 input DateTimeFieldUpdateOperationsInput {
@@ -2260,14 +2325,15 @@ input EnumRoleWithAggregatesFilter {
 }
 
 type File {
-  UserFile(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], skip: Int, take: Int, where: UserFileWhereInput): [UserFile!]!
   _count: FileCount
   createdAt: DateTimeISO!
+  files(cursor: UserFileWhereUniqueInput, distinct: [UserFileScalarFieldEnum!], orderBy: [UserFileOrderByWithRelationInput!], skip: Int, take: Int, where: UserFileWhereInput): [UserFile!]!
   id: ID!
   location: String!
   posts(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFile!]!
   type: FileStorageType!
   updatedAt: DateTimeISO!
+  url: CustomFileUrl!
 }
 
 type FileAvgAggregate {
@@ -2279,7 +2345,7 @@ input FileAvgOrderByAggregateInput {
 }
 
 type FileCount {
-  UserFile(where: UserFileWhereInput): Int!
+  files(where: UserFileWhereInput): Int!
   posts(where: PostFileWhereInput): Int!
 }
 
@@ -2301,8 +2367,8 @@ input FileCountOrderByAggregateInput {
 }
 
 input FileCreateInput {
-  UserFile: UserFileCreateNestedManyWithoutFileInput
   createdAt: DateTimeISO
+  files: UserFileCreateNestedManyWithoutFileInput
   location: String!
   posts: PostFileCreateNestedManyWithoutFileInput
   type: FileStorageType
@@ -2317,16 +2383,21 @@ input FileCreateManyInput {
   updatedAt: DateTimeISO
 }
 
+input FileCreateNestedOneWithoutFilesInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutFilesInput
+  create: FileCreateWithoutFilesInput
+}
+
 input FileCreateNestedOneWithoutPostsInput {
   connect: FileWhereUniqueInput
   connectOrCreate: FileCreateOrConnectWithoutPostsInput
   create: FileCreateWithoutPostsInput
 }
 
-input FileCreateNestedOneWithoutUserFileInput {
-  connect: FileWhereUniqueInput
-  connectOrCreate: FileCreateOrConnectWithoutUserFileInput
-  create: FileCreateWithoutUserFileInput
+input FileCreateOrConnectWithoutFilesInput {
+  create: FileCreateWithoutFilesInput!
+  where: FileWhereUniqueInput!
 }
 
 input FileCreateOrConnectWithoutPostsInput {
@@ -2334,23 +2405,18 @@ input FileCreateOrConnectWithoutPostsInput {
   where: FileWhereUniqueInput!
 }
 
-input FileCreateOrConnectWithoutUserFileInput {
-  create: FileCreateWithoutUserFileInput!
-  where: FileWhereUniqueInput!
-}
-
-input FileCreateWithoutPostsInput {
-  UserFile: UserFileCreateNestedManyWithoutFileInput
+input FileCreateWithoutFilesInput {
   createdAt: DateTimeISO
   location: String!
+  posts: PostFileCreateNestedManyWithoutFileInput
   type: FileStorageType
   updatedAt: DateTimeISO
 }
 
-input FileCreateWithoutUserFileInput {
+input FileCreateWithoutPostsInput {
   createdAt: DateTimeISO
+  files: UserFileCreateNestedManyWithoutFileInput
   location: String!
-  posts: PostFileCreateNestedManyWithoutFileInput
   type: FileStorageType
   updatedAt: DateTimeISO
 }
@@ -2414,8 +2480,8 @@ input FileOrderByWithAggregationInput {
 }
 
 input FileOrderByWithRelationInput {
-  UserFile: UserFileOrderByRelationAggregateInput
   createdAt: SortOrder
+  files: UserFileOrderByRelationAggregateInput
   id: SortOrder
   location: SortOrder
   posts: PostFileOrderByRelationAggregateInput
@@ -2460,8 +2526,8 @@ input FileSumOrderByAggregateInput {
 }
 
 input FileUpdateInput {
-  UserFile: UserFileUpdateManyWithoutFileNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutFileNestedInput
   location: StringFieldUpdateOperationsInput
   posts: PostFileUpdateManyWithoutFileNestedInput
   type: EnumFileStorageTypeFieldUpdateOperationsInput
@@ -2475,6 +2541,14 @@ input FileUpdateManyMutationInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
+input FileUpdateOneRequiredWithoutFilesNestedInput {
+  connect: FileWhereUniqueInput
+  connectOrCreate: FileCreateOrConnectWithoutFilesInput
+  create: FileCreateWithoutFilesInput
+  update: FileUpdateToOneWithWhereWithoutFilesInput
+  upsert: FileUpsertWithoutFilesInput
+}
+
 input FileUpdateOneRequiredWithoutPostsNestedInput {
   connect: FileWhereUniqueInput
   connectOrCreate: FileCreateOrConnectWithoutPostsInput
@@ -2483,12 +2557,9 @@ input FileUpdateOneRequiredWithoutPostsNestedInput {
   upsert: FileUpsertWithoutPostsInput
 }
 
-input FileUpdateOneRequiredWithoutUserFileNestedInput {
-  connect: FileWhereUniqueInput
-  connectOrCreate: FileCreateOrConnectWithoutUserFileInput
-  create: FileCreateWithoutUserFileInput
-  update: FileUpdateToOneWithWhereWithoutUserFileInput
-  upsert: FileUpsertWithoutUserFileInput
+input FileUpdateToOneWithWhereWithoutFilesInput {
+  data: FileUpdateWithoutFilesInput!
+  where: FileWhereInput
 }
 
 input FileUpdateToOneWithWhereWithoutPostsInput {
@@ -2496,25 +2567,26 @@ input FileUpdateToOneWithWhereWithoutPostsInput {
   where: FileWhereInput
 }
 
-input FileUpdateToOneWithWhereWithoutUserFileInput {
-  data: FileUpdateWithoutUserFileInput!
-  where: FileWhereInput
-}
-
-input FileUpdateWithoutPostsInput {
-  UserFile: UserFileUpdateManyWithoutFileNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  location: StringFieldUpdateOperationsInput
-  type: EnumFileStorageTypeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input FileUpdateWithoutUserFileInput {
+input FileUpdateWithoutFilesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   location: StringFieldUpdateOperationsInput
   posts: PostFileUpdateManyWithoutFileNestedInput
   type: EnumFileStorageTypeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input FileUpdateWithoutPostsInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutFileNestedInput
+  location: StringFieldUpdateOperationsInput
+  type: EnumFileStorageTypeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input FileUpsertWithoutFilesInput {
+  create: FileCreateWithoutFilesInput!
+  update: FileUpdateWithoutFilesInput!
+  where: FileWhereInput
 }
 
 input FileUpsertWithoutPostsInput {
@@ -2523,18 +2595,12 @@ input FileUpsertWithoutPostsInput {
   where: FileWhereInput
 }
 
-input FileUpsertWithoutUserFileInput {
-  create: FileCreateWithoutUserFileInput!
-  update: FileUpdateWithoutUserFileInput!
-  where: FileWhereInput
-}
-
 input FileWhereInput {
   AND: [FileWhereInput!]
   NOT: [FileWhereInput!]
   OR: [FileWhereInput!]
-  UserFile: UserFileListRelationFilter
   createdAt: DateTimeFilter
+  files: UserFileListRelationFilter
   id: IntFilter
   location: StringFilter
   posts: PostFileListRelationFilter
@@ -2546,8 +2612,8 @@ input FileWhereUniqueInput {
   AND: [FileWhereInput!]
   NOT: [FileWhereInput!]
   OR: [FileWhereInput!]
-  UserFile: UserFileListRelationFilter
   createdAt: DateTimeFilter
+  files: UserFileListRelationFilter
   id: Int
   location: StringFilter
   posts: PostFileListRelationFilter
@@ -2627,6 +2693,7 @@ type Mutation {
   createManyPost(data: [PostCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyPostFile(data: [PostFileCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManySession(data: [SessionCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
+  createManySpatial_ref_sys(data: [Spatial_ref_sysCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUser(data: [UserCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserAddress(data: [UserAddressCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUserFile(data: [UserFileCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
@@ -2640,6 +2707,7 @@ type Mutation {
   createOnePost(data: PostCreateInput!, relationLoadStrategy: RelationLoadStrategy): Post!
   createOnePostFile(data: PostFileCreateInput!, relationLoadStrategy: RelationLoadStrategy): PostFile!
   createOneSession(data: SessionCreateInput!, relationLoadStrategy: RelationLoadStrategy): Session!
+  createOneSpatial_ref_sys(data: Spatial_ref_sysCreateInput!, relationLoadStrategy: RelationLoadStrategy): Spatial_ref_sys!
   createOneUser(data: UserCreateInput!, relationLoadStrategy: RelationLoadStrategy): User!
   createOneUserAddress(data: UserAddressCreateInput!, relationLoadStrategy: RelationLoadStrategy): UserAddress!
   createOneUserFile(data: UserFileCreateInput!, relationLoadStrategy: RelationLoadStrategy): UserFile!
@@ -2654,6 +2722,7 @@ type Mutation {
   deleteManyPost(where: PostWhereInput): AffectedRowsOutput!
   deleteManyPostFile(where: PostFileWhereInput): AffectedRowsOutput!
   deleteManySession(where: SessionWhereInput): AffectedRowsOutput!
+  deleteManySpatial_ref_sys(where: Spatial_ref_sysWhereInput): AffectedRowsOutput!
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
   deleteManyUserAddress(where: UserAddressWhereInput): AffectedRowsOutput!
   deleteManyUserFile(where: UserFileWhereInput): AffectedRowsOutput!
@@ -2668,6 +2737,7 @@ type Mutation {
   deleteOnePost(relationLoadStrategy: RelationLoadStrategy, where: PostWhereUniqueInput!): Post
   deleteOnePostFile(relationLoadStrategy: RelationLoadStrategy, where: PostFileWhereUniqueInput!): PostFile
   deleteOneSession(relationLoadStrategy: RelationLoadStrategy, where: SessionWhereUniqueInput!): Session
+  deleteOneSpatial_ref_sys(relationLoadStrategy: RelationLoadStrategy, where: Spatial_ref_sysWhereUniqueInput!): Spatial_ref_sys
   deleteOneUser(relationLoadStrategy: RelationLoadStrategy, where: UserWhereUniqueInput!): User
   deleteOneUserAddress(relationLoadStrategy: RelationLoadStrategy, where: UserAddressWhereUniqueInput!): UserAddress
   deleteOneUserFile(relationLoadStrategy: RelationLoadStrategy, where: UserFileWhereUniqueInput!): UserFile
@@ -2682,6 +2752,7 @@ type Mutation {
   updateManyPost(data: PostUpdateManyMutationInput!, where: PostWhereInput): AffectedRowsOutput!
   updateManyPostFile(data: PostFileUpdateManyMutationInput!, where: PostFileWhereInput): AffectedRowsOutput!
   updateManySession(data: SessionUpdateManyMutationInput!, where: SessionWhereInput): AffectedRowsOutput!
+  updateManySpatial_ref_sys(data: Spatial_ref_sysUpdateManyMutationInput!, where: Spatial_ref_sysWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
   updateManyUserAddress(data: UserAddressUpdateManyMutationInput!, where: UserAddressWhereInput): AffectedRowsOutput!
   updateManyUserFile(data: UserFileUpdateManyMutationInput!, where: UserFileWhereInput): AffectedRowsOutput!
@@ -2696,6 +2767,7 @@ type Mutation {
   updateOnePost(data: PostUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: PostWhereUniqueInput!): Post
   updateOnePostFile(data: PostFileUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: PostFileWhereUniqueInput!): PostFile
   updateOneSession(data: SessionUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: SessionWhereUniqueInput!): Session
+  updateOneSpatial_ref_sys(data: Spatial_ref_sysUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: Spatial_ref_sysWhereUniqueInput!): Spatial_ref_sys
   updateOneUser(data: UserUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: UserWhereUniqueInput!): User
   updateOneUserAddress(data: UserAddressUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: UserAddressWhereUniqueInput!): UserAddress
   updateOneUserFile(data: UserFileUpdateInput!, relationLoadStrategy: RelationLoadStrategy, where: UserFileWhereUniqueInput!): UserFile
@@ -2709,6 +2781,7 @@ type Mutation {
   upsertOnePost(create: PostCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: PostUpdateInput!, where: PostWhereUniqueInput!): Post!
   upsertOnePostFile(create: PostFileCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: PostFileUpdateInput!, where: PostFileWhereUniqueInput!): PostFile!
   upsertOneSession(create: SessionCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: SessionUpdateInput!, where: SessionWhereUniqueInput!): Session!
+  upsertOneSpatial_ref_sys(create: Spatial_ref_sysCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: Spatial_ref_sysUpdateInput!, where: Spatial_ref_sysWhereUniqueInput!): Spatial_ref_sys!
   upsertOneUser(create: UserCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   upsertOneUserAddress(create: UserAddressCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: UserAddressUpdateInput!, where: UserAddressWhereUniqueInput!): UserAddress!
   upsertOneUserFile(create: UserFileCreateInput!, relationLoadStrategy: RelationLoadStrategy, update: UserFileUpdateInput!, where: UserFileWhereUniqueInput!): UserFile!
@@ -2959,10 +3032,10 @@ enum NullsOrder {
 }
 
 type Post {
-  Comment(cursor: CommentWhereUniqueInput, distinct: [CommentScalarFieldEnum!], orderBy: [CommentOrderByWithRelationInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
   _count: PostCount
   address: Address!
   addressId: Int!
+  comments(cursor: CommentWhereUniqueInput, distinct: [CommentScalarFieldEnum!], orderBy: [CommentOrderByWithRelationInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
   content: String!
   createdAt: DateTimeISO!
   files(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFile!]!
@@ -2985,7 +3058,7 @@ input PostAvgOrderByAggregateInput {
 }
 
 type PostCount {
-  Comment(where: CommentWhereInput): Int!
+  comments(where: CommentWhereInput): Int!
   files(where: PostFileWhereInput): Int!
 }
 
@@ -3009,13 +3082,13 @@ input PostCountOrderByAggregateInput {
 }
 
 input PostCreateInput {
-  Comment: CommentCreateNestedManyWithoutPostInput
-  address: AddressCreateNestedOneWithoutPostInput!
+  address: AddressCreateNestedOneWithoutPostsInput!
+  comments: CommentCreateNestedManyWithoutPostInput
   content: String!
   createdAt: DateTimeISO
   files: PostFileCreateNestedManyWithoutPostInput
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutPostInput!
+  user: UserCreateNestedOneWithoutPostsInput!
 }
 
 input PostCreateManyAddressInput {
@@ -3060,10 +3133,10 @@ input PostCreateNestedManyWithoutUserInput {
   createMany: PostCreateManyUserInputEnvelope
 }
 
-input PostCreateNestedOneWithoutCommentInput {
+input PostCreateNestedOneWithoutCommentsInput {
   connect: PostWhereUniqueInput
-  connectOrCreate: PostCreateOrConnectWithoutCommentInput
-  create: PostCreateWithoutCommentInput
+  connectOrCreate: PostCreateOrConnectWithoutCommentsInput
+  create: PostCreateWithoutCommentsInput
 }
 
 input PostCreateNestedOneWithoutFilesInput {
@@ -3077,8 +3150,8 @@ input PostCreateOrConnectWithoutAddressInput {
   where: PostWhereUniqueInput!
 }
 
-input PostCreateOrConnectWithoutCommentInput {
-  create: PostCreateWithoutCommentInput!
+input PostCreateOrConnectWithoutCommentsInput {
+  create: PostCreateWithoutCommentsInput!
   where: PostWhereUniqueInput!
 }
 
@@ -3093,35 +3166,35 @@ input PostCreateOrConnectWithoutUserInput {
 }
 
 input PostCreateWithoutAddressInput {
-  Comment: CommentCreateNestedManyWithoutPostInput
+  comments: CommentCreateNestedManyWithoutPostInput
   content: String!
   createdAt: DateTimeISO
   files: PostFileCreateNestedManyWithoutPostInput
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutPostInput!
+  user: UserCreateNestedOneWithoutPostsInput!
 }
 
-input PostCreateWithoutCommentInput {
-  address: AddressCreateNestedOneWithoutPostInput!
+input PostCreateWithoutCommentsInput {
+  address: AddressCreateNestedOneWithoutPostsInput!
   content: String!
   createdAt: DateTimeISO
   files: PostFileCreateNestedManyWithoutPostInput
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutPostInput!
+  user: UserCreateNestedOneWithoutPostsInput!
 }
 
 input PostCreateWithoutFilesInput {
-  Comment: CommentCreateNestedManyWithoutPostInput
-  address: AddressCreateNestedOneWithoutPostInput!
+  address: AddressCreateNestedOneWithoutPostsInput!
+  comments: CommentCreateNestedManyWithoutPostInput
   content: String!
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutPostInput!
+  user: UserCreateNestedOneWithoutPostsInput!
 }
 
 input PostCreateWithoutUserInput {
-  Comment: CommentCreateNestedManyWithoutPostInput
-  address: AddressCreateNestedOneWithoutPostInput!
+  address: AddressCreateNestedOneWithoutPostsInput!
+  comments: CommentCreateNestedManyWithoutPostInput
   content: String!
   createdAt: DateTimeISO
   files: PostFileCreateNestedManyWithoutPostInput
@@ -3547,9 +3620,9 @@ input PostOrderByWithAggregationInput {
 }
 
 input PostOrderByWithRelationInput {
-  Comment: CommentOrderByRelationAggregateInput
   address: AddressOrderByWithRelationInput
   addressId: SortOrder
+  comments: CommentOrderByRelationAggregateInput
   content: SortOrder
   createdAt: SortOrder
   files: PostFileOrderByRelationAggregateInput
@@ -3610,13 +3683,13 @@ input PostSumOrderByAggregateInput {
 }
 
 input PostUpdateInput {
-  Comment: CommentUpdateManyWithoutPostNestedInput
-  address: AddressUpdateOneRequiredWithoutPostNestedInput
+  address: AddressUpdateOneRequiredWithoutPostsNestedInput
+  comments: CommentUpdateManyWithoutPostNestedInput
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   files: PostFileUpdateManyWithoutPostNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutPostNestedInput
+  user: UserUpdateOneRequiredWithoutPostsNestedInput
 }
 
 input PostUpdateManyMutationInput {
@@ -3663,12 +3736,12 @@ input PostUpdateManyWithoutUserNestedInput {
   upsert: [PostUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input PostUpdateOneRequiredWithoutCommentNestedInput {
+input PostUpdateOneRequiredWithoutCommentsNestedInput {
   connect: PostWhereUniqueInput
-  connectOrCreate: PostCreateOrConnectWithoutCommentInput
-  create: PostCreateWithoutCommentInput
-  update: PostUpdateToOneWithWhereWithoutCommentInput
-  upsert: PostUpsertWithoutCommentInput
+  connectOrCreate: PostCreateOrConnectWithoutCommentsInput
+  create: PostCreateWithoutCommentsInput
+  update: PostUpdateToOneWithWhereWithoutCommentsInput
+  upsert: PostUpsertWithoutCommentsInput
 }
 
 input PostUpdateOneRequiredWithoutFilesNestedInput {
@@ -3679,8 +3752,8 @@ input PostUpdateOneRequiredWithoutFilesNestedInput {
   upsert: PostUpsertWithoutFilesInput
 }
 
-input PostUpdateToOneWithWhereWithoutCommentInput {
-  data: PostUpdateWithoutCommentInput!
+input PostUpdateToOneWithWhereWithoutCommentsInput {
+  data: PostUpdateWithoutCommentsInput!
   where: PostWhereInput
 }
 
@@ -3700,35 +3773,35 @@ input PostUpdateWithWhereUniqueWithoutUserInput {
 }
 
 input PostUpdateWithoutAddressInput {
-  Comment: CommentUpdateManyWithoutPostNestedInput
+  comments: CommentUpdateManyWithoutPostNestedInput
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   files: PostFileUpdateManyWithoutPostNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutPostNestedInput
+  user: UserUpdateOneRequiredWithoutPostsNestedInput
 }
 
-input PostUpdateWithoutCommentInput {
-  address: AddressUpdateOneRequiredWithoutPostNestedInput
+input PostUpdateWithoutCommentsInput {
+  address: AddressUpdateOneRequiredWithoutPostsNestedInput
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   files: PostFileUpdateManyWithoutPostNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutPostNestedInput
+  user: UserUpdateOneRequiredWithoutPostsNestedInput
 }
 
 input PostUpdateWithoutFilesInput {
-  Comment: CommentUpdateManyWithoutPostNestedInput
-  address: AddressUpdateOneRequiredWithoutPostNestedInput
+  address: AddressUpdateOneRequiredWithoutPostsNestedInput
+  comments: CommentUpdateManyWithoutPostNestedInput
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutPostNestedInput
+  user: UserUpdateOneRequiredWithoutPostsNestedInput
 }
 
 input PostUpdateWithoutUserInput {
-  Comment: CommentUpdateManyWithoutPostNestedInput
-  address: AddressUpdateOneRequiredWithoutPostNestedInput
+  address: AddressUpdateOneRequiredWithoutPostsNestedInput
+  comments: CommentUpdateManyWithoutPostNestedInput
   content: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   files: PostFileUpdateManyWithoutPostNestedInput
@@ -3747,9 +3820,9 @@ input PostUpsertWithWhereUniqueWithoutUserInput {
   where: PostWhereUniqueInput!
 }
 
-input PostUpsertWithoutCommentInput {
-  create: PostCreateWithoutCommentInput!
-  update: PostUpdateWithoutCommentInput!
+input PostUpsertWithoutCommentsInput {
+  create: PostCreateWithoutCommentsInput!
+  update: PostUpdateWithoutCommentsInput!
   where: PostWhereInput
 }
 
@@ -3761,11 +3834,11 @@ input PostUpsertWithoutFilesInput {
 
 input PostWhereInput {
   AND: [PostWhereInput!]
-  Comment: CommentListRelationFilter
   NOT: [PostWhereInput!]
   OR: [PostWhereInput!]
   address: AddressRelationFilter
   addressId: IntFilter
+  comments: CommentListRelationFilter
   content: StringFilter
   createdAt: DateTimeFilter
   files: PostFileListRelationFilter
@@ -3777,11 +3850,11 @@ input PostWhereInput {
 
 input PostWhereUniqueInput {
   AND: [PostWhereInput!]
-  Comment: CommentListRelationFilter
   NOT: [PostWhereInput!]
   OR: [PostWhereInput!]
   address: AddressRelationFilter
   addressId: IntFilter
+  comments: CommentListRelationFilter
   content: StringFilter
   createdAt: DateTimeFilter
   files: PostFileListRelationFilter
@@ -3806,6 +3879,7 @@ type Query {
   aggregatePost(cursor: PostWhereUniqueInput, orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): AggregatePost!
   aggregatePostFile(cursor: PostFileWhereUniqueInput, orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): AggregatePostFile!
   aggregateSession(cursor: SessionWhereUniqueInput, orderBy: [SessionOrderByWithRelationInput!], skip: Int, take: Int, where: SessionWhereInput): AggregateSession!
+  aggregateSpatial_ref_sys(cursor: Spatial_ref_sysWhereUniqueInput, orderBy: [Spatial_ref_sysOrderByWithRelationInput!], skip: Int, take: Int, where: Spatial_ref_sysWhereInput): AggregateSpatial_ref_sys!
   aggregateUser(cursor: UserWhereUniqueInput, orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): AggregateUser!
   aggregateUserAddress(cursor: UserAddressWhereUniqueInput, orderBy: [UserAddressOrderByWithRelationInput!], skip: Int, take: Int, where: UserAddressWhereInput): AggregateUserAddress!
   aggregateUserFile(cursor: UserFileWhereUniqueInput, orderBy: [UserFileOrderByWithRelationInput!], skip: Int, take: Int, where: UserFileWhereInput): AggregateUserFile!
@@ -3840,6 +3914,8 @@ type Query {
   findFirstPostOrThrow(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: PostWhereInput): Post
   findFirstSession(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: SessionWhereInput): Session
   findFirstSessionOrThrow(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: SessionWhereInput): Session
+  findFirstSpatial_ref_sys(cursor: Spatial_ref_sysWhereUniqueInput, distinct: [Spatial_ref_sysScalarFieldEnum!], orderBy: [Spatial_ref_sysOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: Spatial_ref_sysWhereInput): Spatial_ref_sys
+  findFirstSpatial_ref_sysOrThrow(cursor: Spatial_ref_sysWhereUniqueInput, distinct: [Spatial_ref_sysScalarFieldEnum!], orderBy: [Spatial_ref_sysOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: Spatial_ref_sysWhereInput): Spatial_ref_sys
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserWhereInput): User
   findFirstUserAddress(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserAddressWhereInput): UserAddress
   findFirstUserAddressOrThrow(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserAddressWhereInput): UserAddress
@@ -3848,6 +3924,9 @@ type Query {
   findFirstUserOrThrow(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: UserWhereInput): User
   findFirstVerificationToken(cursor: VerificationTokenWhereUniqueInput, distinct: [VerificationTokenScalarFieldEnum!], orderBy: [VerificationTokenOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: VerificationTokenWhereInput): VerificationToken
   findFirstVerificationTokenOrThrow(cursor: VerificationTokenWhereUniqueInput, distinct: [VerificationTokenScalarFieldEnum!], orderBy: [VerificationTokenOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: VerificationTokenWhereInput): VerificationToken
+  findManySpatial_ref_sys(cursor: Spatial_ref_sysWhereUniqueInput, distinct: [Spatial_ref_sysScalarFieldEnum!], orderBy: [Spatial_ref_sysOrderByWithRelationInput!], relationLoadStrategy: RelationLoadStrategy, skip: Int, take: Int, where: Spatial_ref_sysWhereInput): [Spatial_ref_sys!]!
+  findUniqueSpatial_ref_sys(relationLoadStrategy: RelationLoadStrategy, where: Spatial_ref_sysWhereUniqueInput!): Spatial_ref_sys
+  findUniqueSpatial_ref_sysOrThrow(relationLoadStrategy: RelationLoadStrategy, where: Spatial_ref_sysWhereUniqueInput!): Spatial_ref_sys
   getAccount(relationLoadStrategy: RelationLoadStrategy, where: AccountWhereUniqueInput!): Account
   getAddress(relationLoadStrategy: RelationLoadStrategy, where: AddressWhereUniqueInput!): Address
   getChat(relationLoadStrategy: RelationLoadStrategy, where: ChatWhereUniqueInput!): Chat
@@ -3872,6 +3951,7 @@ type Query {
   groupByPost(by: [PostScalarFieldEnum!]!, having: PostScalarWhereWithAggregatesInput, orderBy: [PostOrderByWithAggregationInput!], skip: Int, take: Int, where: PostWhereInput): [PostGroupBy!]!
   groupByPostFile(by: [PostFileScalarFieldEnum!]!, having: PostFileScalarWhereWithAggregatesInput, orderBy: [PostFileOrderByWithAggregationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFileGroupBy!]!
   groupBySession(by: [SessionScalarFieldEnum!]!, having: SessionScalarWhereWithAggregatesInput, orderBy: [SessionOrderByWithAggregationInput!], skip: Int, take: Int, where: SessionWhereInput): [SessionGroupBy!]!
+  groupBySpatial_ref_sys(by: [Spatial_ref_sysScalarFieldEnum!]!, having: Spatial_ref_sysScalarWhereWithAggregatesInput, orderBy: [Spatial_ref_sysOrderByWithAggregationInput!], skip: Int, take: Int, where: Spatial_ref_sysWhereInput): [Spatial_ref_sysGroupBy!]!
   groupByUser(by: [UserScalarFieldEnum!]!, having: UserScalarWhereWithAggregatesInput, orderBy: [UserOrderByWithAggregationInput!], skip: Int, take: Int, where: UserWhereInput): [UserGroupBy!]!
   groupByUserAddress(by: [UserAddressScalarFieldEnum!]!, having: UserAddressScalarWhereWithAggregatesInput, orderBy: [UserAddressOrderByWithAggregationInput!], skip: Int, take: Int, where: UserAddressWhereInput): [UserAddressGroupBy!]!
   groupByUserFile(by: [UserFileScalarFieldEnum!]!, having: UserFileScalarWhereWithAggregatesInput, orderBy: [UserFileOrderByWithAggregationInput!], skip: Int, take: Int, where: UserFileWhereInput): [UserFileGroupBy!]!
@@ -3946,7 +4026,7 @@ input SessionCreateInput {
   expires: DateTimeISO!
   sessionToken: String!
   updatedAt: DateTimeISO
-  user: UserCreateNestedOneWithoutSessionInput!
+  user: UserCreateNestedOneWithoutSessionsInput!
 }
 
 input SessionCreateManyInput {
@@ -4108,7 +4188,7 @@ input SessionUpdateInput {
   expires: DateTimeFieldUpdateOperationsInput
   sessionToken: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  user: UserUpdateOneRequiredWithoutSessionNestedInput
+  user: UserUpdateOneRequiredWithoutSessionsNestedInput
 }
 
 input SessionUpdateManyMutationInput {
@@ -4189,6 +4269,193 @@ input SortOrderInput {
   sort: SortOrder!
 }
 
+"""
+This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+"""
+type Spatial_ref_sys {
+  auth_name: String
+  auth_srid: Int
+  proj4text: String
+  srid: ID!
+  srtext: String
+}
+
+type Spatial_ref_sysAvgAggregate {
+  auth_srid: Float
+  srid: Float
+}
+
+input Spatial_ref_sysAvgOrderByAggregateInput {
+  auth_srid: SortOrder
+  srid: SortOrder
+}
+
+type Spatial_ref_sysCountAggregate {
+  _all: Int!
+  auth_name: Int!
+  auth_srid: Int!
+  proj4text: Int!
+  srid: Int!
+  srtext: Int!
+}
+
+input Spatial_ref_sysCountOrderByAggregateInput {
+  auth_name: SortOrder
+  auth_srid: SortOrder
+  proj4text: SortOrder
+  srid: SortOrder
+  srtext: SortOrder
+}
+
+input Spatial_ref_sysCreateInput {
+  auth_name: String
+  auth_srid: Int
+  proj4text: String
+  srid: Int!
+  srtext: String
+}
+
+input Spatial_ref_sysCreateManyInput {
+  auth_name: String
+  auth_srid: Int
+  proj4text: String
+  srid: Int!
+  srtext: String
+}
+
+type Spatial_ref_sysGroupBy {
+  _avg: Spatial_ref_sysAvgAggregate
+  _count: Spatial_ref_sysCountAggregate
+  _max: Spatial_ref_sysMaxAggregate
+  _min: Spatial_ref_sysMinAggregate
+  _sum: Spatial_ref_sysSumAggregate
+  auth_name: String
+  auth_srid: Int
+  proj4text: String
+  srid: Int!
+  srtext: String
+}
+
+type Spatial_ref_sysMaxAggregate {
+  auth_name: String
+  auth_srid: Int
+  proj4text: String
+  srid: Int
+  srtext: String
+}
+
+input Spatial_ref_sysMaxOrderByAggregateInput {
+  auth_name: SortOrder
+  auth_srid: SortOrder
+  proj4text: SortOrder
+  srid: SortOrder
+  srtext: SortOrder
+}
+
+type Spatial_ref_sysMinAggregate {
+  auth_name: String
+  auth_srid: Int
+  proj4text: String
+  srid: Int
+  srtext: String
+}
+
+input Spatial_ref_sysMinOrderByAggregateInput {
+  auth_name: SortOrder
+  auth_srid: SortOrder
+  proj4text: SortOrder
+  srid: SortOrder
+  srtext: SortOrder
+}
+
+input Spatial_ref_sysOrderByWithAggregationInput {
+  _avg: Spatial_ref_sysAvgOrderByAggregateInput
+  _count: Spatial_ref_sysCountOrderByAggregateInput
+  _max: Spatial_ref_sysMaxOrderByAggregateInput
+  _min: Spatial_ref_sysMinOrderByAggregateInput
+  _sum: Spatial_ref_sysSumOrderByAggregateInput
+  auth_name: SortOrderInput
+  auth_srid: SortOrderInput
+  proj4text: SortOrderInput
+  srid: SortOrder
+  srtext: SortOrderInput
+}
+
+input Spatial_ref_sysOrderByWithRelationInput {
+  auth_name: SortOrderInput
+  auth_srid: SortOrderInput
+  proj4text: SortOrderInput
+  srid: SortOrder
+  srtext: SortOrderInput
+}
+
+enum Spatial_ref_sysScalarFieldEnum {
+  auth_name
+  auth_srid
+  proj4text
+  srid
+  srtext
+}
+
+input Spatial_ref_sysScalarWhereWithAggregatesInput {
+  AND: [Spatial_ref_sysScalarWhereWithAggregatesInput!]
+  NOT: [Spatial_ref_sysScalarWhereWithAggregatesInput!]
+  OR: [Spatial_ref_sysScalarWhereWithAggregatesInput!]
+  auth_name: StringNullableWithAggregatesFilter
+  auth_srid: IntNullableWithAggregatesFilter
+  proj4text: StringNullableWithAggregatesFilter
+  srid: IntWithAggregatesFilter
+  srtext: StringNullableWithAggregatesFilter
+}
+
+type Spatial_ref_sysSumAggregate {
+  auth_srid: Int
+  srid: Int
+}
+
+input Spatial_ref_sysSumOrderByAggregateInput {
+  auth_srid: SortOrder
+  srid: SortOrder
+}
+
+input Spatial_ref_sysUpdateInput {
+  auth_name: NullableStringFieldUpdateOperationsInput
+  auth_srid: NullableIntFieldUpdateOperationsInput
+  proj4text: NullableStringFieldUpdateOperationsInput
+  srid: IntFieldUpdateOperationsInput
+  srtext: NullableStringFieldUpdateOperationsInput
+}
+
+input Spatial_ref_sysUpdateManyMutationInput {
+  auth_name: NullableStringFieldUpdateOperationsInput
+  auth_srid: NullableIntFieldUpdateOperationsInput
+  proj4text: NullableStringFieldUpdateOperationsInput
+  srid: IntFieldUpdateOperationsInput
+  srtext: NullableStringFieldUpdateOperationsInput
+}
+
+input Spatial_ref_sysWhereInput {
+  AND: [Spatial_ref_sysWhereInput!]
+  NOT: [Spatial_ref_sysWhereInput!]
+  OR: [Spatial_ref_sysWhereInput!]
+  auth_name: StringNullableFilter
+  auth_srid: IntNullableFilter
+  proj4text: StringNullableFilter
+  srid: IntFilter
+  srtext: StringNullableFilter
+}
+
+input Spatial_ref_sysWhereUniqueInput {
+  AND: [Spatial_ref_sysWhereInput!]
+  NOT: [Spatial_ref_sysWhereInput!]
+  OR: [Spatial_ref_sysWhereInput!]
+  auth_name: StringNullableFilter
+  auth_srid: IntNullableFilter
+  proj4text: StringNullableFilter
+  srid: Int
+  srtext: StringNullableFilter
+}
+
 input StringFieldUpdateOperationsInput {
   set: String
 }
@@ -4260,18 +4527,17 @@ input StringWithAggregatesFilter {
 }
 
 type Subscription {
-  toChat(chatId: Float!): ChatMessage!
+  chat(chatId: Int!): ChatMessage!
 }
 
 type User {
-  Account(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): [Account!]!
-  ChatUser(cursor: ChatUserWhereUniqueInput, distinct: [ChatUserScalarFieldEnum!], orderBy: [ChatUserOrderByWithRelationInput!], skip: Int, take: Int, where: ChatUserWhereInput): [ChatUser!]!
-  Comment(cursor: CommentWhereUniqueInput, distinct: [CommentScalarFieldEnum!], orderBy: [CommentOrderByWithRelationInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
-  Post(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
-  Session(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], skip: Int, take: Int, where: SessionWhereInput): [Session!]!
   _count: UserCount
+  accounts(cursor: AccountWhereUniqueInput, distinct: [AccountScalarFieldEnum!], orderBy: [AccountOrderByWithRelationInput!], skip: Int, take: Int, where: AccountWhereInput): [Account!]!
   addresses(cursor: UserAddressWhereUniqueInput, distinct: [UserAddressScalarFieldEnum!], orderBy: [UserAddressOrderByWithRelationInput!], skip: Int, take: Int, where: UserAddressWhereInput): [UserAddress!]!
   babyBirth: DateTimeISO
+  chatMessages(cursor: ChatMessageWhereUniqueInput, distinct: [ChatMessageScalarFieldEnum!], orderBy: [ChatMessageOrderByWithRelationInput!], skip: Int, take: Int, where: ChatMessageWhereInput): [ChatMessage!]!
+  chats(cursor: ChatUserWhereUniqueInput, distinct: [ChatUserScalarFieldEnum!], orderBy: [ChatUserOrderByWithRelationInput!], skip: Int, take: Int, where: ChatUserWhereInput): [ChatUser!]!
+  comments(cursor: CommentWhereUniqueInput, distinct: [CommentScalarFieldEnum!], orderBy: [CommentOrderByWithRelationInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
   content: String
   createdAt: DateTimeISO!
   email: String!
@@ -4280,7 +4546,9 @@ type User {
   id: ID!
   image: String
   name: String
+  posts(cursor: PostWhereUniqueInput, distinct: [PostScalarFieldEnum!], orderBy: [PostOrderByWithRelationInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
   role: Role!
+  sessions(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], skip: Int, take: Int, where: SessionWhereInput): [Session!]!
   updatedAt: DateTimeISO!
   username: String
 }
@@ -4631,13 +4899,14 @@ input UserAvgOrderByAggregateInput {
 }
 
 type UserCount {
-  Account(where: AccountWhereInput): Int!
-  ChatUser(where: ChatUserWhereInput): Int!
-  Comment(where: CommentWhereInput): Int!
-  Post(where: PostWhereInput): Int!
-  Session(where: SessionWhereInput): Int!
+  accounts(where: AccountWhereInput): Int!
   addresses(where: UserAddressWhereInput): Int!
+  chatMessages(where: ChatMessageWhereInput): Int!
+  chats(where: ChatUserWhereInput): Int!
+  comments(where: CommentWhereInput): Int!
   files(where: UserFileWhereInput): Int!
+  posts(where: PostWhereInput): Int!
+  sessions(where: SessionWhereInput): Int!
 }
 
 type UserCountAggregate {
@@ -4670,13 +4939,12 @@ input UserCountOrderByAggregateInput {
 }
 
 input UserCreateInput {
-  Account: AccountCreateNestedManyWithoutUserInput
-  ChatUser: ChatUserCreateNestedManyWithoutUserInput
-  Comment: CommentCreateNestedManyWithoutUserInput
-  Post: PostCreateNestedManyWithoutUserInput
-  Session: SessionCreateNestedManyWithoutUserInput
+  accounts: AccountCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
@@ -4684,7 +4952,9 @@ input UserCreateInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  posts: PostCreateNestedManyWithoutUserInput
   role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
   updatedAt: DateTimeISO
   username: String
 }
@@ -4703,10 +4973,10 @@ input UserCreateManyInput {
   username: String
 }
 
-input UserCreateNestedOneWithoutAccountInput {
+input UserCreateNestedOneWithoutAccountsInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutAccountInput
-  create: UserCreateWithoutAccountInput
+  connectOrCreate: UserCreateOrConnectWithoutAccountsInput
+  create: UserCreateWithoutAccountsInput
 }
 
 input UserCreateNestedOneWithoutAddressesInput {
@@ -4715,16 +4985,22 @@ input UserCreateNestedOneWithoutAddressesInput {
   create: UserCreateWithoutAddressesInput
 }
 
-input UserCreateNestedOneWithoutChatUserInput {
+input UserCreateNestedOneWithoutChatMessagesInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutChatUserInput
-  create: UserCreateWithoutChatUserInput
+  connectOrCreate: UserCreateOrConnectWithoutChatMessagesInput
+  create: UserCreateWithoutChatMessagesInput
 }
 
-input UserCreateNestedOneWithoutCommentInput {
+input UserCreateNestedOneWithoutChatsInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutCommentInput
-  create: UserCreateWithoutCommentInput
+  connectOrCreate: UserCreateOrConnectWithoutChatsInput
+  create: UserCreateWithoutChatsInput
+}
+
+input UserCreateNestedOneWithoutCommentsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutCommentsInput
+  create: UserCreateWithoutCommentsInput
 }
 
 input UserCreateNestedOneWithoutFilesInput {
@@ -4733,20 +5009,20 @@ input UserCreateNestedOneWithoutFilesInput {
   create: UserCreateWithoutFilesInput
 }
 
-input UserCreateNestedOneWithoutPostInput {
+input UserCreateNestedOneWithoutPostsInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutPostInput
-  create: UserCreateWithoutPostInput
+  connectOrCreate: UserCreateOrConnectWithoutPostsInput
+  create: UserCreateWithoutPostsInput
 }
 
-input UserCreateNestedOneWithoutSessionInput {
+input UserCreateNestedOneWithoutSessionsInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutSessionInput
-  create: UserCreateWithoutSessionInput
+  connectOrCreate: UserCreateOrConnectWithoutSessionsInput
+  create: UserCreateWithoutSessionsInput
 }
 
-input UserCreateOrConnectWithoutAccountInput {
-  create: UserCreateWithoutAccountInput!
+input UserCreateOrConnectWithoutAccountsInput {
+  create: UserCreateWithoutAccountsInput!
   where: UserWhereUniqueInput!
 }
 
@@ -4755,13 +5031,18 @@ input UserCreateOrConnectWithoutAddressesInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutChatUserInput {
-  create: UserCreateWithoutChatUserInput!
+input UserCreateOrConnectWithoutChatMessagesInput {
+  create: UserCreateWithoutChatMessagesInput!
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutCommentInput {
-  create: UserCreateWithoutCommentInput!
+input UserCreateOrConnectWithoutChatsInput {
+  create: UserCreateWithoutChatsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput!
   where: UserWhereUniqueInput!
 }
 
@@ -4770,23 +5051,22 @@ input UserCreateOrConnectWithoutFilesInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutPostInput {
-  create: UserCreateWithoutPostInput!
+input UserCreateOrConnectWithoutPostsInput {
+  create: UserCreateWithoutPostsInput!
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutSessionInput {
-  create: UserCreateWithoutSessionInput!
+input UserCreateOrConnectWithoutSessionsInput {
+  create: UserCreateWithoutSessionsInput!
   where: UserWhereUniqueInput!
 }
 
-input UserCreateWithoutAccountInput {
-  ChatUser: ChatUserCreateNestedManyWithoutUserInput
-  Comment: CommentCreateNestedManyWithoutUserInput
-  Post: PostCreateNestedManyWithoutUserInput
-  Session: SessionCreateNestedManyWithoutUserInput
+input UserCreateWithoutAccountsInput {
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
@@ -4794,18 +5074,19 @@ input UserCreateWithoutAccountInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  posts: PostCreateNestedManyWithoutUserInput
   role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
   updatedAt: DateTimeISO
   username: String
 }
 
 input UserCreateWithoutAddressesInput {
-  Account: AccountCreateNestedManyWithoutUserInput
-  ChatUser: ChatUserCreateNestedManyWithoutUserInput
-  Comment: CommentCreateNestedManyWithoutUserInput
-  Post: PostCreateNestedManyWithoutUserInput
-  Session: SessionCreateNestedManyWithoutUserInput
+  accounts: AccountCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
@@ -4813,18 +5094,19 @@ input UserCreateWithoutAddressesInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  posts: PostCreateNestedManyWithoutUserInput
   role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
   updatedAt: DateTimeISO
   username: String
 }
 
-input UserCreateWithoutChatUserInput {
-  Account: AccountCreateNestedManyWithoutUserInput
-  Comment: CommentCreateNestedManyWithoutUserInput
-  Post: PostCreateNestedManyWithoutUserInput
-  Session: SessionCreateNestedManyWithoutUserInput
+input UserCreateWithoutChatMessagesInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
@@ -4832,18 +5114,19 @@ input UserCreateWithoutChatUserInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  posts: PostCreateNestedManyWithoutUserInput
   role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
   updatedAt: DateTimeISO
   username: String
 }
 
-input UserCreateWithoutCommentInput {
-  Account: AccountCreateNestedManyWithoutUserInput
-  ChatUser: ChatUserCreateNestedManyWithoutUserInput
-  Post: PostCreateNestedManyWithoutUserInput
-  Session: SessionCreateNestedManyWithoutUserInput
+input UserCreateWithoutChatsInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
@@ -4851,37 +5134,60 @@ input UserCreateWithoutCommentInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  posts: PostCreateNestedManyWithoutUserInput
   role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
+  updatedAt: DateTimeISO
+  username: String
+}
+
+input UserCreateWithoutCommentsInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
+  addresses: UserAddressCreateNestedManyWithoutUserInput
+  babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  content: String
+  createdAt: DateTimeISO
+  email: String!
+  emailVerified: DateTimeISO
+  files: UserFileCreateNestedManyWithoutUserInput
+  image: String
+  name: String
+  posts: PostCreateNestedManyWithoutUserInput
+  role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
   updatedAt: DateTimeISO
   username: String
 }
 
 input UserCreateWithoutFilesInput {
-  Account: AccountCreateNestedManyWithoutUserInput
-  ChatUser: ChatUserCreateNestedManyWithoutUserInput
-  Comment: CommentCreateNestedManyWithoutUserInput
-  Post: PostCreateNestedManyWithoutUserInput
-  Session: SessionCreateNestedManyWithoutUserInput
+  accounts: AccountCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
   emailVerified: DateTimeISO
   image: String
   name: String
+  posts: PostCreateNestedManyWithoutUserInput
   role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
   updatedAt: DateTimeISO
   username: String
 }
 
-input UserCreateWithoutPostInput {
-  Account: AccountCreateNestedManyWithoutUserInput
-  ChatUser: ChatUserCreateNestedManyWithoutUserInput
-  Comment: CommentCreateNestedManyWithoutUserInput
-  Session: SessionCreateNestedManyWithoutUserInput
+input UserCreateWithoutPostsInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
@@ -4890,17 +5196,18 @@ input UserCreateWithoutPostInput {
   image: String
   name: String
   role: Role
+  sessions: SessionCreateNestedManyWithoutUserInput
   updatedAt: DateTimeISO
   username: String
 }
 
-input UserCreateWithoutSessionInput {
-  Account: AccountCreateNestedManyWithoutUserInput
-  ChatUser: ChatUserCreateNestedManyWithoutUserInput
-  Comment: CommentCreateNestedManyWithoutUserInput
-  Post: PostCreateNestedManyWithoutUserInput
+input UserCreateWithoutSessionsInput {
+  accounts: AccountCreateNestedManyWithoutUserInput
   addresses: UserAddressCreateNestedManyWithoutUserInput
   babyBirth: DateTimeISO
+  chatMessages: ChatMessageCreateNestedManyWithoutUserInput
+  chats: ChatUserCreateNestedManyWithoutUserInput
+  comments: CommentCreateNestedManyWithoutUserInput
   content: String
   createdAt: DateTimeISO
   email: String!
@@ -4908,6 +5215,7 @@ input UserCreateWithoutSessionInput {
   files: UserFileCreateNestedManyWithoutUserInput
   image: String
   name: String
+  posts: PostCreateNestedManyWithoutUserInput
   role: Role
   updatedAt: DateTimeISO
   username: String
@@ -4954,7 +5262,7 @@ input UserFileCountOrderByAggregateInput {
 
 input UserFileCreateInput {
   createdAt: DateTimeISO
-  file: FileCreateNestedOneWithoutUserFileInput!
+  file: FileCreateNestedOneWithoutFilesInput!
   updatedAt: DateTimeISO
   user: UserCreateNestedOneWithoutFilesInput!
 }
@@ -5023,7 +5331,7 @@ input UserFileCreateWithoutFileInput {
 
 input UserFileCreateWithoutUserInput {
   createdAt: DateTimeISO
-  file: FileCreateNestedOneWithoutUserFileInput!
+  file: FileCreateNestedOneWithoutFilesInput!
   updatedAt: DateTimeISO
 }
 
@@ -5149,7 +5457,7 @@ input UserFileSumOrderByAggregateInput {
 
 input UserFileUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
-  file: FileUpdateOneRequiredWithoutUserFileNestedInput
+  file: FileUpdateOneRequiredWithoutFilesNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutFilesNestedInput
 }
@@ -5215,7 +5523,7 @@ input UserFileUpdateWithoutFileInput {
 
 input UserFileUpdateWithoutUserInput {
   createdAt: DateTimeFieldUpdateOperationsInput
-  file: FileUpdateOneRequiredWithoutUserFileNestedInput
+  file: FileUpdateOneRequiredWithoutFilesNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -5352,13 +5660,12 @@ input UserOrderByWithAggregationInput {
 }
 
 input UserOrderByWithRelationInput {
-  Account: AccountOrderByRelationAggregateInput
-  ChatUser: ChatUserOrderByRelationAggregateInput
-  Comment: CommentOrderByRelationAggregateInput
-  Post: PostOrderByRelationAggregateInput
-  Session: SessionOrderByRelationAggregateInput
+  accounts: AccountOrderByRelationAggregateInput
   addresses: UserAddressOrderByRelationAggregateInput
   babyBirth: SortOrderInput
+  chatMessages: ChatMessageOrderByRelationAggregateInput
+  chats: ChatUserOrderByRelationAggregateInput
+  comments: CommentOrderByRelationAggregateInput
   content: SortOrderInput
   createdAt: SortOrder
   email: SortOrder
@@ -5367,7 +5674,9 @@ input UserOrderByWithRelationInput {
   id: SortOrder
   image: SortOrderInput
   name: SortOrderInput
+  posts: PostOrderByRelationAggregateInput
   role: SortOrder
+  sessions: SessionOrderByRelationAggregateInput
   updatedAt: SortOrder
   username: SortOrderInput
 }
@@ -5417,13 +5726,12 @@ input UserSumOrderByAggregateInput {
 }
 
 input UserUpdateInput {
-  Account: AccountUpdateManyWithoutUserNestedInput
-  ChatUser: ChatUserUpdateManyWithoutUserNestedInput
-  Comment: CommentUpdateManyWithoutUserNestedInput
-  Post: PostUpdateManyWithoutUserNestedInput
-  Session: SessionUpdateManyWithoutUserNestedInput
+  accounts: AccountUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
@@ -5431,7 +5739,9 @@ input UserUpdateInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
   role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
@@ -5449,12 +5759,12 @@ input UserUpdateManyMutationInput {
   username: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateOneRequiredWithoutAccountNestedInput {
+input UserUpdateOneRequiredWithoutAccountsNestedInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutAccountInput
-  create: UserCreateWithoutAccountInput
-  update: UserUpdateToOneWithWhereWithoutAccountInput
-  upsert: UserUpsertWithoutAccountInput
+  connectOrCreate: UserCreateOrConnectWithoutAccountsInput
+  create: UserCreateWithoutAccountsInput
+  update: UserUpdateToOneWithWhereWithoutAccountsInput
+  upsert: UserUpsertWithoutAccountsInput
 }
 
 input UserUpdateOneRequiredWithoutAddressesNestedInput {
@@ -5465,20 +5775,28 @@ input UserUpdateOneRequiredWithoutAddressesNestedInput {
   upsert: UserUpsertWithoutAddressesInput
 }
 
-input UserUpdateOneRequiredWithoutChatUserNestedInput {
+input UserUpdateOneRequiredWithoutChatMessagesNestedInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutChatUserInput
-  create: UserCreateWithoutChatUserInput
-  update: UserUpdateToOneWithWhereWithoutChatUserInput
-  upsert: UserUpsertWithoutChatUserInput
+  connectOrCreate: UserCreateOrConnectWithoutChatMessagesInput
+  create: UserCreateWithoutChatMessagesInput
+  update: UserUpdateToOneWithWhereWithoutChatMessagesInput
+  upsert: UserUpsertWithoutChatMessagesInput
 }
 
-input UserUpdateOneRequiredWithoutCommentNestedInput {
+input UserUpdateOneRequiredWithoutChatsNestedInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutCommentInput
-  create: UserCreateWithoutCommentInput
-  update: UserUpdateToOneWithWhereWithoutCommentInput
-  upsert: UserUpsertWithoutCommentInput
+  connectOrCreate: UserCreateOrConnectWithoutChatsInput
+  create: UserCreateWithoutChatsInput
+  update: UserUpdateToOneWithWhereWithoutChatsInput
+  upsert: UserUpsertWithoutChatsInput
+}
+
+input UserUpdateOneRequiredWithoutCommentsNestedInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutCommentsInput
+  create: UserCreateWithoutCommentsInput
+  update: UserUpdateToOneWithWhereWithoutCommentsInput
+  upsert: UserUpsertWithoutCommentsInput
 }
 
 input UserUpdateOneRequiredWithoutFilesNestedInput {
@@ -5489,24 +5807,24 @@ input UserUpdateOneRequiredWithoutFilesNestedInput {
   upsert: UserUpsertWithoutFilesInput
 }
 
-input UserUpdateOneRequiredWithoutPostNestedInput {
+input UserUpdateOneRequiredWithoutPostsNestedInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutPostInput
-  create: UserCreateWithoutPostInput
-  update: UserUpdateToOneWithWhereWithoutPostInput
-  upsert: UserUpsertWithoutPostInput
+  connectOrCreate: UserCreateOrConnectWithoutPostsInput
+  create: UserCreateWithoutPostsInput
+  update: UserUpdateToOneWithWhereWithoutPostsInput
+  upsert: UserUpsertWithoutPostsInput
 }
 
-input UserUpdateOneRequiredWithoutSessionNestedInput {
+input UserUpdateOneRequiredWithoutSessionsNestedInput {
   connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutSessionInput
-  create: UserCreateWithoutSessionInput
-  update: UserUpdateToOneWithWhereWithoutSessionInput
-  upsert: UserUpsertWithoutSessionInput
+  connectOrCreate: UserCreateOrConnectWithoutSessionsInput
+  create: UserCreateWithoutSessionsInput
+  update: UserUpdateToOneWithWhereWithoutSessionsInput
+  upsert: UserUpsertWithoutSessionsInput
 }
 
-input UserUpdateToOneWithWhereWithoutAccountInput {
-  data: UserUpdateWithoutAccountInput!
+input UserUpdateToOneWithWhereWithoutAccountsInput {
+  data: UserUpdateWithoutAccountsInput!
   where: UserWhereInput
 }
 
@@ -5515,13 +5833,18 @@ input UserUpdateToOneWithWhereWithoutAddressesInput {
   where: UserWhereInput
 }
 
-input UserUpdateToOneWithWhereWithoutChatUserInput {
-  data: UserUpdateWithoutChatUserInput!
+input UserUpdateToOneWithWhereWithoutChatMessagesInput {
+  data: UserUpdateWithoutChatMessagesInput!
   where: UserWhereInput
 }
 
-input UserUpdateToOneWithWhereWithoutCommentInput {
-  data: UserUpdateWithoutCommentInput!
+input UserUpdateToOneWithWhereWithoutChatsInput {
+  data: UserUpdateWithoutChatsInput!
+  where: UserWhereInput
+}
+
+input UserUpdateToOneWithWhereWithoutCommentsInput {
+  data: UserUpdateWithoutCommentsInput!
   where: UserWhereInput
 }
 
@@ -5530,23 +5853,22 @@ input UserUpdateToOneWithWhereWithoutFilesInput {
   where: UserWhereInput
 }
 
-input UserUpdateToOneWithWhereWithoutPostInput {
-  data: UserUpdateWithoutPostInput!
+input UserUpdateToOneWithWhereWithoutPostsInput {
+  data: UserUpdateWithoutPostsInput!
   where: UserWhereInput
 }
 
-input UserUpdateToOneWithWhereWithoutSessionInput {
-  data: UserUpdateWithoutSessionInput!
+input UserUpdateToOneWithWhereWithoutSessionsInput {
+  data: UserUpdateWithoutSessionsInput!
   where: UserWhereInput
 }
 
-input UserUpdateWithoutAccountInput {
-  ChatUser: ChatUserUpdateManyWithoutUserNestedInput
-  Comment: CommentUpdateManyWithoutUserNestedInput
-  Post: PostUpdateManyWithoutUserNestedInput
-  Session: SessionUpdateManyWithoutUserNestedInput
+input UserUpdateWithoutAccountsInput {
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
@@ -5554,18 +5876,19 @@ input UserUpdateWithoutAccountInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
   role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutAddressesInput {
-  Account: AccountUpdateManyWithoutUserNestedInput
-  ChatUser: ChatUserUpdateManyWithoutUserNestedInput
-  Comment: CommentUpdateManyWithoutUserNestedInput
-  Post: PostUpdateManyWithoutUserNestedInput
-  Session: SessionUpdateManyWithoutUserNestedInput
+  accounts: AccountUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
@@ -5573,18 +5896,19 @@ input UserUpdateWithoutAddressesInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
   role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutChatUserInput {
-  Account: AccountUpdateManyWithoutUserNestedInput
-  Comment: CommentUpdateManyWithoutUserNestedInput
-  Post: PostUpdateManyWithoutUserNestedInput
-  Session: SessionUpdateManyWithoutUserNestedInput
+input UserUpdateWithoutChatMessagesInput {
+  accounts: AccountUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
@@ -5592,18 +5916,19 @@ input UserUpdateWithoutChatUserInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
   role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutCommentInput {
-  Account: AccountUpdateManyWithoutUserNestedInput
-  ChatUser: ChatUserUpdateManyWithoutUserNestedInput
-  Post: PostUpdateManyWithoutUserNestedInput
-  Session: SessionUpdateManyWithoutUserNestedInput
+input UserUpdateWithoutChatsInput {
+  accounts: AccountUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
@@ -5611,56 +5936,60 @@ input UserUpdateWithoutCommentInput {
   files: UserFileUpdateManyWithoutUserNestedInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
   role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutCommentsInput {
+  accounts: AccountUpdateManyWithoutUserNestedInput
+  addresses: UserAddressUpdateManyWithoutUserNestedInput
+  babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutUserNestedInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
+  role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutFilesInput {
-  Account: AccountUpdateManyWithoutUserNestedInput
-  ChatUser: ChatUserUpdateManyWithoutUserNestedInput
-  Comment: CommentUpdateManyWithoutUserNestedInput
-  Post: PostUpdateManyWithoutUserNestedInput
-  Session: SessionUpdateManyWithoutUserNestedInput
+  accounts: AccountUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   emailVerified: NullableDateTimeFieldUpdateOperationsInput
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
   role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutPostInput {
-  Account: AccountUpdateManyWithoutUserNestedInput
-  ChatUser: ChatUserUpdateManyWithoutUserNestedInput
-  Comment: CommentUpdateManyWithoutUserNestedInput
-  Session: SessionUpdateManyWithoutUserNestedInput
+input UserUpdateWithoutPostsInput {
+  accounts: AccountUpdateManyWithoutUserNestedInput
   addresses: UserAddressUpdateManyWithoutUserNestedInput
   babyBirth: NullableDateTimeFieldUpdateOperationsInput
-  content: NullableStringFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  email: StringFieldUpdateOperationsInput
-  emailVerified: NullableDateTimeFieldUpdateOperationsInput
-  files: UserFileUpdateManyWithoutUserNestedInput
-  image: NullableStringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
-  role: EnumRoleFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  username: NullableStringFieldUpdateOperationsInput
-}
-
-input UserUpdateWithoutSessionInput {
-  Account: AccountUpdateManyWithoutUserNestedInput
-  ChatUser: ChatUserUpdateManyWithoutUserNestedInput
-  Comment: CommentUpdateManyWithoutUserNestedInput
-  Post: PostUpdateManyWithoutUserNestedInput
-  addresses: UserAddressUpdateManyWithoutUserNestedInput
-  babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
   content: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
@@ -5669,13 +5998,34 @@ input UserUpdateWithoutSessionInput {
   image: NullableStringFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   role: EnumRoleFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserNestedInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpsertWithoutAccountInput {
-  create: UserCreateWithoutAccountInput!
-  update: UserUpdateWithoutAccountInput!
+input UserUpdateWithoutSessionsInput {
+  accounts: AccountUpdateManyWithoutUserNestedInput
+  addresses: UserAddressUpdateManyWithoutUserNestedInput
+  babyBirth: NullableDateTimeFieldUpdateOperationsInput
+  chatMessages: ChatMessageUpdateManyWithoutUserNestedInput
+  chats: ChatUserUpdateManyWithoutUserNestedInput
+  comments: CommentUpdateManyWithoutUserNestedInput
+  content: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  emailVerified: NullableDateTimeFieldUpdateOperationsInput
+  files: UserFileUpdateManyWithoutUserNestedInput
+  image: NullableStringFieldUpdateOperationsInput
+  name: NullableStringFieldUpdateOperationsInput
+  posts: PostUpdateManyWithoutUserNestedInput
+  role: EnumRoleFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  username: NullableStringFieldUpdateOperationsInput
+}
+
+input UserUpsertWithoutAccountsInput {
+  create: UserCreateWithoutAccountsInput!
+  update: UserUpdateWithoutAccountsInput!
   where: UserWhereInput
 }
 
@@ -5685,15 +6035,21 @@ input UserUpsertWithoutAddressesInput {
   where: UserWhereInput
 }
 
-input UserUpsertWithoutChatUserInput {
-  create: UserCreateWithoutChatUserInput!
-  update: UserUpdateWithoutChatUserInput!
+input UserUpsertWithoutChatMessagesInput {
+  create: UserCreateWithoutChatMessagesInput!
+  update: UserUpdateWithoutChatMessagesInput!
   where: UserWhereInput
 }
 
-input UserUpsertWithoutCommentInput {
-  create: UserCreateWithoutCommentInput!
-  update: UserUpdateWithoutCommentInput!
+input UserUpsertWithoutChatsInput {
+  create: UserCreateWithoutChatsInput!
+  update: UserUpdateWithoutChatsInput!
+  where: UserWhereInput
+}
+
+input UserUpsertWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput!
+  update: UserUpdateWithoutCommentsInput!
   where: UserWhereInput
 }
 
@@ -5703,29 +6059,28 @@ input UserUpsertWithoutFilesInput {
   where: UserWhereInput
 }
 
-input UserUpsertWithoutPostInput {
-  create: UserCreateWithoutPostInput!
-  update: UserUpdateWithoutPostInput!
+input UserUpsertWithoutPostsInput {
+  create: UserCreateWithoutPostsInput!
+  update: UserUpdateWithoutPostsInput!
   where: UserWhereInput
 }
 
-input UserUpsertWithoutSessionInput {
-  create: UserCreateWithoutSessionInput!
-  update: UserUpdateWithoutSessionInput!
+input UserUpsertWithoutSessionsInput {
+  create: UserCreateWithoutSessionsInput!
+  update: UserUpdateWithoutSessionsInput!
   where: UserWhereInput
 }
 
 input UserWhereInput {
   AND: [UserWhereInput!]
-  Account: AccountListRelationFilter
-  ChatUser: ChatUserListRelationFilter
-  Comment: CommentListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
-  Post: PostListRelationFilter
-  Session: SessionListRelationFilter
+  accounts: AccountListRelationFilter
   addresses: UserAddressListRelationFilter
   babyBirth: DateTimeNullableFilter
+  chatMessages: ChatMessageListRelationFilter
+  chats: ChatUserListRelationFilter
+  comments: CommentListRelationFilter
   content: StringNullableFilter
   createdAt: DateTimeFilter
   email: StringFilter
@@ -5734,22 +6089,23 @@ input UserWhereInput {
   id: IntFilter
   image: StringNullableFilter
   name: StringNullableFilter
+  posts: PostListRelationFilter
   role: EnumRoleFilter
+  sessions: SessionListRelationFilter
   updatedAt: DateTimeFilter
   username: StringNullableFilter
 }
 
 input UserWhereUniqueInput {
   AND: [UserWhereInput!]
-  Account: AccountListRelationFilter
-  ChatUser: ChatUserListRelationFilter
-  Comment: CommentListRelationFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
-  Post: PostListRelationFilter
-  Session: SessionListRelationFilter
+  accounts: AccountListRelationFilter
   addresses: UserAddressListRelationFilter
   babyBirth: DateTimeNullableFilter
+  chatMessages: ChatMessageListRelationFilter
+  chats: ChatUserListRelationFilter
+  comments: CommentListRelationFilter
   content: StringNullableFilter
   createdAt: DateTimeFilter
   email: String
@@ -5758,7 +6114,9 @@ input UserWhereUniqueInput {
   id: Int
   image: StringNullableFilter
   name: StringNullableFilter
+  posts: PostListRelationFilter
   role: EnumRoleFilter
+  sessions: SessionListRelationFilter
   updatedAt: DateTimeFilter
   username: StringNullableFilter
 }

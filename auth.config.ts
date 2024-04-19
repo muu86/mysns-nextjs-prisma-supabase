@@ -15,11 +15,17 @@ export default {
   secret: process.env.AUTH_SECRET,
   session: { strategy: 'jwt' },
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         token.role = user.role;
         token.username = user.username;
       }
+
+      if (trigger === 'update') {
+        token.role = session.role;
+        token.username = session.username;
+      }
+
       return token;
     },
     session({ session, token }) {

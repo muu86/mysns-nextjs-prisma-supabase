@@ -1,16 +1,17 @@
 # MySNS
 
-- prisma: 스프링은 서버리스와 어울리지 않아서 상시 서버를 가동해야하기 때문에 nextjs 만으로 앱을 구동하기 위해서 prisma를 사용했습니다.
+`supabase`, `prisma`, `nextjs`, `graphql`로 개발한 앱입니다.
+
+- 스프링 백엔드 서버를 두고 개발했었는데 서버리스로 구동하고 싶어서 nextjs 만으로 백엔드를 대체했습니다.
+- supabase: 상시 가동되는 데이터베이스를 무료로 제공해서 사용했습니다. postgis 확장도 가능합니다.
+- prisma: 스프링, JPA는 서버리스와 어울리지 않기 때문에 nextjs 만으로 앱을 구동하기 위해서 prisma를 사용했습니다.
 - graphql: prisma 와 잘 어울리는 것 같아서 사용해봤습니다. 경험해보니 혼자서 개발하기에 `rest` 보다 `graphql`이 편한 것 같습니다. rest api 로 개발하려면 백엔드 서버에서 api 명세를 정하고 프론트는 그 명세에 따라서 요청 응답을 정의하고 타입까지 신경을 써줘야합니다. qraphql 은 명세를 한번 정해놓으면 클라이언트에서 선택적으로 정보를 가져올 수 있는 것이 장점입니다.
-  
-혼자 개발하기에는 스프링과 프론트를 분리해서 개발하는 것보다 `nextjs`만으로 개발하는게 편할 것 같아서 `prisma` 를 사용해봤습니다. vercel에 배포할 때도 prisma 버전으로 배포했습니다. 
-  
 
 ## Prisma
 
 Javascript의 ORM 프레임워크입니다.
 
-데이버베이스를 `supabase`를 사용해볼 생각이었는데 `prisma`와 `supabase`가 잘 호환되지 않고 차라리 supabase 가 제공하는 client를 사용하는 것이 낫다는 글들을 봤습니다. 정확한 정보는 다시 확인해봐야겠습니다.
+`supabase`도 전용 클라이언트를 제공하므로 `prisma`를 사용할 필요는 없습니다. 그런데 개인적으로 궁금해서 사용해봤습니다.
 
 
 ### 단점
@@ -51,9 +52,9 @@ async function main() {
 ### 커넥션 풀
 
 - Prisma Accelerate: Prisma 에서 제공하는 커넥션풀, 캐쉬 기능
-- PgBouncer: Postgres 에서 제공하는 커넥션풀 기능, supabase에서 사용
+- PgBouncer: Postgres 에서 제공하는 커넥션풀 기능, supabase에서 기본으로 사용
 
-저는 supabase를 사용하기 때문에 supabase가 기본으로 제공하는 pgBouncer를 사용했습니다.
+supabase가 기본으로 제공하는 pgBouncer를 사용했습니다.
 
 ### 서버리스에서 prisma, connection pool 사용 시 주의사항
 
@@ -61,7 +62,7 @@ https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-c
 
 nextjs 를 vercel 에 배포하면 서버리스 환경에서 구동되기 때문에 주의해야 할 것 같습니다. 
 
-pgBouncer 설정에서 `connection_limit` 옵션을 `1`로 설정하고 필요에 따라 차근차근 늘려가라고 권장하고 있습니다. 왜냐하면 서버리스 환경에서는 생성되는 람다 컨테이너 마다 각각의 Prisma Client 인스턴스가 만들어지기 때문입니다. connection_limit 을 3으로 설정하고 람다 환경이 3개가 만들어지면 하나의 db로  3 * 3 = 9개의 connection 이 만들어 질 수가 있습니다.
+pgBouncer 설정에서 `connection_limit` 옵션을 `1`로 설정하고 필요에 따라 차근차근 늘려가라고 권장하고 있습니다. 왜냐하면 서버리스 환경에서는 생성되는 nextjs 컨테이너 마다 각각의 Prisma Client 인스턴스가 만들어지기 때문입니다. 만약, connection_limit 을 3으로 설정하고 람다 환경이 3개가 만들어지면 하나의 db로  3 * 3 = 9개의 connection 이 만들어 질 수가 있습니다.
 
 
 ### prisma 와 supabase 를 사용할 때 extensions 충돌 문제
@@ -91,7 +92,7 @@ CREATE SCHEMA IF NOT EXISTS "vault";
 CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
 ```
 
-supabase 에서 사용하는 extensions 을 스키마도 같이 맞춰서 직접 prisma 에도 반영해주어야 합니다. 
+supabase 에서 사용하는 extensions 을 스키마도 같이 맞춰서 직접 prisma 에도 반영해주어서 해결했습니다.
 
 ```
 datasource db {
@@ -118,7 +119,7 @@ https://typegraphql.com/docs/getting-started.html
 
 Spring 과 비슷하게 어노테이션 기반으로 GraphQL 스키마를 정의합니다. 
 
-다음과 같이 resolver에 서비스 계층을 주입할 수도 있습니다. 처음엔 `pothos`를 사용해서 스키마를 생성했는데, 스프링과 비슷한 이런 기능들이 좋아보여서 `type-grapqhl` 로 변경했습니다.
+다음과 같이 resolver에 서비스 계층을 주입할 수도 있습니다.
 ```ts
 import { Service } from "typedi";
 
@@ -253,11 +254,13 @@ const QueryComments: TypedDocumentNode<CommentsQuery, Exact<{
 
 ### 한계
 
-엔티티는 도메인, 비지니스 로직을 처리하는 계층에서 사용하는 영역이고, GraphQL 스키마는 클라이언트에게 노출되는 영역입니다. Java 에서는 Dto 계층을 따로 두어서 Entity를 클라이언트에서 분리합니다. TypeGraphQL 로 엔티티에서 바로 스키마를 생성하게 되면 기본적으로 엔티티의 모든 정보가 클라이언트에게 노출되기 때문에 주의해야합니다.
+엔티티는 도메인, 비지니스 로직을 처리하는 계층에서 사용하는 영역이고, GraphQL 스키마는 클라이언트에게 노출되는 영역입니다. Java 에서는 Dto 계층을 따로 두어서 Entity를 클라이언트에서 분리합니다. TypeGraphQL 로 엔티티에서 바로 스키마를 생성하게 되면 기본적으로 엔티티의 모든 정보가 클라이언트에게 노출되기 때문에 주의해야할 것 같습니다.
 
-위의 코드에서도 GraphQL 스키마가 entity와 완전히 일치합니다. GraphQL 스키마가 Prisma 의 쿼리 방법까지 그대로 반영합니다.
+위의 코드에서도 GraphQL 스키마가 entity와 완전히 일치합니다. GraphQL 스키마가 prisma 의 쿼리 방법까지 그대로 반영합니다. 따라서 앱 자체가 prisma에 종속되어 만들어집니다.
 
 ```ts
+// 클라이언트에서 Query를 실행하기 위해서 매개변수를 세팅하는 코드
+// prisma 의 api가 클라이언트 코드에도 그대로 사용됨
 function createVariables({ session, username, content, babyBirth, file, address }: UserContextState) {
   const data = {
     username: {
@@ -303,14 +306,200 @@ function createVariables({ session, username, content, babyBirth, file, address 
 }
 ```
 
-제가 user update 시 GraphQL 에 매개변수로 넣을 객체를 생성한 코드입니다. GraphQL 스키마가 `create`, `connect` 같은 Prisma 의 쿼리 문법까지도 반영하고 있습니다. 따라서 앱 자체가 prisma에 종속되어 만들어집니다.
+user update 시 GraphQL 에 매개변수로 넣을 객체를 생성한 코드입니다. GraphQL 스키마가 `create`, `connect` 같은 Prisma 의 쿼리 문법까지도 반영하고 있습니다. 
 
-type-graphql의 기능을 활용하면 자동으로 생성된 스키마 중 일부분만 노출하고 내가 직접 작성한 스키마를 노출할 수 있습니다. 필드 이름을 변경하거나 필드를 없애고 추가하는 것 모두 가능합니다. 조금만 신경을 쓰면 prisma 코드가 GraphQL 에까지 삽입되는 건 막을 수 있습니다. 
+type-graphql의 기능을 활용하면 자동으로 생성된 스키마 중 일부분만 노출하고 내가 직접 작성한 스키마를 노출할 수 있습니다. 필드 이름을 변경하거나 필드를 없애고 추가하는 것 모두 가능합니다. 조금만 신경을 쓰면 prisma 코드가 GraphQL 에까지 삽입되는 건 막을 수 있습니다.
 
-그런데 저는 혼자 개발 중이라 이렇게 통합으로 개발하는 게 편해서 그냥 플러그인이 제공하는 스키마를 그대로 사용했습니다.
+### 자동생성된 스키마 확장
 
-### WebSocket
+typegraphql 과 typegraphql-prisma 플러그인이 자동으로 생성한 스키마를 선택적으로 사용할 수도 있고, 그대로 사용하면서 확장도 가능합니다.
 
-https://www.apollographql.com/docs/react/data/subscriptions#client-side
+```ts
+// 자동 생성된 ChatMessageCrudResolver 커스터마이징
+@Resolver()
+export class CustomChatMessageCrudResolver extends ChatMessageCrudResolver {
+  @Mutation((returns) => ChatMessage)
+  async createOneChatMessage(
+    @Ctx() ctx: any,
+    @Info() info: GraphQLResolveInfo,
+    @Args() args: CreateOneChatMessageArgs
+  ): Promise<ChatMessage> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    const created: ChatMessage = await getPrismaFromContext(ctx).chatMessage.create({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
 
-typegrapql은 Subscription 오퍼레이션은 스키마를 생성해주지 않아서 직접 작성해야합니다.
+    pubSub.publish('chat:message', created.chatId, created);
+
+    return created;
+  }
+}
+```
+```ts
+// 데이터베이스에서 File 은 s3 key 만 저장하기 때문에 resolver에서 presigned url 세팅하는 것으로 확장
+@Resolver((of) => File)
+export class CustomFileResolver {
+  @FieldResolver((type) => CustomFileUrl)
+  async url(@Root() file: File, @Ctx() ctx: MyContext): Promise<CustomFileUrl> {
+    const urls = await getPresignedUrlForGet(file.location);
+    return {
+      raw: urls.raw,
+      lg: urls.lg,
+      md: urls.md,
+      sm: urls.sm,
+    };
+  }
+}
+```
+```ts
+// 자동 생성된 Resolver 클래스들을 임포트해올 때 내가 확장한 클래스로 변경해서 스키마 등록
+import { ChatMessageCrudResolver, resolvers } from '@/graphql/generated/type-graphql';
+
+const filtered = resolvers.filter((r) => r.name !== ChatMessageCrudResolver.name) as NonEmptyArray<Function>;
+
+export const schema = await buildSchema({
+  resolvers: [...filtered, CustomChatMessageCrudResolver, ChatSubscriptionResolver, CustomFileUrl, CustomFileResolver],
+  validate: false,
+  emitSchemaFile: {
+    path: path.join(process.cwd(), './graphql/schema.graphql'),
+  },
+  pubSub: pubSub,
+});
+
+```
+
+### Subscription (실시간 통신 처리) 를 위한 GraphQL-SSE
+GraphQL 의 Operation 은 기본적으로 Query, Mutation 인데 추가적으로 Subscription 이라는 실시간 통신도 정의합니다.
+
+저는 yoga 서버를 사용했는데 Subscription 을 처리하기 위해서 http, websocket 기반 모두 구현 가능합니다.
+
+https://the-guild.dev/graphql/yoga-server/docs/features/subscriptions
+
+그런데 nextjs 를 서버리스로 배포하면 websocket 은 사용이 불가능합니다. 아니면 websocket 을 위한 별도의 서버를 두어야 할 겁니다. 그래서 http 기반으로 구현하는 `GraphQL-SSE` 를 사용했습니다. yoga 에서 권장하는 방법입니다.
+
+https://the-guild.dev/graphql/sse/get-started
+
+GraphQL-SSE 는 javascript EventSource API 기반으로 구동됩니다.
+
+https://developer.mozilla.org/en-US/docs/Web/API/EventSource
+
+#### 단점
+
+- Websocket 과 달리 양방향 통신은 아닙니다. 서버에서 클라이언트로 메시지를 보내는 것만 가능하고 클라이언트에서 서버로 메시지를 보낼 수는 없습니다. 
+- Yoga의 PubSub 모델을 사용해서 클라이언트에서 이벤트를 publish 해서 이벤트를 발동시킬 수 있습니다.
+
+```ts
+@Resolver()
+export class CustomChatMessageCrudResolver extends ChatMessageCrudResolver {
+  @Mutation((returns) => ChatMessage)
+  async createOneChatMessage(
+    @Ctx() ctx: any,
+    @Info() info: GraphQLResolveInfo,
+    @Args() args: CreateOneChatMessageArgs
+  ): Promise<ChatMessage> {
+    const { _count } = transformInfoIntoPrismaArgs(info);
+    const created: ChatMessage = await getPrismaFromContext(ctx).chatMessage.create({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+    });
+
+    // client 에서 create chat message Mutation 을 실행할 때 chat Id 이름의 토픽에 이벤트 발행
+    pubSub.publish('chat:message', created.chatId, created);
+
+    return created;
+  }
+}
+```
+
+#### Apollo Client 에서 Subscription 사용
+
+Yoga 서버 자체는 SSE 를 사용할 시 아무 설정이 필요하지 않습니다. 그런데 앱에서 Apollo Client 로 Subscription 명령을 수행하기 위해서 별도 설정이 필요합니다.  
+- `SSELink` 클래스를 생성
+- Query, Mutation 은 일반 HttpLink 가 담당
+- Subscription 은 `SSELink` 가 담당하도록 apollo client의 `split` 으로 요청 분리
+
+아래는 nextjs 14 에서 apollo client 를 사용하기 위해서 `@apollo/experimental-nextjs-app-support/ssr` 의 `NextSSRApolloClient` 를 사용하고, 거기에 `SSELink` 도 붙여넣은 코드입니다.
+
+```ts
+'use client';
+
+import { ApolloLink, FetchResult, HttpLink, Observable, Operation, split } from '@apollo/client';
+import { getMainDefinition } from '@apollo/client/utilities';
+import {
+  ApolloNextAppProvider,
+  NextSSRInMemoryCache,
+  NextSSRApolloClient,
+  SSRMultipartLink,
+} from '@apollo/experimental-nextjs-app-support/ssr';
+import { print } from 'graphql';
+import { Client, ClientOptions, createClient } from 'graphql-sse';
+
+class SSELink extends ApolloLink {
+  private client: Client;
+
+  constructor(options: ClientOptions) {
+    super();
+    this.client = createClient(options);
+  }
+
+  public request(operation: Operation): Observable<FetchResult> {
+    return new Observable((sink) => {
+      return this.client.subscribe<FetchResult>(
+        { ...operation, query: print(operation.query) },
+        {
+          next: sink.next.bind(sink),
+          complete: sink.complete.bind(sink),
+          error: sink.error.bind(sink),
+        }
+      );
+    });
+  }
+}
+
+function makeClient() {
+  const httpLink = new HttpLink({
+    uri: 'http://localhost:3000/api/graphql',
+
+    fetchOptions: { cache: 'no-store' },
+
+  });
+
+  export const sseLink = new SSELink({
+    url: 'http://localhost:3000/api/graphql',
+  
+  });
+
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+    },
+    sseLink,
+    httpLink
+  );
+
+  return new NextSSRApolloClient({
+    // use the `NextSSRInMemoryCache`, not the normal `InMemoryCache`
+    cache: new NextSSRInMemoryCache(),
+    link:
+      typeof window === 'undefined'
+        ? ApolloLink.from([
+            // in a SSR environment, if you use multipart features like
+            // @defer, you need to decide how to handle these.
+            // This strips all interfaces with a `@defer` directive from your queries.
+            new SSRMultipartLink({
+              stripDefer: true,
+            }),
+            splitLink,
+          ])
+        : splitLink,
+  });
+}
+
+export function ApolloWrapper({ children }: React.PropsWithChildren) {
+  return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>;
+}
+```
+
+vercel 에 nextjs 를 배포한 뒤에도 실시간 통신이 잘 되는지는 확인필요.

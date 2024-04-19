@@ -13,7 +13,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { MouseEvent, useContext, useState } from 'react';
 import { ActiveModifiers } from 'react-day-picker';
 
-export default function BabyBirthdayPicker() {
+export default function BabyBirthdayCard() {
   const { state, dispatch } = useContext(UpdateUserContext);
   const [open, setOpen] = useState(false);
 

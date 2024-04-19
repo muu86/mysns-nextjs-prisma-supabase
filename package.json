@@ -17,6 +17,7 @@
     "@aws-sdk/s3-request-presigner": "^3.554.0",
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/schema-ast": "^4.0.2",
+    "@graphql-sse/apollo-client": "^0.0.19",
     "@prisma/client": "^5.12.1",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
