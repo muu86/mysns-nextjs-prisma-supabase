@@ -1,7 +1,7 @@
 'use client';
 
 import { graphql } from '@/graphql/generated/gql';
-import { AddressesQuery } from '@/graphql/generated/gql/graphql';
+import { AddressesQuery, Role } from '@/graphql/generated/gql/graphql';
 import { UserUpdateInput, UserWhereUniqueInput } from '@/graphql/generated/type-graphql';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
@@ -35,7 +35,7 @@ export default function UpdateUserContextProvider({
   session,
   children,
 }: PropsWithChildren<{ session: Session | null }>) {
-  const [updateOneUser, { data, loading, error }] = useMutation(MutationUpdateOneUser);
+  const [updateOneUser] = useMutation(MutationUpdateOneUser);
 
   const [state, dispatch] = useReducer(updateUserReducer, { session: session, isUploading: false, address: [] });
   console.log(state.address);
@@ -45,7 +45,7 @@ export default function UpdateUserContextProvider({
     if (!session?.user?.email) redirect('/login');
     if (!state.username) return;
 
-    const variables = getVariables(state);
+    const variables = createVariables(state);
 
     const result = await updateOneUser({
       variables,
@@ -73,10 +73,13 @@ export type UpdateUserContextType = {
   submit: () => void;
 };
 
-function getVariables({ session, username, content, babyBirth, file, address }: UserContextState) {
+function createVariables({ session, username, content, babyBirth, file, address }: UserContextState) {
   const data = {
     username: {
       set: username,
+    },
+    role: {
+      set: Role.Write,
     },
     babyBirth: {
       set: babyBirth,

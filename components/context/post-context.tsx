@@ -2,9 +2,10 @@
 
 import { getPosts } from '@/actions/post';
 import { GetPostsQuery } from '@/graphql/generated/gql/graphql';
+import { Session } from 'next-auth';
 import { PropsWithChildren, createContext, useEffect, useState } from 'react';
 
-export default function PostContextProvider({ children }: PropsWithChildren) {
+export default function PostContextProvider({ session, children }: PropsWithChildren<{ session: Session | null }>) {
   const [posts, setPosts] = useState<GetPostsQuery['posts']>([]);
 
   // useEffect(() => {
@@ -18,10 +19,11 @@ export default function PostContextProvider({ children }: PropsWithChildren) {
   // }
 
   const value = {
-    states: {
+    state: {
+      session,
       posts,
     },
-    actions: {},
+    action: {},
   };
   return <PostContext.Provider value={value}>{children}</PostContext.Provider>;
 }
@@ -29,12 +31,13 @@ export default function PostContextProvider({ children }: PropsWithChildren) {
 export const PostContext = createContext<PostContextType>({} as PostContextType);
 
 export type PostContextStates = {
+  session: Session | null;
   posts: GetPostsQuery['posts'];
 };
 
 export type PostContextActions = {};
 
 export type PostContextType = {
-  states: PostContextStates;
-  actions: PostContextActions;
+  state: PostContextStates;
+  action: PostContextActions;
 };

@@ -1,12 +1,11 @@
 'use client';
 
-import { getPresignedUrl } from '@/actions/file';
+import { getPresignedUrlForPut } from '@/actions/file';
 import { graphql } from '@/graphql/generated/gql';
 import { PostCreateInput } from '@/graphql/generated/gql/graphql';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
 import { Session } from 'next-auth';
-import { redirect } from 'next/navigation';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
 
 const MutationCreateOnePost = graphql(`
@@ -124,7 +123,7 @@ export type MutatePostContextType = {
 
 async function uploadFile(newFile: ImageFile) {
   const buffer = await newFile.file.arrayBuffer();
-  const { key, signedUrl } = await getPresignedUrl();
+  const { key, signedUrl } = await getPresignedUrlForPut();
 
   const response = await fetch(signedUrl, {
     method: 'PUT',

@@ -1,155 +1,194 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions", "relationJoins"]
+  previewFeatures = ["multiSchema", "postgresqlExtensions", "relationJoins"]
 }
 
 generator typegraphql {
   provider            = "typegraphql-prisma"
   output              = "../graphql/generated/type-graphql"
+  emitIdAsIDType      = "true"
   formatGeneratedCode = "prettier"
-  emitIdAsIDType      = true
 }
 
 datasource db {
   provider   = "postgresql"
-  url        = env("DATABASE_URL_LOCAL")
-  extensions = [postgis(version: "3.4.2")]
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [pg_graphql(schema: "graphql"), postgis(version: "3.3.2", schema: "public"), pgsodium(schema: "pgsodium"), supabase_vault(schema: "vault")]
+  schemas    = ["public", "graphql"]
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String?
-  username  String?
-  content   String?
-  babyBirth DateTime? @map("baby_birth") @db.Timestamptz()
-
-  email         String    @unique
-  emailVerified DateTime? @map("email_verified") @db.Timestamptz()
+  id            Int           @id @default(autoincrement())
+  content       String?
+  babyBirth     DateTime?     @map("baby_birth") @db.Timestamptz(6)
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  email         String        @unique
+  emailVerified DateTime?     @map("email_verified") @db.Timestamptz(6)
   image         String?
-
-  role Role @default(READ)
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
-
-  addresses UserAddress[]
-  files     UserFile[]
-  Account   Account[]
-  Session   Session[]
-  Post      Post[]
+  name          String?
+  username      String?
+  role          Role          @default(READ)
+  accounts      Account[]
+  chats         ChatUser[]
+  comments      Comment[]
+  posts         Post[]
+  sessions      Session[]
+  addresses     UserAddress[]
+  files         UserFile[]
 
   @@map("users")
-}
-
-enum Role {
-  READ
-  WRITE
+  @@schema("public")
 }
 
 model UserFile {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @map("user_id")
-  file   File @relation(fields: [fileId], references: [id])
-  fileId Int  @map("file_id")
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  fileId    Int      @map("file_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  file      File     @relation(fields: [fileId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("user_files")
+  @@schema("public")
 }
 
 model UserAddress {
-  id        Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references: [id])
-  userId    Int     @map("user_id")
-  address   Address @relation(fields: [addressId], references: [id])
-  addressId Int     @map("address_id")
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  addressId Int      @map("address_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  address   Address  @relation(fields: [addressId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("user_addresses")
+  @@schema("public")
 }
 
 model Post {
-  id      Int    @id @default(autoincrement())
-  content String
-
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @map("user_id")
-
-  address   Address @relation(fields: [addressId], references: [id])
-  addressId Int     @map("address_id")
-
-  files PostFile[]
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  id        Int        @id @default(autoincrement())
+  content   String
+  addressId Int        @map("address_id")
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  userId    Int        @map("user_id")
+  comments  Comment[]
+  files     PostFile[]
+  address   Address    @relation(fields: [addressId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
 
   @@map("posts")
+  @@schema("public")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  userId    Int
+  postId    Int      @map("post_id")
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("comments")
+  @@schema("public")
 }
 
 model PostFile {
-  id     Int  @id @default(autoincrement())
-  post   Post @relation(fields: [postId], references: [id])
-  postId Int  @map("post_id")
-  file   File @relation(fields: [fileId], references: [id])
-  fileId Int  @map("file_id")
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  fileId    Int      @map("file_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  file      File     @relation(fields: [fileId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
 
   @@map("post_files")
+  @@schema("public")
 }
 
 model File {
-  id       Int             @id @default(autoincrement())
-  location String
-  type     FileStorageType @default(S3)
-
-  posts    PostFile[]
-  UserFile UserFile[]
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  id        Int             @id @default(autoincrement())
+  location  String
+  type      FileStorageType @default(S3)
+  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  posts     PostFile[]
+  files     UserFile[]
 
   @@map("files")
+  @@schema("public")
 }
 
-enum FileStorageType {
-  S3
-}
-
-//|code|c1|c2|c3|c4|order|created_at|deleted_at|prev_code|eng_name|name|geometry|geo_g|p_center|g_center
 model Address {
-  id   Int     @id @default(autoincrement())
-  code String  @unique
-  c1   String
-  c2   String?
-  c3   String?
-  c4   String?
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
-
-  geoP    Unsupported("geometry(Geometry, 5179)") @map("geo_p")
-  geoS    Unsupported("geometry(Geometry, 4326)") @map("geo_s")
-  centerP Unsupported("geometry(Point, 5179)")    @map("center_p")
-  centerS Unsupported("geometry(Point, 4326)")    @map("center_s")
-
-  Post  Post[]
-  users UserAddress[]
+  id        Int                                     @id @default(autoincrement())
+  code      String                                  @unique
+  c1        String
+  c2        String?
+  c3        String?
+  c4        String?
+  createdAt DateTime                                @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime                                @updatedAt @map("updated_at") @db.Timestamptz(6)
+  geoP      Unsupported("geometry(Geometry, 5179)") @map("geo_p")
+  geoS      Unsupported("geometry(Geometry, 4326)") @map("geo_s")
+  centerP   Unsupported("geometry(Point, 5179)")    @map("center_p")
+  centerS   Unsupported("geometry(Point, 4326)")    @map("center_s")
+  posts     Post[]
+  users     UserAddress[]
 
   @@index([centerP], type: Gist)
   @@index([centerS], type: Gist)
   @@map("addresses")
+  @@schema("public")
+}
+
+model Chat {
+  id        Int           @id @default(autoincrement())
+  name      String?
+  createdAt DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  messages  ChatMessage[]
+  users     ChatUser[]
+
+  @@map("chats")
+  @@schema("public")
+}
+
+model ChatUser {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  chatId    Int      @map("chat_id")
+  userId    Int      @map("user_id")
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("chat_users")
+  @@schema("public")
+}
+
+model ChatMessage {
+  id        Int      @id @default(autoincrement())
+  username  String
+  message   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  chatId    Int      @map("chat_id")
+  userId    Int      @map("user_id")
+  chat      Chat     @relation(fields: [chatId], references: [id])
+
+  @@map("chat_messages")
+  @@schema("public")
 }
 
 model Account {
   type              String
   provider          String
-  providerAccountId String  @map("provider_account_id")
+  providerAccountId String   @map("provider_account_id")
   refresh_token     String?
   access_token      String?
   expires_at        Int?
@@ -157,34 +196,58 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
-
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  userId            Int      @map("user_id")
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
   @@map("accounts")
+  @@schema("public")
 }
 
 model Session {
   sessionToken String   @unique @map("session_token")
-  expires      DateTime @db.Timestamptz()
+  expires      DateTime @db.Timestamptz(6)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  userId       Int      @map("user_id")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
-  userId    Int
-
   @@map("sessions")
+  @@schema("public")
 }
 
 model VerificationToken {
   identifier String
   token      String
-  expires    DateTime @db.Timestamptz()
+  expires    DateTime @db.Timestamptz(6)
 
   @@id([identifier, token])
   @@map("verification_tokens")
+  @@schema("public")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+
+  @@schema("public")
+}
+
+enum Role {
+  READ
+  WRITE
+
+  @@schema("public")
+}
+
+enum FileStorageType {
+  S3
+
+  @@schema("public")
 }

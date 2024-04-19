@@ -1,6 +1,6 @@
 'use client';
 
-import { getPresignedUrl } from '@/actions/file';
+import { getPresignedUrlForPut } from '@/actions/file';
 import { UpdateUserContext } from '@/components/context/update-user-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -69,7 +69,7 @@ export default function ImageCard() {
 
 export async function uploadFile(newFile: ImageFile) {
   const buffer = await newFile.file.arrayBuffer();
-  const { key, signedUrl } = await getPresignedUrl();
+  const { key, signedUrl } = await getPresignedUrlForPut();
 
   const response = await fetch(signedUrl, {
     method: 'PUT',

@@ -1,12 +1,11 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { CircleUser } from 'lucide-react';
 import Image from 'next/image';
 import { SyntheticEvent, useEffect, useState } from 'react';
-import { Avatar } from '../ui/avatar';
-import { CircleUser } from 'lucide-react';
 
-export default function ProfileImageWithFallback({ src, className }: { src: string; className?: string }) {
+export default function ProfileImageWithFallback({ src, className }: { src?: string; className?: string }) {
   const [error, setError] = useState<SyntheticEvent<HTMLImageElement, Event> | null>(null);
 
   useEffect(() => {
@@ -20,12 +19,12 @@ export default function ProfileImageWithFallback({ src, className }: { src: stri
         className
       )}
     >
-      {error ? (
+      {!src || error ? (
         <div className="w-full aspect-square flex items-center justify-center bg-muted">
           <CircleUser />
         </div>
       ) : (
-        <Image onError={(e) => setError(e)} fill src={src} alt="profile" />
+        <Image onError={(e) => setError(e)} fill src={src} alt="profile" className="object-cover" />
       )}
     </div>
   );

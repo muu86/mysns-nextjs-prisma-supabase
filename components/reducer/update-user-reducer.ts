@@ -1,7 +1,5 @@
 import { UserContextState } from '@/components/context/update-user-context';
-import { ImageFile } from '@/lib/types';
 import { produce } from 'immer';
-import { Dispatch } from 'react';
 
 export type UpdateUserActionType =
   | 'setUsername'
@@ -59,32 +57,3 @@ export const updateUserReducer = produce((draft: UserContextState, action: Updat
     }
   }
 });
-
-// export type ActionWrapper =
-//   | Exclude<UpdateUserAction, { type: 'setFile'; payload: UserContextState['file'] }>
-//   | { type: 'setFile'; payload: File };
-
-// export function createDispatchWrapper(state: UserContextState, dispatch: Dispatch<UpdateUserAction>) {
-//   return async function (action: ActionWrapper) {
-//     switch (action.type) {
-//       case 'setFile': {
-//         dispatch({ type: 'setIsUploading' });
-
-//         const file = action.payload;
-//         if (!file) return;
-
-//         const tempUrl = URL.createObjectURL(file);
-//         const newFile: ImageFile = { tempUrl, file };
-//         dispatch({ type: 'setFile', payload: { tempUrl, file } });
-
-//         await uploadFile(newFile);
-
-//         dispatch({ type: 'setIsUploading' });
-//         break;
-//       }
-
-//       default:
-//         dispatch(action);
-//     }
-//   };
-// }
