@@ -519,3 +519,117 @@ export function ApolloWrapper({ children }: React.PropsWithChildren) {
 ```
 
 vercel 에 nextjs 를 배포한 뒤에도 실시간 통신이 잘 되는지는 확인필요.
+
+## vercel 에 배포 실패하고 express 서버 배포
+
+vercel 에 배포한 뒤에 graphql 서버가 잘 동작하지 않는 것을 확인했습니다. yoga 의 graphiql 에 직접 접속해서 query 를 하는 것은 가능한데 apollo client 로 yoga 서버에 접속하면 계속 요청이 pending 상태가 되다가 결국 타임아웃으로 컨테이너가 종료됩니다. 
+ 
+vercel 에서도 serverless 환경에서 graphql 서버까지 구동하는 것은 권하지 않고 있는데 억지로 해보려다가 실패했습니다. 
+
+graphql 백엔드 서버를 따로 구성해야 했습니다. 
+
+### express, yoga, aws fargate
+
+graphql 서버측 로직을 그대로 복사해서 express 서버를 구성했습니다.
+
+```ts
+// express, yoga
+const filtered = resolvers.filter((r) => r.name !== ChatMessageCrudResolver.name) as NonEmptyArray<Function>;
+
+export async function buildApp(app: ReturnType<typeof express>) {
+  const schema = await buildSchema({
+    resolvers: [
+      ...filtered,
+      CustomChatMessageCrudResolver,
+      ChatSubscriptionResolver,
+      CustomFileUrl,
+      CustomFileResolver,
+    ],
+    pubSub: pubSub,
+    validate: false,
+  });
+
+  const prisma = new PrismaClient();
+
+  const graphQLServer = createYoga({
+    schema: schema,
+    // logging: false,
+    context: () => ({ prisma }),
+  });
+
+  app.use(graphQLServer.graphqlEndpoint, graphQLServer);
+
+  return graphQLServer.graphqlEndpoint;
+}
+
+```
+
+```dockerfile
+# Dockerfile
+ARG NODE_VERSION=20.11.1
+
+FROM --platform=linux/amd64 node:${NODE_VERSION}-alpine
+
+ENV NODE_ENV production
+
+WORKDIR /usr/src/app
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
+
+COPY . .
+
+RUN npx prisma generate
+
+USER node
+
+EXPOSE 8000
+
+CMD npm start
+
+```
+docker 구동 시 `npx prisma generate` 를 실행해서 prisma client 와 typegraphql 플러그인을 세팅해줘야 합니다.
+
+```ts
+// aws cdk fargate 
+export class GraphQLServerFargate extends Construct {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    const cluster = new ecs.Cluster(this, 'mysns-graphql-server-cluster', {
+      clusterName: 'mysns-graphql-server-cluster',
+    });
+
+    const repository = ecr.Repository.fromRepositoryName(
+      scope,
+      'mysns-graphql-server-ecr',
+      'express-graphql-prisma-server'
+    );
+
+    const taskDefinition = new ecs.FargateTaskDefinition(this, 'mysns-fargate-task-definition');
+    taskDefinition.addContainer('graphql-server', {
+      image: ecs.ContainerImage.fromEcrRepository(repository),
+      portMappings: [
+        {
+          containerPort: 8000,
+        },
+      ],
+    });
+
+    const fargateService = new ecs_patterns.ApplicationLoadBalancedFargateService(
+      this,
+      'mysns-graphql-server-fargate',
+      {
+        cluster: cluster,
+        taskDefinition: taskDefinition,
+        healthCheck: {
+          command: ['CMD-SHELL', 'curl -f http://localhost:8000/ || exit 1'],
+        },
+      }
+    );
+  }
+}
+```
+fargate 로 도커 이미지를 aws에 배포했습니다.
