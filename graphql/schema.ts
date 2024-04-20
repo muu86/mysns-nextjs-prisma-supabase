@@ -13,8 +13,8 @@ const filtered = resolvers.filter((r) => r.name !== ChatMessageCrudResolver.name
 export const schema = await buildSchema({
   resolvers: [...filtered, CustomChatMessageCrudResolver, ChatSubscriptionResolver, CustomFileUrl, CustomFileResolver],
   validate: false,
-  emitSchemaFile: {
-    path: path.join(process.cwd(), './graphql/schema.graphql'),
-  },
+  // emitSchemaFile: {
+  //   path: path.join(process.cwd(), './graphql/schema.graphql'),
+  // },
   pubSub: pubSub,
 });

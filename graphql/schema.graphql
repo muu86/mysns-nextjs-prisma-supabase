@@ -2216,13 +2216,6 @@ input CommentWhereUniqueInput {
   userId: IntFilter
 }
 
-type CustomFileUrl {
-  lg: String
-  md: String
-  raw: String
-  sm: String
-}
-
 input DateTimeFieldUpdateOperationsInput {
   set: DateTimeISO
 }
@@ -2333,7 +2326,7 @@ type File {
   posts(cursor: PostFileWhereUniqueInput, distinct: [PostFileScalarFieldEnum!], orderBy: [PostFileOrderByWithRelationInput!], skip: Int, take: Int, where: PostFileWhereInput): [PostFile!]!
   type: FileStorageType!
   updatedAt: DateTimeISO!
-  url: CustomFileUrl!
+  url: n!
 }
 
 type FileAvgAggregate {
@@ -6249,4 +6242,11 @@ input VerificationTokenWhereUniqueInput {
   identifier: StringFilter
   identifier_token: VerificationTokenIdentifierTokenCompoundUniqueInput
   token: StringFilter
+}
+
+type n {
+  lg: String
+  md: String
+  raw: String
+  sm: String
 }
