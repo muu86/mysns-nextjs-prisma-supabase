@@ -34,7 +34,7 @@ export default function UpdateUserContextProvider({ children }: PropsWithChildre
         email: session.user.email!,
       },
     });
-  }, [session]);
+  }, [session, getUser]);
 
   const submit = async () => {
     if (state.isUploading) return;

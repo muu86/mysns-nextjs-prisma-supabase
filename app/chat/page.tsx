@@ -4,10 +4,11 @@ import ChatContextProvider from '@/components/context/chat-context';
 import DefaultCardContainer from '@/components/layout/default-card-container';
 import DefaultContainer from '@/components/layout/default-container';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Session } from 'next-auth';
 import { Suspense } from 'react';
 
 export default async function Page() {
-  const session = await auth();
+  const session = (await auth()) as Session;
 
   return (
     <ChatContextProvider session={session}>

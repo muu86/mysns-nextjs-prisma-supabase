@@ -10,7 +10,6 @@ import {
 import { CommentsQuery, CommentsQueryVariables, PostsQuery } from '@/graphql/generated/gql/graphql';
 import { cn } from '@/lib/utils';
 import { QueryReference, useReadQuery } from '@apollo/client';
-import { produce } from 'immer';
 import { MouseEvent, useCallback, useContext, useEffect, useState } from 'react';
 
 const COMMENT_COUNT_PER_PAGE = 5;
@@ -26,6 +25,10 @@ export default function CommentList({
   queryCommentRef: QueryReference<CommentsQuery, CommentsQueryVariables>;
   isPending: boolean;
 }) {
+  const isInPage = useCallback(function (index: number, page: number) {
+    return index >= (page - 1) * COMMENT_COUNT_PER_PAGE && index < page * COMMENT_COUNT_PER_PAGE;
+  }, []);
+
   const { data } = useReadQuery(queryCommentRef);
   const { state, dispatch } = useContext(CommentContext);
   const [comments, setComments] = useState<CommentsQuery['comments'] | undefined>();
@@ -34,7 +37,7 @@ export default function CommentList({
   useEffect(() => {
     const filtered = data.comments.filter((c, i) => isInPage(i, page));
     setComments(filtered);
-  }, [data, page]);
+  }, [data, page, isInPage]);
 
   function prevPageHandler(event: MouseEvent<HTMLAnchorElement>): void {
     if (!data.comments) return;
@@ -51,12 +54,6 @@ export default function CommentList({
     }
     setPage(page + 1);
   }
-
-  const isInPage = useCallback(function (index: number, page: number) {
-    return index >= (page - 1) * COMMENT_COUNT_PER_PAGE && index < page * COMMENT_COUNT_PER_PAGE;
-  }, []);
-
-  console.log('rerender!');
 
   return (
     <div className={cn('hidden', { 'flex flex-col': commentOpen })}>

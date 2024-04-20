@@ -13,17 +13,11 @@ import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { ChangeEvent, MouseEvent, useContext, useEffect, useState } from 'react';
 
-export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] | undefined }) {
-  if (!chat) return;
-
+export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }) {
   const { session, state } = useContext(ChatContext);
   const [messages, setMessages] = useState<ChatMessagesQuery['chatMessages']>([]);
   const [currentMessage, setCurrent] = useState<string | undefined>();
   const [createOneChatMessage] = useMutation(MutationCreateOneChatMessage);
-
-  if (!session?.user?.username) {
-    redirect('/login');
-  }
 
   const { data } = useSuspenseQuery(QueryChatMessages, {
     variables: {
@@ -52,7 +46,7 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] |
   });
   useEffect(() => {
     if (!chatMessageData?.chat?.message) return;
-    setMessages([chatMessageData.chat, ...messages]);
+    setMessages((prev) => [chatMessageData.chat, ...prev]);
   }, [chatMessageData]);
 
   function messageChangeEventHandler(event: ChangeEvent<HTMLTextAreaElement>): void {

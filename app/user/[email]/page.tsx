@@ -90,6 +90,5 @@ function isNotLogedIn(session: Session | null) {
 
 function checkIsOwner(session: Session | null, email: string) {
   if (isNotLogedIn(session)) return false;
-  console.log(session?.user.email, ' ', email);
   return session!.user!.email === email;
 }

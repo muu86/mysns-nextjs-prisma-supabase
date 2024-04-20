@@ -7,26 +7,29 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ImageFile } from '@/lib/types';
 import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';
-import { ChangeEvent, useContext } from 'react';
+import { ChangeEvent, useCallback, useContext } from 'react';
 
 export default function ImageCard() {
   const { state, dispatch } = useContext(UpdateUserContext);
-  async function changeEventHandler(event: ChangeEvent<HTMLInputElement>) {
-    event.preventDefault();
+  const changeEventHandler = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
 
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
 
-    dispatch({ type: 'setIsUploading' });
+      dispatch({ type: 'setIsUploading', payload: true });
 
-    const tempUrl = URL.createObjectURL(file);
-    const newFile: ImageFile = { tempUrl, file };
-    dispatch({ type: 'setFile', payload: { tempUrl, file } });
+      const tempUrl = URL.createObjectURL(file);
+      const newFile: ImageFile = { tempUrl, file };
+      dispatch({ type: 'setFile', payload: { tempUrl, file } });
 
-    await uploadFile(newFile);
+      await uploadFile(newFile);
 
-    dispatch({ type: 'setIsUploading' });
-  }
+      dispatch({ type: 'setIsUploading', payload: false });
+    },
+    [dispatch]
+  );
 
   return (
     <div className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">
