@@ -35,7 +35,10 @@ class SSELink extends ApolloLink {
 }
 
 export const sseLink = new SSELink({
-  url: process.env.VERCEL === '1' ? `${process.env.VERCEL_URL}/api/graphql` : 'http://localhost:3000/api/graphql',
+  url:
+    process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/graphql`
+      : 'http://localhost:3000/api/graphql',
   // headers: () => {
   // const session = getSession();
   // if (!session) return {};
