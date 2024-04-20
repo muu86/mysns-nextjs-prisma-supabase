@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserTitle from '@/components/user/user-title';
 import { QueryGetUser } from '@/graphql/query/user';
-import { getClient } from '@/lib/apollo-client';
+import { getClient } from '@/app/apollo-client';
 import { MessageCircleMore } from 'lucide-react';
 import { Session } from 'next-auth';
 import Image from 'next/image';

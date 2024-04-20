@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { MutationCreateOneChat, QueryChats } from '@/graphql/query/chat';
 import { QueryGetUser } from '@/graphql/query/user';
-import { getClient } from '@/lib/apollo-client';
+import { getClient } from '@/app/apollo-client';
 import { redirect } from 'next/navigation';
 
 export default async function Page({ params }: { params: { userId: string } }) {

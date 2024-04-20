@@ -1,7 +1,7 @@
 'use server';
 
 import { graphql } from '@/graphql/generated/gql';
-import { getClient } from '@/lib/apollo-client';
+import { getClient } from '@/app/apollo-client';
 
 const QueryPosts = graphql(`
   query getPosts {
