@@ -1,0 +1,14 @@
+export { AggregateSpatial_ref_sysArgs } from './AggregateSpatial_ref_sysArgs';
+export { CreateManySpatial_ref_sysArgs } from './CreateManySpatial_ref_sysArgs';
+export { CreateOneSpatial_ref_sysArgs } from './CreateOneSpatial_ref_sysArgs';
+export { DeleteManySpatial_ref_sysArgs } from './DeleteManySpatial_ref_sysArgs';
+export { DeleteOneSpatial_ref_sysArgs } from './DeleteOneSpatial_ref_sysArgs';
+export { FindFirstSpatial_ref_sysArgs } from './FindFirstSpatial_ref_sysArgs';
+export { FindFirstSpatial_ref_sysOrThrowArgs } from './FindFirstSpatial_ref_sysOrThrowArgs';
+export { FindManySpatial_ref_sysArgs } from './FindManySpatial_ref_sysArgs';
+export { FindUniqueSpatial_ref_sysArgs } from './FindUniqueSpatial_ref_sysArgs';
+export { FindUniqueSpatial_ref_sysOrThrowArgs } from './FindUniqueSpatial_ref_sysOrThrowArgs';
+export { GroupBySpatial_ref_sysArgs } from './GroupBySpatial_ref_sysArgs';
+export { UpdateManySpatial_ref_sysArgs } from './UpdateManySpatial_ref_sysArgs';
+export { UpdateOneSpatial_ref_sysArgs } from './UpdateOneSpatial_ref_sysArgs';
+export { UpsertOneSpatial_ref_sysArgs } from './UpsertOneSpatial_ref_sysArgs';

@@ -1,0 +1,14 @@
+export { AggregatePostFileArgs } from './AggregatePostFileArgs';
+export { CreateManyPostFileArgs } from './CreateManyPostFileArgs';
+export { CreateOnePostFileArgs } from './CreateOnePostFileArgs';
+export { DeleteManyPostFileArgs } from './DeleteManyPostFileArgs';
+export { DeleteOnePostFileArgs } from './DeleteOnePostFileArgs';
+export { FindFirstPostFileArgs } from './FindFirstPostFileArgs';
+export { FindFirstPostFileOrThrowArgs } from './FindFirstPostFileOrThrowArgs';
+export { FindManyPostFileArgs } from './FindManyPostFileArgs';
+export { FindUniquePostFileArgs } from './FindUniquePostFileArgs';
+export { FindUniquePostFileOrThrowArgs } from './FindUniquePostFileOrThrowArgs';
+export { GroupByPostFileArgs } from './GroupByPostFileArgs';
+export { UpdateManyPostFileArgs } from './UpdateManyPostFileArgs';
+export { UpdateOnePostFileArgs } from './UpdateOnePostFileArgs';
+export { UpsertOnePostFileArgs } from './UpsertOnePostFileArgs';

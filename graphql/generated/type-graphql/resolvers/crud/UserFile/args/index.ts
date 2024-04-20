@@ -1,0 +1,14 @@
+export { AggregateUserFileArgs } from './AggregateUserFileArgs';
+export { CreateManyUserFileArgs } from './CreateManyUserFileArgs';
+export { CreateOneUserFileArgs } from './CreateOneUserFileArgs';
+export { DeleteManyUserFileArgs } from './DeleteManyUserFileArgs';
+export { DeleteOneUserFileArgs } from './DeleteOneUserFileArgs';
+export { FindFirstUserFileArgs } from './FindFirstUserFileArgs';
+export { FindFirstUserFileOrThrowArgs } from './FindFirstUserFileOrThrowArgs';
+export { FindManyUserFileArgs } from './FindManyUserFileArgs';
+export { FindUniqueUserFileArgs } from './FindUniqueUserFileArgs';
+export { FindUniqueUserFileOrThrowArgs } from './FindUniqueUserFileOrThrowArgs';
+export { GroupByUserFileArgs } from './GroupByUserFileArgs';
+export { UpdateManyUserFileArgs } from './UpdateManyUserFileArgs';
+export { UpdateOneUserFileArgs } from './UpdateOneUserFileArgs';
+export { UpsertOneUserFileArgs } from './UpsertOneUserFileArgs';

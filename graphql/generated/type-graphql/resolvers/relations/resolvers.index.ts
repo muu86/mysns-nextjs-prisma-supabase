@@ -1,0 +1,13 @@
+export { AccountRelationsResolver } from './Account/AccountRelationsResolver';
+export { AddressRelationsResolver } from './Address/AddressRelationsResolver';
+export { ChatRelationsResolver } from './Chat/ChatRelationsResolver';
+export { ChatMessageRelationsResolver } from './ChatMessage/ChatMessageRelationsResolver';
+export { ChatUserRelationsResolver } from './ChatUser/ChatUserRelationsResolver';
+export { CommentRelationsResolver } from './Comment/CommentRelationsResolver';
+export { FileRelationsResolver } from './File/FileRelationsResolver';
+export { PostRelationsResolver } from './Post/PostRelationsResolver';
+export { PostFileRelationsResolver } from './PostFile/PostFileRelationsResolver';
+export { SessionRelationsResolver } from './Session/SessionRelationsResolver';
+export { UserRelationsResolver } from './User/UserRelationsResolver';
+export { UserAddressRelationsResolver } from './UserAddress/UserAddressRelationsResolver';
+export { UserFileRelationsResolver } from './UserFile/UserFileRelationsResolver';
