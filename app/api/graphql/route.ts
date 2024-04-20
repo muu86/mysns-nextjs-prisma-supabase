@@ -1,6 +1,6 @@
 // Next.js Custom Route Handler: https://nextjs.org/docs/app/building-your-application/routing/router-handlers
 // import { schema } from '@/graphql-pothos/schema';
-import { createSchema, createYoga } from 'graphql-yoga';
+import { createYoga } from 'graphql-yoga';
 
 import prisma from '@/lib/prisma';
 import { schema } from '@/graphql/schema';
