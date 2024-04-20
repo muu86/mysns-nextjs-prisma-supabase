@@ -1,5 +1,7 @@
 import type { NextAuthConfig } from 'next-auth';
 import KeyCloak from 'next-auth/providers/keycloak';
+import Kakao from 'next-auth/providers/kakao';
+import Google from 'next-auth/providers/google';
 
 export default {
   providers: [
@@ -7,6 +9,14 @@ export default {
       issuer: 'http://localhost:3333/realms/master',
       clientId: process.env.AUTH_KEYCLOAK_ID,
       clientSecret: process.env.AUTH_KEYCLOAK_SECRET,
+    }),
+    Kakao({
+      clientId: process.env.AUTH_KAKAO_ID,
+      clientSecret: process.env.AUTH_KAKAO_SECRET,
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
   pages: {

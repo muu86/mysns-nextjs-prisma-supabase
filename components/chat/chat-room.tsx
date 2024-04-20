@@ -1,17 +1,17 @@
 'use client';
 
 import { ChatContext } from '@/components/context/chat-context';
-import { ChatMessagesQuery, ChatsQuery, SortOrder } from '@/graphql/generated/gql/graphql';
-import { MutationCreateOneChatMessage, QueryChatMessages, SubscriptionChat } from '@/graphql/query/chat';
-import { useMutation, useSubscription, useSuspenseQuery } from '@apollo/client';
-import { CircleUser, Send } from 'lucide-react';
-import { redirect } from 'next/navigation';
-import { ChangeEvent, MouseEvent, useContext, useEffect, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Session } from 'next-auth';
+import { ChatMessagesQuery, ChatsQuery, SortOrder } from '@/graphql/generated/gql/graphql';
+import { MutationCreateOneChatMessage, QueryChatMessages, SubscriptionChat } from '@/graphql/query/chat';
 import { cn } from '@/lib/utils';
+import { useMutation, useSubscription, useSuspenseQuery } from '@apollo/client';
+import { CircleUser, Send } from 'lucide-react';
+import { Session } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { ChangeEvent, MouseEvent, useContext, useEffect, useState } from 'react';
 
 export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] | undefined }) {
   if (!chat) return;

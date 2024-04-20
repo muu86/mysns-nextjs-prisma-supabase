@@ -14,10 +14,26 @@ Javascript의 ORM 프레임워크입니다.
 `supabase`도 전용 클라이언트를 제공하므로 `prisma`를 사용할 필요는 없습니다. 그런데 개인적으로 궁금해서 사용해봤습니다.
 
 
+### 트랜잭션
+
+트랜잭션 처리가 미흡하다는 글들을 봤는데 제가 최신 버전을 사용해서 그런지 부족한 점이 없는 것 같습니다. 
+  
+https://www.prisma.io/docs/orm/prisma-client/queries/transactions#transaction-isolation-level
+
+- 다음의 경우에 하나의 트랜잭션에서 실행됨
+  - Nested writes
+    - 연결 테이블을 함께 업데이트하는 쿼리
+  - Batch/bulk operations
+    - updateMany, deleteMany 등
+  - The $transaction API
+    - `$transaction` 함수 안에서 실행되는 코드  
+- 격리단계도 컨트롤 가능함
+- version 컬럼 추가후 `increment` 명령어를 사용하여 직접 version 관리 가능
+
 ### 단점
 
 - 복잡한 쿼리에는 한계가 있는 거 같습니다. 서브 쿼리 불가.
-- Postgres 확장기능을 사용할 수 없습니다. 확장기능을 사용하려면 Raw Query 로 작성해야 합니다.  PostGIS 의 Geometry 타입도 정의할 수 없습니다.
+- 아직 Postgres 확장기능을 사용할 수 없습니다. 현재 `preview feature` 기능에서 extensions를 설치할 수는 있습니다. 확장기능을 사용하려면 Raw Query 로 작성해야 합니다.  PostGIS 의 Geometry 타입도 정의할 수 없습니다.
 
 ```
 model Address {
@@ -56,13 +72,13 @@ async function main() {
 
 supabase가 기본으로 제공하는 pgBouncer를 사용했습니다.
 
-### 서버리스에서 prisma, connection pool 사용 시 주의사항
+### 서버리스 환경에서 커넥션 풀 고갈문제
 
 https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas
 
-nextjs 를 vercel 에 배포하면 서버리스 환경에서 구동되기 때문에 주의해야 할 것 같습니다. 
+nextjs 를 vercel 에 배포하면 서버리스 환경에서 구동됩니다. 동시에 들어오는 요청이 늘어나서 nextjs 컨테이너가 더 생성되면 각각이 prisma container를 갖습니다.  
+pgBouncer 설정에서 `connection_limit` 옵션을 `1`로 설정하고 필요에 따라 차근차근 늘려가라고 권장하고 있습니다. 만약, connection_limit 을 3으로 설정하고 람다 환경이 3개가 만들어지면 하나의 db로  3 * 3 = 9개의 connection 이 만들어 질 수가 있습니다.
 
-pgBouncer 설정에서 `connection_limit` 옵션을 `1`로 설정하고 필요에 따라 차근차근 늘려가라고 권장하고 있습니다. 왜냐하면 서버리스 환경에서는 생성되는 nextjs 컨테이너 마다 각각의 Prisma Client 인스턴스가 만들어지기 때문입니다. 만약, connection_limit 을 3으로 설정하고 람다 환경이 3개가 만들어지면 하나의 db로  3 * 3 = 9개의 connection 이 만들어 질 수가 있습니다.
 
 
 ### prisma 와 supabase 를 사용할 때 extensions 충돌 문제

@@ -30,13 +30,14 @@ export default async function Page({ params }: { params: { email: string } }) {
   const isOwner = checkIsOwner(session, userEmail);
 
   console.log(session);
+  console.log(isOwner);
 
   return (
     <DefaultContainer>
       <DefaultContainer>
-        <UserTitle />
+        <UserTitle session={session} isOwner={isOwner} />
         <DefaultCardContainer>
-          <Card>
+          <Card className="py-4">
             <CardContent>
               {user.files.length > 0 ? (
                 <Image
@@ -88,7 +89,7 @@ function isNotLogedIn(session: Session | null) {
 }
 
 function checkIsOwner(session: Session | null, email: string) {
-  if (!isNotLogedIn(session)) return false;
-
+  if (isNotLogedIn(session)) return false;
+  console.log(session?.user.email, ' ', email);
   return session!.user!.email === email;
 }

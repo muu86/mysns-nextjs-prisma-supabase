@@ -27,3 +27,25 @@ export const QueryGetUser = graphql(`
     }
   }
 `);
+
+export const MutationUpdateOneUser = graphql(`
+  mutation updateOneUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
+    updateOneUser(data: $data, where: $where) {
+      id
+      username
+      babyBirth
+      content
+      addresses {
+        address {
+          c3
+        }
+      }
+      files {
+        file {
+          location
+        }
+      }
+      role
+    }
+  }
+`);

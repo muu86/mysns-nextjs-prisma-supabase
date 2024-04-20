@@ -1,4 +1,8 @@
-export default function UserTitle() {
+import Link from 'next/link';
+import { Button } from '../ui/button';
+import { Session } from 'next-auth';
+
+export default function UserTitle({ session, isOwner }: { session: Session | null; isOwner: boolean }) {
   return (
     <div className="flex items-center gap-4">
       {/* <Button variant="outline" size="icon" className="h-7 w-7">
@@ -9,6 +13,13 @@ export default function UserTitle() {
       {/* <Badge variant="outline" className="ml-auto sm:ml-0">
               In stock
             </Badge> */}
+      {isOwner && (
+        <div className="flex items-center gap-2 md:ml-auto">
+          <Link href={`/n/user`}>
+            <Button size="sm">수정</Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

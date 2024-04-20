@@ -10,6 +10,16 @@ export default async function Page() {
     await signIn('keycloak', { redirectTo: '/login/start' });
   }
 
+  async function kakaoAction() {
+    'use server';
+    await signIn('kakao', { redirectTo: '/login/start' });
+  }
+
+  async function googleAction() {
+    'use server';
+    await signIn('google', { redirectTo: '/login/start' });
+  }
+
   return (
     <div className="w-full lg:min-h-[600px] xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
@@ -21,7 +31,17 @@ export default async function Page() {
           <div className="grid gap-4">
             <form action={keycloakAction}>
               <Button type="submit" variant="outline" className="w-full">
-                Keycloak 으로 로그인
+                키클록(테스트) 로그인
+              </Button>
+            </form>
+            <form action={kakaoAction}>
+              <Button type="submit" variant="outline" className="w-full">
+                카카오 로그인
+              </Button>
+            </form>
+            <form action={googleAction}>
+              <Button type="submit" variant="outline" className="w-full">
+                구글 로그인
               </Button>
             </form>
           </div>

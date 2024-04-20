@@ -4,44 +4,37 @@ import { graphql } from '@/graphql/generated/gql';
 import { AddressesQuery, Role } from '@/graphql/generated/gql/graphql';
 import { UserUpdateInput, UserWhereUniqueInput } from '@/graphql/generated/type-graphql';
 import { ImageFile } from '@/lib/types';
-import { useMutation } from '@apollo/client';
+import { useLoadableQuery, useMutation, useReadQuery, useSuspenseQuery } from '@apollo/client';
 import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { Dispatch, PropsWithChildren, createContext, useReducer } from 'react';
+import { Dispatch, PropsWithChildren, createContext, useEffect, useReducer } from 'react';
 import { UpdateUserAction, updateUserReducer } from '../reducer/update-user-reducer';
 import { useSession } from 'next-auth/react';
+import { MutationUpdateOneUser, QueryGetUser } from '@/graphql/query/user';
 
-const MutationUpdateOneUser = graphql(`
-  mutation updateOneUser($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
-    updateOneUser(data: $data, where: $where) {
-      id
-      username
-      babyBirth
-      content
-      addresses {
-        address {
-          c3
-        }
-      }
-      files {
-        file {
-          location
-        }
-      }
-      role
-    }
-  }
-`);
-
-export default function UpdateUserContextProvider({
-  // session,
-  children,
-}: PropsWithChildren) {
-  const { data: session, status, update } = useSession();
-  const [updateOneUser] = useMutation(MutationUpdateOneUser);
-
+export default function UpdateUserContextProvider({ children }: PropsWithChildren) {
+  const { data: session, update } = useSession();
   const [state, dispatch] = useReducer(updateUserReducer, { session: session, isUploading: false, address: [] });
-  console.log(state.address);
+
+  const [updateOneUser] = useMutation(MutationUpdateOneUser);
+  const [getUser, getUserQueryRef] = useLoadableQuery(QueryGetUser);
+  const {
+    data: { getUser: currentUser },
+  } = useSuspenseQuery(QueryGetUser, {
+    variables: {
+      where: {
+        email: session?.user?.email,
+      },
+    },
+  });
+  useEffect(() => {
+    if (session?.user?.role !== 'WRITE') return;
+    getUser({
+      where: {
+        email: session.user.email!,
+      },
+    });
+  }, [session]);
 
   const submit = async () => {
     if (state.isUploading) return;

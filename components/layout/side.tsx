@@ -41,7 +41,7 @@ export default async function Side() {
     },
     {
       name: '프로필',
-      link: `/user/${session?.user?.email}`,
+      link: `/user/${encodeURIComponent(session?.user?.email || '')}`,
       Icon: User,
     },
   ];
