@@ -1,20 +1,24 @@
 import { ActiveStatus, PostsQuery } from '@/graphql/generated/gql/graphql';
 import * as dfn from 'date-fns';
-import { Suspense, useState } from 'react';
-import ProfileImageWithFallback from '../common/profile-image-with-fallback';
-import { Badge } from '../ui/badge';
-import Image from 'next/image';
 import { CircleUser } from 'lucide-react';
+import Image from 'next/image';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
 export default function PostCardProfile({ post }: { post: PostsQuery['posts'][number] }) {
   const src = post.user.files.find((f) => f.status === ActiveStatus.Active)?.file.url.sm;
+  const userEmail = encodeURIComponent(post.user.email);
   return (
     <div className="my-2 pt-2 flex flex-row items-center">
       <div className="flex-1 flex flex-row items-center justify-start gap-4">
         {/* <Suspense fallback={<div className="w-full h-full bg-black">hi</div>}>
           <ProfileImageWithFallback className="col-span-8" src={url} />
         </Suspense> */}
-        <div className="relative flex justify-center items-center rounded-full overflow-hidden h-10 w-10 shrink-0">
+        <Link
+          href={`/user/${userEmail}`}
+          className="relative flex justify-center items-center rounded-full overflow-hidden h-10 w-10 shrink-0"
+        >
           {src ? (
             <Image fill src={src} alt="profile" className="object-cover" />
           ) : (
@@ -22,7 +26,7 @@ export default function PostCardProfile({ post }: { post: PostsQuery['posts'][nu
               <CircleUser />
             </div>
           )}
-        </div>
+        </Link>
 
         <div className="">
           <p className="text-sm font-medium leading-none">{post.user.username ? post.user.username : '?'}</p>

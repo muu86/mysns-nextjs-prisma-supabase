@@ -18,6 +18,7 @@ export const QueryPosts = graphql(`
             }
           }
         }
+        email
         username
         addresses {
           address {
