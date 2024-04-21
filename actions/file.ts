@@ -43,7 +43,9 @@ import { randomUUID } from 'crypto';
 export async function getSignedUrlForPut(filename: string, contentType: string) {
   // const { filename, contentType } = await request.json();
   try {
-    const client = new S3Client();
+    const client = new S3Client({
+      region: process.env.AWS_DEFAULT_REGION,
+    });
     const key = randomUUID();
 
     const command = new PutObjectCommand({
