@@ -1,5 +1,6 @@
 'use client';
 
+import { getSignedUrlForPut } from '@/actions/file';
 import { PostCreateInput } from '@/graphql/generated/gql/graphql';
 import { MutationCreateOnePost } from '@/graphql/query/posts';
 import { ImageFile } from '@/lib/types';
@@ -107,24 +108,34 @@ export type MutatePostContextType = {
 };
 
 export async function uploadFile(newFile: ImageFile) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ filename: newFile.file.name, contentType: newFile.file.type }),
+  // const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({ filename: newFile.file.name, contentType: newFile.file.type }),
+  // });
+  // if (response.ok) {
+  //   const { url, key } = await response.json();
+
+  //   const uploadResponse = await fetch(url, {
+  //     method: 'PUT',
+  //     body: await newFile.file.arrayBuffer(),
+  //   });
+
+  //   console.log(uploadResponse);
+
+  //   newFile.s3Key = key;
+  // }
+
+  const { url, key } = await getSignedUrlForPut(newFile.file.name, newFile.file.type);
+
+  const uploadResponse = await fetch(url!, {
+    method: 'PUT',
+    body: await newFile.file.arrayBuffer(),
   });
 
-  if (response.ok) {
-    const { url, key } = await response.json();
+  console.log(uploadResponse);
 
-    const uploadResponse = await fetch(url, {
-      method: 'PUT',
-      body: await newFile.file.arrayBuffer(),
-    });
-
-    console.log(uploadResponse);
-
-    newFile.s3Key = key;
-  }
+  newFile.s3Key = key;
 }
