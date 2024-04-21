@@ -34,54 +34,53 @@ export default async function Page({ params }: { params: { email: string } }) {
 
   return (
     <DefaultContainer>
-      <DefaultContainer>
-        <UserTitle session={session} isOwner={isOwner} />
-        <DefaultCardContainer>
-          <Card className="flex flex-col gap-4 h-full py-4">
+      <UserTitle session={session} isOwner={isOwner} />
+      <DefaultCardContainer>
+        <Card className="flex flex-col flex-1 gap-4 h-full py-4">
+          {/* <Card className="grid grid-rows-12 gap-4 h-full py-4"> */}
+          <CardContent>
+            {profileImageSrc ? (
+              <Image
+                alt="profile image"
+                className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
+                height="300"
+                width="300"
+                src={`${profileImageSrc}`}
+              />
+            ) : (
+              <Skeleton className="mx-auto w-1/2 rounded-full aspect-square flex items-center justify-center hover:cursor-pointer">
+                {/* <UploadIcon className="h-4 w-4 text-muted-foreground" /> */}
+                <span className="sr-only">프로필 이미지</span>
+              </Skeleton>
+            )}
+          </CardContent>
+          <CardHeader className="items-center">
+            <CardTitle>{user.username}</CardTitle>
+          </CardHeader>
+
+          <div className="flex flex-row items-center justify-center flex-wrap gap-2">
+            {user.addresses
+              .map((a) => a.address)
+              .map((a, i) => (
+                <Badge key={i} className="w-auto hover:cursor-pointer">{`${a.c1} ${a.c2} ${a.c3} ${a.c4}`}</Badge>
+              ))}
+          </div>
+
+          <Card className="flex-1 mt-4 mx-4 p-6 border">
             <CardContent>
-              {profileImageSrc ? (
-                <Image
-                  alt="profile image"
-                  className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
-                  height="300"
-                  width="300"
-                  src={`${profileImageSrc}`}
-                />
-              ) : (
-                <Skeleton className="mx-auto w-1/2 rounded-full aspect-square flex items-center justify-center hover:cursor-pointer">
-                  {/* <UploadIcon className="h-4 w-4 text-muted-foreground" /> */}
-                  <span className="sr-only">프로필 이미지</span>
-                </Skeleton>
-              )}
+              <p className="">{user.content}</p>
             </CardContent>
-            <CardHeader className="items-center">
-              <CardTitle>{user.username}</CardTitle>
-            </CardHeader>
-
-            <div className="flex flex-row items-center justify-center flex-wrap gap-2">
-              {user.addresses
-                .map((a) => a.address)
-                .map((a, i) => (
-                  <Badge key={i} className="w-auto hover:cursor-pointer">{`${a.c1} ${a.c2} ${a.c3} ${a.c4}`}</Badge>
-                ))}
-            </div>
-
-            <Card className="mt-4 mx-4 p-6 border">
-              <CardContent>
-                <p className="">{user.content}</p>
-              </CardContent>
-            </Card>
-
-            <div className="flex flex-col flex-1 items-center justify-center">
-              <Link href={`/n/chat/${user.id}`}>
-                <Button>
-                  <MessageCircleMore />
-                </Button>
-              </Link>
-            </div>
           </Card>
-        </DefaultCardContainer>
-      </DefaultContainer>
+
+          <div className="flex flex-col flex-1 items-center justify-center">
+            <Link href={`/n/chat/${user.id}`}>
+              <Button>
+                <MessageCircleMore />
+              </Button>
+            </Link>
+          </div>
+        </Card>
+      </DefaultCardContainer>
     </DefaultContainer>
   );
 }

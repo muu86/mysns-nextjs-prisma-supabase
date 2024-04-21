@@ -2,7 +2,7 @@
 
 import { PostsQuery } from '@/graphql/generated/gql/graphql';
 import { Session } from 'next-auth';
-import { PropsWithChildren, createContext, useEffect, useState } from 'react';
+import { PropsWithChildren, createContext, useState } from 'react';
 
 export default function PostContextProvider({ session, children }: PropsWithChildren<{ session: Session | null }>) {
   const [posts, setPosts] = useState<PostsQuery['posts']>([]);

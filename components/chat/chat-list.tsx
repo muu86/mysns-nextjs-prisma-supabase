@@ -20,7 +20,7 @@ export default function ChatList({ session, chatList }: { session: Session | nul
     <Drawer open={open} onOpenChange={setOpen} direction="left">
       <DrawerTrigger>
         {/* <Button onClick={() => setOpen(true)} variant="link" className="w-12 h-12 p-0"> */}
-        <PanelLeftOpen className={cn('transition-all', { 'rotate-180': open })} />
+        <PanelLeftOpen className={cn('ml-6 transition-all', { 'rotate-180': open })} />
         {/* </Button> */}
       </DrawerTrigger>
       <DrawerContent className="h-screen rounded-none w-32">
@@ -30,21 +30,29 @@ export default function ChatList({ session, chatList }: { session: Session | nul
             <DrawerDescription>Set your daily activity goal.</DrawerDescription>
           </DrawerHeader> */}
           <div className="mt-2 flex flex-col gap-2">
-            {chatList && chatList.map((c, i) => <ChatListOne key={i} session={session} chat={c} />)}
+            {chatList && chatList.map((c, i) => <ChatListOne setOpen={setOpen} key={i} session={session} chat={c} />)}
           </div>
-          <DrawerFooter>
+          {/* <DrawerFooter>
             <Button>Submit</Button>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
             </DrawerClose>
-          </DrawerFooter>
+          </DrawerFooter> */}
         </div>
       </DrawerContent>
     </Drawer>
   );
 }
 
-function ChatListOne({ session, chat }: { session: Session | null; chat: ChatsQuery['chats'][number] }) {
+function ChatListOne({
+  setOpen,
+  session,
+  chat,
+}: {
+  setOpen: () => void;
+  session: Session | null;
+  chat: ChatsQuery['chats'][number];
+}) {
   const { state, dispatch } = useContext(ChatContext);
 
   function chatSelectHandler(event: MouseEvent<HTMLButtonElement>): void {
@@ -52,6 +60,7 @@ function ChatListOne({ session, chat }: { session: Session | null; chat: ChatsQu
       type: 'chat/select',
       payload: chat.id,
     });
+    setOpen(false);
   }
 
   const other = chat.users.find((u) => u.user.email !== session?.user?.email);
