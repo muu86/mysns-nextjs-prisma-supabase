@@ -57,7 +57,14 @@ export async function getSignedUrlForPut(filename: string, contentType: string) 
     console.log(process.env.AWS_SECRET_ACCESS_KEY);
     console.log(url);
 
-    return { url, key };
+    return {
+      url,
+      key,
+      data: {
+        id: process.env.AWS_ACCESS_KEY_ID,
+        key: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    };
   } catch (error: any) {
     return { error: error.message };
   }
