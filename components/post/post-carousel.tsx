@@ -5,7 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 export default function PostCarousel({ post }: { post: PostsQuery['posts'][number] }) {
   return (
-    <Carousel className="grid">
+    <Carousel className="grid overflow-hidden">
       <CarouselContent>
         {post.files.map((f, i) => {
           return <Item url={f.file.url.lg} key={i} />;

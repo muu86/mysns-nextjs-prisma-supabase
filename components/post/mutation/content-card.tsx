@@ -16,7 +16,7 @@ export default function ContentCard() {
     <Card className="grid auto-rows-max items-start gap-4 col-span-3 lg:gap-8">
       <CardHeader>
         {/* <CardTitle>글</CardTitle> */}
-        <CardDescription>코멘트를 적어주세요.</CardDescription>
+        <CardDescription>코멘트를 남겨주세요.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-6">

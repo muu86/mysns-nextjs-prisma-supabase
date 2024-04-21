@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { ApolloWrapper } from '@/app/apollo-wrapper';
 import './globals.css';
 import Side from '@/components/layout/side';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,8 @@ export default function RootLayout({
           <ApolloWrapper>
             <Side />
             <div className="flex flex-col flex-1 h-full sm:gap-4 pb-14 sm:py-4 sm:pl-14">{children}</div>
+
+            <Toaster />
           </ApolloWrapper>
         </div>
       </body>

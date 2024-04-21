@@ -7,14 +7,18 @@ import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
 import { Session } from 'next-auth';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
+import { useToast } from '../ui/use-toast';
+import _ from 'lodash';
 
 export default function MutatePostContextProvider({ session, children }: PropsWithChildren<{ session: Session }>) {
+  const { toast } = useToast();
   const [createPost, { data, loading, error }] = useMutation(MutationCreateOnePost);
 
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<ImageFile[]>([]);
   const [selectedFile, setSelectedFile] = useState<ImageFile | undefined>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [snapshot, setSnapshot] = useState<MutatePostContextStates>();
 
   const fileUploadHandler = useCallback(async (file: File) => {
     setIsUploading(true);
@@ -30,6 +34,22 @@ export default function MutatePostContextProvider({ session, children }: PropsWi
   }, []);
 
   const submit = async () => {
+    if (content.length < 3) {
+      toast({
+        variant: 'destructive',
+        description: '3글자 이상 적어주세요.',
+        duration: 1000,
+      });
+      return;
+    }
+    if (content.length > 300) {
+      toast({
+        variant: 'destructive',
+        description: '글자수가 너무 많아요.',
+        duration: 1000,
+      });
+      return;
+    }
     setIsUploading(true);
     // if (!session.user?.email) redirect('/login');
     // 임시 주소 코드
@@ -66,6 +86,21 @@ export default function MutatePostContextProvider({ session, children }: PropsWi
         data: input,
       },
     });
+
+    if (data) {
+      toast({
+        description: '포스트를 저장했습니다.',
+        duration: 1000,
+      });
+    }
+
+    if (error) {
+      toast({
+        variant: 'destructive',
+        description: '포스트 저장 중 오류가 발생했습니다.',
+        duration: 1000,
+      });
+    }
 
     setIsUploading(false);
   };

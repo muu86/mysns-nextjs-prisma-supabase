@@ -6,19 +6,19 @@ import {
   AddressesQuery,
   GetUserQuery,
   Role,
-  UserAddressUpdateManyWithoutUserNestedInput,
-  UserAddressUpsertWithWhereUniqueWithoutUserInput,
   UserUpdateInput,
   UserWhereUniqueInput,
 } from '@/graphql/generated/gql/graphql';
 import { MutationUpdateOneUser } from '@/graphql/query/user';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
+import { produce } from 'immer';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
-import { Dispatch, PropsWithChildren, createContext, useMemo, useReducer } from 'react';
-import { produce } from 'immer';
+import { Dispatch, PropsWithChildren, createContext, useMemo, useReducer, useState } from 'react';
+import { useToast } from '../ui/use-toast';
+import _ from 'lodash';
 
 export default function UpdateUserContextProvider({
   user,
@@ -26,6 +26,7 @@ export default function UpdateUserContextProvider({
 }: PropsWithChildren<{ user: GetUserQuery['getUser'] }>) {
   const { data: session, update } = useSession();
   const [updateOneUser] = useMutation(MutationUpdateOneUser);
+  const [snapshot, setSnapshot] = useState<UpdateUserContextState>();
 
   const initialState = useMemo((): UpdateUserContextState => {
     return {
@@ -43,11 +44,19 @@ export default function UpdateUserContextProvider({
     };
   }, [user, session]);
   const [state, dispatch] = useReducer(updateUserReducer, initialState);
+  const { toast } = useToast();
 
   const submit = async () => {
     if (state.isUploading) return;
     if (!session?.user?.email) redirect('/login');
     if (!state.username) return;
+    if (snapshot && _.isEqual(snapshot, state)) {
+      toast({
+        description: '프로필이 변경되지 않았습니다.',
+        duration: 1000,
+      });
+      return;
+    }
 
     dispatch({
       type: 'setIsUploading',
@@ -55,7 +64,7 @@ export default function UpdateUserContextProvider({
     });
     const variables = createVariables(state);
 
-    const result = await updateOneUser({
+    const { data, errors } = await updateOneUser({
       variables,
     });
 
@@ -64,10 +73,25 @@ export default function UpdateUserContextProvider({
       payload: false,
     });
 
-    if (!result.errors) {
+    if (data) {
+      console.log('rhrh');
+      toast({
+        description: '프로필을 수정했습니다.',
+        duration: 1000,
+      });
       update({
-        username: result.data?.updateOneUser?.username,
-        role: result.data?.updateOneUser?.role,
+        username: data.updateOneUser?.username,
+        role: data.updateOneUser?.role,
+      });
+      setSnapshot(_.cloneDeep(state));
+    }
+
+    if (errors) {
+      toast({
+        variant: 'destructive',
+        title: '오류 발생',
+        description: '프로필 업데이트 중 오류가 발생했습니다.',
+        duration: 1000,
       });
     }
   };
