@@ -1,5 +1,6 @@
 'use client';
 
+import { getSignedUrlForPut } from '@/actions/file';
 import { UpdateUserContext } from '@/components/context/update-user-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -77,17 +78,9 @@ export default function ImageCard() {
 }
 
 export async function uploadFile(newFile: ImageFile) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ filename: newFile.file.name, contentType: newFile.file.type }),
-  });
+  const { url, key, error } = await getSignedUrlForPut(newFile.file.name, newFile.file.type);
 
-  if (response.ok) {
-    const { url, key } = await response.json();
-
+  if (url) {
     const uploadResponse = await fetch(url, {
       method: 'PUT',
       body: await newFile.file.arrayBuffer(),
@@ -96,5 +89,9 @@ export async function uploadFile(newFile: ImageFile) {
     console.log(uploadResponse);
 
     newFile.s3Key = key;
+  }
+
+  if (error) {
+    console.log(error);
   }
 }

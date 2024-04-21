@@ -41,7 +41,6 @@ import { randomUUID } from 'crypto';
 // }
 
 export async function getSignedUrlForPut(filename: string, contentType: string) {
-  // const { filename, contentType } = await request.json();
   try {
     const client = new S3Client({
       region: process.env.AWS_DEFAULT_REGION,
@@ -55,19 +54,12 @@ export async function getSignedUrlForPut(filename: string, contentType: string) 
     });
     const url = await getSignedUrl(client, command, { expiresIn: 3600 });
 
-    console.log(process.env.AWS_ACCESS_KEY_ID);
-    console.log(process.env.AWS_SECRET_ACCESS_KEY);
-    console.log(url);
-
     return {
       url,
       key,
-      data: {
-        id: process.env.AWS_ACCESS_KEY_ID,
-        key: process.env.AWS_SECRET_ACCESS_KEY,
-      },
     };
   } catch (error: any) {
+    console.log(error);
     return { error: error.message };
   }
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { getPosts } from '@/actions/post';
 import { GetPostsQuery } from '@/graphql/generated/gql/graphql';
 import { Session } from 'next-auth';
 import { PropsWithChildren, createContext, useEffect, useState } from 'react';

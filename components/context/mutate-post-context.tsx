@@ -128,16 +128,20 @@ export async function uploadFile(newFile: ImageFile) {
   //   newFile.s3Key = key;
   // }
 
-  const { url, key, data, error } = await getSignedUrlForPut(newFile.file.name, newFile.file.type);
+  const { url, key, error } = await getSignedUrlForPut(newFile.file.name, newFile.file.type);
 
-  console.log('error : ', error);
-  console.log('data is ', data);
-  const uploadResponse = await fetch(url!, {
-    method: 'PUT',
-    body: await newFile.file.arrayBuffer(),
-  });
+  if (url) {
+    const uploadResponse = await fetch(url, {
+      method: 'PUT',
+      body: await newFile.file.arrayBuffer(),
+    });
 
-  console.log(uploadResponse);
+    console.log(uploadResponse);
 
-  newFile.s3Key = key;
+    newFile.s3Key = key;
+  }
+
+  if (error) {
+    console.log(error);
+  }
 }
