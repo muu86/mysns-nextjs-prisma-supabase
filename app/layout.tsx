@@ -23,7 +23,7 @@ export default function RootLayout({
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
           <ApolloWrapper>
             <Side />
-            <div className="flex flex-col flex-1 h-full sm:gap-4 pb-14 sm:py-4 sm:pl-14">{children}</div>
+            <div className="flex flex-col flex-1 h-full sm:gap-4 pb-14 sm:pb-0 sm:pl-14">{children}</div>
 
             <Toaster />
           </ApolloWrapper>

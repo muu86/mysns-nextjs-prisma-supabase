@@ -17,7 +17,9 @@ export default async function Page({ params }: { params: { userId: string } }) {
     },
   });
   if (!me) throw new Error('로그인이 필요합니다.');
-  console.log('[Chat] me: ', me);
+  if (me.id === params.userId) {
+    redirect('/chat');
+  }
 
   const { data } = await getClient().query({
     query: QueryChats,
@@ -46,9 +48,6 @@ export default async function Page({ params }: { params: { userId: string } }) {
       },
     },
   });
-  // console.log('[Chat] chats: ', data.chats.length === 0);
-  console.log('[Chat] me.id: ', parseInt(me.id));
-  console.log('[Chat] params.userId', parseInt(params.userId));
 
   if (data.chats.length === 0) {
     console.log('[Chat] create new chat');

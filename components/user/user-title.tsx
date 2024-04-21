@@ -4,7 +4,7 @@ import { Session } from 'next-auth';
 
 export default function UserTitle({ session, isOwner }: { session: Session | null; isOwner: boolean }) {
   return (
-    <div className="px-4 mt-2 flex items-center gap-4">
+    <div className="w-full px-4 mt-2 flex items-center gap-4">
       {/* <Button variant="outline" size="icon" className="h-7 w-7">
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Back</span>

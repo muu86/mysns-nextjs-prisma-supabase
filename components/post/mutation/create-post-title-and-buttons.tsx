@@ -2,7 +2,7 @@ import SubmitButtons from '@/components/post/mutation/submit-buttons';
 
 export default function CreatePostTitleAndButtons() {
   return (
-    <div className="px-4 mt-2 flex items-center gap-4">
+    <div className="px-4 mt-2 flex w-full items-center gap-4">
       {/* <Button variant="outline" size="icon" className="h-7 w-7">
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Back</span>

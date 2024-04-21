@@ -37,7 +37,7 @@ export default async function Page({ params }: { params: { email: string } }) {
       <DefaultContainer>
         <UserTitle session={session} isOwner={isOwner} />
         <DefaultCardContainer>
-          <Card className="py-4">
+          <Card className="flex flex-col gap-4 h-full py-4">
             <CardContent>
               {profileImageSrc ? (
                 <Image
@@ -66,11 +66,13 @@ export default async function Page({ params }: { params: { email: string } }) {
                 ))}
             </div>
 
-            <div className="flex flex-col items-center justify-center">
-              <p className="min-h-32">{user.content}</p>
-            </div>
+            <Card className="mt-4 mx-4 p-6 border">
+              <CardContent>
+                <p className="">{user.content}</p>
+              </CardContent>
+            </Card>
 
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col flex-1 items-center justify-center">
               <Link href={`/n/chat/${user.id}`}>
                 <Button>
                   <MessageCircleMore />

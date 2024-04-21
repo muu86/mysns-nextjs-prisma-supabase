@@ -4,7 +4,7 @@ import { ChatContext } from '@/components/context/chat-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { ChatMessagesQuery, ChatsQuery, SortOrder } from '@/graphql/generated/gql/graphql';
+import { ActiveStatus, ChatMessagesQuery, ChatsQuery, SortOrder } from '@/graphql/generated/gql/graphql';
 import { MutationCreateOneChatMessage, QueryChatMessages, SubscriptionChat } from '@/graphql/query/chat';
 import { cn } from '@/lib/utils';
 import { useMutation, useSubscription, useSuspenseQuery } from '@apollo/client';
@@ -86,19 +86,14 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
   }
 
   return (
-    <div className="flex flex-col flex-1 gap-2">
-      <div className="flex flex-col-reverse max-h-[580px] overflow-y-scroll bg-muted flex-1">
+    <div className="flex flex-col h-full gap-2">
+      <div className="flex flex-col-reverse overflow-y-scroll bg-muted flex-1">
         {messages.map((cm, i) => (
           <Message key={i} session={session} chat={chat} chatMessage={cm} />
         ))}
       </div>
       <div className="flex flex-col w-full gap-2">
-        <Textarea
-          className="flex-1"
-          placeholder="댓글달기."
-          value={currentMessage}
-          onChange={messageChangeEventHandler}
-        />
+        <Textarea className="flex-1" value={currentMessage} onChange={messageChangeEventHandler} />
         {/* <Test chat={chat} /> */}
         <Button onClick={submitHandler} variant="ghost" className="self-end">
           <Send />
@@ -120,19 +115,23 @@ function Message({
   if (session?.user?.role !== 'WRITE') return;
 
   const other = chatMessage.user.email !== session.user.email;
+  const image = chatMessage.user.files.find((f) => f.status === ActiveStatus.Active)?.file.url.sm;
 
   return (
     <div
-      className={cn('mx-2 py-1 pr-3 bg-primaryv2-foreground rounded-lg my-2 flex flex-row gap-2 items-center', {
-        'self-end': other,
-        'self-start': !other,
+      className={cn('mx-2 py-1 pl-2 pr-3 bg-primaryv2-foreground rounded-lg my-2 flex flex-row gap-2 items-center', {
+        'self-end ml-16': other,
+        'self-start mr-16': !other,
       })}
     >
-      <Avatar>
-        <AvatarImage />
-        <AvatarFallback className="bg-primaryv2-foreground">
-          <CircleUser />
-        </AvatarFallback>
+      <Avatar className="ring-1 w-10 h-10">
+        {image ? (
+          <AvatarImage src={image} className="object-cover border" />
+        ) : (
+          <AvatarFallback className="bg-primaryv2-foreground">
+            <CircleUser />
+          </AvatarFallback>
+        )}
       </Avatar>
       <p>{chatMessage.message}</p>
     </div>

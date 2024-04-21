@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { QueryChats } from '@/graphql/query/chat';
 import { useSuspenseQuery } from '@apollo/client';
 import { redirect } from 'next/navigation';
-import { Suspense, useCallback, useContext, useMemo } from 'react';
+import { Suspense, useContext, useMemo } from 'react';
 import { ChatContext } from '../context/chat-context';
 
 export default function Chat() {
@@ -40,20 +40,20 @@ export default function Chat() {
   }, [data.chats, state.selectedChatId]);
 
   return (
-    <Card className="flex flex-col flex-1 items-start gap-4 lg:gap-8">
-      <CardHeader>
-        {/* {loading ? <Skeleton className="bg-black w-full aspect-square" /> : <ChatList chats={data.chats} />} */}
-        <Suspense fallback={<Skeleton className="bg-black w-full aspect-square" />}>
-          <ChatList session={session} chatList={data.chats} />
-        </Suspense>
-      </CardHeader>
-      <CardContent className="flex flex-col flex-1 w-full">
+    // <Card className="max-h-[calc(100vh-60px)] overflow-hidden flex flex-col items-start lg:gap-8">
+    <Card className="h-[calc(100vh-60px)] overflow-hidden grid grid-rows-12">
+      {/* <CardHeader className="p-0"> */}
+      <Suspense fallback={<Skeleton className="bg-black w-full aspect-square" />}>
+        <ChatList session={session} chatList={data.chats} />
+      </Suspense>
+      {/* </CardHeader> */}
+      <CardContent className="row-span-12">
         {chat ? (
-          <Suspense fallback={<Skeleton className="w-full flex-1 flex items-center justify-center">로딩</Skeleton>}>
+          <Suspense fallback={<Skeleton className="w-full h-full flex items-center justify-center">로딩</Skeleton>}>
             <ChatRoom chat={chat} />
           </Suspense>
         ) : (
-          <div className="w-full flex-1 flex items-center justify-center rounded-md bg-muted">
+          <div className="w-full h-full flex items-center justify-center rounded-md bg-muted">
             {data.chats.length === 0 ? '채팅이 없습니다.' : '채팅을 선택해주세요.'}
           </div>
         )}

@@ -13,6 +13,9 @@ const config = {
       },
     },
     extend: {
+      height: {
+        vhmax: 'var(--vh-max)',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

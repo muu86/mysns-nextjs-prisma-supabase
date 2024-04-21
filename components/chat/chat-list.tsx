@@ -1,23 +1,53 @@
 'use client';
 
+import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerTrigger } from '@/components/ui/drawer';
 import { ChatsQuery } from '@/graphql/generated/gql/graphql';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { MouseEvent, useContext } from 'react';
-import { ChatContext } from '../context/chat-context';
+import { cn } from '@/lib/utils';
+import { PanelLeftOpen } from 'lucide-react';
 import { Session } from 'next-auth';
+import { MouseEvent, useContext, useState } from 'react';
+import { ChatContext } from '../context/chat-context';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Button } from '../ui/button';
 
 export default function ChatList({ session, chatList }: { session: Session | null; chatList: ChatsQuery['chats'] }) {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="my-2 flex flex-row">
-      {chatList && chatList.map((c, i) => <ChatListOne key={i} session={session} chat={c} />)}
-    </div>
+    // <div className="mt-2 flex flex-row gap-2">
+    //   {chatList && chatList.map((c, i) => <ChatListOne key={i} session={session} chat={c} />)}
+    // </div>
+
+    <Drawer open={open} onOpenChange={setOpen} direction="left">
+      <DrawerTrigger>
+        {/* <Button onClick={() => setOpen(true)} variant="link" className="w-12 h-12 p-0"> */}
+        <PanelLeftOpen className={cn('transition-all', { 'rotate-180': open })} />
+        {/* </Button> */}
+      </DrawerTrigger>
+      <DrawerContent className="h-screen rounded-none w-32">
+        <div className="mx-auto w-full max-w-sm">
+          {/* <DrawerHeader>
+            <DrawerTitle>Move Goal</DrawerTitle>
+            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+          </DrawerHeader> */}
+          <div className="mt-2 flex flex-col gap-2">
+            {chatList && chatList.map((c, i) => <ChatListOne key={i} session={session} chat={c} />)}
+          </div>
+          <DrawerFooter>
+            <Button>Submit</Button>
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
 function ChatListOne({ session, chat }: { session: Session | null; chat: ChatsQuery['chats'][number] }) {
   const { state, dispatch } = useContext(ChatContext);
 
-  function chatSelectHandler(event: MouseEvent<HTMLDivElement>): void {
+  function chatSelectHandler(event: MouseEvent<HTMLButtonElement>): void {
     dispatch({
       type: 'chat/select',
       payload: chat.id,
@@ -28,7 +58,11 @@ function ChatListOne({ session, chat }: { session: Session | null; chat: ChatsQu
   const image = other?.user.files.find((f) => f.file?.url?.sm)?.file.url.sm;
 
   return (
-    <div onClick={chatSelectHandler} className="flex-1 flex flex-col items-center justify-start gap-4">
+    <Button
+      onClick={chatSelectHandler}
+      variant="ghost"
+      className="flex-1 flex flex-col h-[6rem] items-center justify-start gap-4"
+    >
       <div className="flex flex-row">
         <Avatar className="">
           {image && <AvatarImage src={image} alt="profile-image" className="object-cover" />}
@@ -39,9 +73,9 @@ function ChatListOne({ session, chat }: { session: Session | null; chat: ChatsQu
         </Avatar>
       </div>
       <div className="">
-        <p className="text-sm font-medium leading-none">username</p>
+        <p className="text-sm font-medium leading-none">{other?.user.username || '1'}</p>
         {/* <p className="text-sm text-muted-foreground">olivia.martin@email.com</p> */}
       </div>
-    </div>
+    </Button>
   );
 }

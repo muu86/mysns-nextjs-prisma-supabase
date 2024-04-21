@@ -11,6 +11,7 @@ export const QueryChats = graphql(`
           username
           email
           files {
+            status
             file {
               url {
                 raw
@@ -36,6 +37,7 @@ export const QueryChatMessages = graphql(`
         username
         email
         files {
+          status
           file {
             url {
               sm
@@ -77,6 +79,7 @@ export const SubscriptionChat = graphql(`
         username
         email
         files {
+          status
           file {
             url {
               sm
