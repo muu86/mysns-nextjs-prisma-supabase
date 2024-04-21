@@ -1,12 +1,9 @@
 import { PostsQuery } from '@/graphql/generated/gql/graphql';
 import Image from 'next/image';
-import { useState } from 'react';
 import { Card, CardContent } from '../ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel';
 
 export default function PostCarousel({ post }: { post: PostsQuery['posts'][number] }) {
-  const [urls, setUrls] = useState<string[]>([]);
-
   return (
     <Carousel className="grid">
       <CarouselContent>
@@ -21,6 +18,7 @@ export default function PostCarousel({ post }: { post: PostsQuery['posts'][numbe
 }
 
 function Item({ url }: { url?: string | null }) {
+  console.log(url);
   return (
     <CarouselItem>
       <Card>

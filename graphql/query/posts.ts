@@ -8,6 +8,7 @@ export const QueryPosts = graphql(`
       user {
         id
         files {
+          status
           file {
             url {
               raw

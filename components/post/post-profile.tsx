@@ -1,30 +1,29 @@
-import { getPresignedUrlForGet } from '@/actions/file';
-import { PostsQuery } from '@/graphql/generated/gql/graphql';
-import { Suspense, useEffect, useState } from 'react';
-import ProfileImageWithFallback from '../common/profile-image-with-fallback';
+import { ActiveStatus, PostsQuery } from '@/graphql/generated/gql/graphql';
 import * as dfn from 'date-fns';
+import { Suspense, useState } from 'react';
+import ProfileImageWithFallback from '../common/profile-image-with-fallback';
 import { Badge } from '../ui/badge';
+import Image from 'next/image';
+import { CircleUser } from 'lucide-react';
 
 export default function PostCardProfile({ post }: { post: PostsQuery['posts'][number] }) {
-  const [url, setUrl] = useState<string | undefined>();
-
-  useEffect(() => {
-    (async () => {
-      if (post.user.files.length > 0) {
-        const urls = await getPresignedUrlForGet(post.user.files[0].file.location);
-        setUrl(urls.lg);
-      }
-    })();
-  }, [post]);
-
-  const [error, setError] = useState(false);
-
+  const src = post.user.files.find((f) => f.status === ActiveStatus.Active)?.file.url.sm;
   return (
     <div className="my-2 flex flex-row">
       <div className="flex-1 flex flex-row items-center justify-start gap-4">
-        <Suspense fallback={<div className="w-full h-full bg-black">hi</div>}>
+        {/* <Suspense fallback={<div className="w-full h-full bg-black">hi</div>}>
           <ProfileImageWithFallback className="col-span-8" src={url} />
-        </Suspense>
+        </Suspense> */}
+        <div className="relative flex justify-center items-center rounded-full overflow-hidden h-10 w-10 shrink-0">
+          {src ? (
+            <Image fill src={src} alt="profile" className="object-cover" />
+          ) : (
+            <div className="w-full aspect-square flex items-center justify-center bg-muted">
+              <CircleUser />
+            </div>
+          )}
+        </div>
+
         <div className="">
           <p className="text-sm font-medium leading-none">{post.user.username ? post.user.username : '?'}</p>
           {/* <p className="text-sm text-muted-foreground">olivia.martin@email.com</p> */}

@@ -53,7 +53,9 @@ export default function Chat() {
             <ChatRoom chat={chat} />
           </Suspense>
         ) : (
-          <Skeleton className="w-full flex-1 flex items-center justify-center">채팅을 선택해주세요.</Skeleton>
+          <div className="w-full flex-1 flex items-center justify-center rounded-md bg-muted">
+            {data.chats.length === 0 ? '채팅이 없습니다.' : '채팅을 선택해주세요.'}
+          </div>
         )}
       </CardContent>
     </Card>

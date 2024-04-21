@@ -1141,10 +1141,30 @@ input UserFileWhereInput {
   id: IntFilter
   userId: IntFilter
   fileId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   file: FileRelationFilter
   user: UserRelationFilter
+}
+
+input EnumActiveStatusFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusFilter
+}
+
+enum ActiveStatus {
+  ACTIVE
+  INACTIVE
+}
+
+input NestedEnumActiveStatusFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusFilter
 }
 
 input AddressRelationFilter {
@@ -1187,6 +1207,7 @@ input UserAddressWhereInput {
   id: IntFilter
   userId: IntFilter
   addressId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   address: AddressRelationFilter
@@ -1764,6 +1785,7 @@ type UserFile {
   id: ID!
   userId: Int!
   fileId: Int!
+  status: ActiveStatus!
   createdAt: DateTimeISO!
   updatedAt: DateTimeISO!
   file: File!
@@ -1774,6 +1796,7 @@ input UserFileOrderByWithRelationInput {
   id: SortOrder
   userId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   file: FileOrderByWithRelationInput
@@ -1787,6 +1810,7 @@ input UserFileWhereUniqueInput {
   NOT: [UserFileWhereInput!]
   userId: IntFilter
   fileId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   file: FileRelationFilter
@@ -1797,6 +1821,7 @@ enum UserFileScalarFieldEnum {
   id
   userId
   fileId
+  status
   createdAt
   updatedAt
 }
@@ -1870,6 +1895,7 @@ type UserAddress {
   id: ID!
   userId: Int!
   addressId: Int!
+  status: ActiveStatus!
   createdAt: DateTimeISO!
   updatedAt: DateTimeISO!
   address: Address!
@@ -1880,6 +1906,7 @@ input UserAddressOrderByWithRelationInput {
   id: SortOrder
   userId: SortOrder
   addressId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   address: AddressOrderByWithRelationInput
@@ -1893,6 +1920,7 @@ input UserAddressWhereUniqueInput {
   NOT: [UserAddressWhereInput!]
   userId: IntFilter
   addressId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   address: AddressRelationFilter
@@ -1903,6 +1931,7 @@ enum UserAddressScalarFieldEnum {
   id
   userId
   addressId
+  status
   createdAt
   updatedAt
 }
@@ -3841,6 +3870,7 @@ type UserAddressCountAggregate {
   id: Int!
   userId: Int!
   addressId: Int!
+  status: Int!
   createdAt: Int!
   updatedAt: Int!
   _all: Int!
@@ -3862,6 +3892,7 @@ type UserAddressMinAggregate {
   id: Int
   userId: Int
   addressId: Int
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -3870,6 +3901,7 @@ type UserAddressMaxAggregate {
   id: Int
   userId: Int
   addressId: Int
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -3878,6 +3910,7 @@ type UserAddressGroupBy {
   id: Int!
   userId: Int!
   addressId: Int!
+  status: ActiveStatus!
   createdAt: DateTimeISO!
   updatedAt: DateTimeISO!
   _count: UserAddressCountAggregate
@@ -3891,6 +3924,7 @@ input UserAddressOrderByWithAggregationInput {
   id: SortOrder
   userId: SortOrder
   addressId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   _count: UserAddressCountOrderByAggregateInput
@@ -3904,6 +3938,7 @@ input UserAddressCountOrderByAggregateInput {
   id: SortOrder
   userId: SortOrder
   addressId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -3918,6 +3953,7 @@ input UserAddressMaxOrderByAggregateInput {
   id: SortOrder
   userId: SortOrder
   addressId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -3926,6 +3962,7 @@ input UserAddressMinOrderByAggregateInput {
   id: SortOrder
   userId: SortOrder
   addressId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -3943,8 +3980,29 @@ input UserAddressScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   userId: IntWithAggregatesFilter
   addressId: IntWithAggregatesFilter
+  status: EnumActiveStatusWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
+}
+
+input EnumActiveStatusWithAggregatesFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedEnumActiveStatusFilter
+  _max: NestedEnumActiveStatusFilter
+}
+
+input NestedEnumActiveStatusWithAggregatesFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedEnumActiveStatusFilter
+  _max: NestedEnumActiveStatusFilter
 }
 
 type AggregateUserFile {
@@ -3959,6 +4017,7 @@ type UserFileCountAggregate {
   id: Int!
   userId: Int!
   fileId: Int!
+  status: Int!
   createdAt: Int!
   updatedAt: Int!
   _all: Int!
@@ -3980,6 +4039,7 @@ type UserFileMinAggregate {
   id: Int
   userId: Int
   fileId: Int
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -3988,6 +4048,7 @@ type UserFileMaxAggregate {
   id: Int
   userId: Int
   fileId: Int
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -3996,6 +4057,7 @@ type UserFileGroupBy {
   id: Int!
   userId: Int!
   fileId: Int!
+  status: ActiveStatus!
   createdAt: DateTimeISO!
   updatedAt: DateTimeISO!
   _count: UserFileCountAggregate
@@ -4009,6 +4071,7 @@ input UserFileOrderByWithAggregationInput {
   id: SortOrder
   userId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   _count: UserFileCountOrderByAggregateInput
@@ -4022,6 +4085,7 @@ input UserFileCountOrderByAggregateInput {
   id: SortOrder
   userId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -4036,6 +4100,7 @@ input UserFileMaxOrderByAggregateInput {
   id: SortOrder
   userId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -4044,6 +4109,7 @@ input UserFileMinOrderByAggregateInput {
   id: SortOrder
   userId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -4061,6 +4127,7 @@ input UserFileScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   userId: IntWithAggregatesFilter
   fileId: IntWithAggregatesFilter
+  status: EnumActiveStatusWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
 }
@@ -4653,6 +4720,7 @@ input UserFileCreateNestedManyWithoutFileInput {
 }
 
 input UserFileCreateWithoutFileInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   user: UserCreateNestedOneWithoutFilesInput!
@@ -4779,6 +4847,7 @@ input UserAddressCreateNestedManyWithoutUserInput {
 }
 
 input UserAddressCreateWithoutUserInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   address: AddressCreateNestedOneWithoutUsersInput!
@@ -4801,6 +4870,7 @@ input UserAddressCreateManyUserInputEnvelope {
 input UserAddressCreateManyUserInput {
   id: Int
   addressId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -4813,6 +4883,7 @@ input UserFileCreateNestedManyWithoutUserInput {
 }
 
 input UserFileCreateWithoutUserInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   file: FileCreateNestedOneWithoutFilesInput!
@@ -5046,6 +5117,7 @@ input UserFileCreateManyUserInputEnvelope {
 input UserFileCreateManyUserInput {
   id: Int
   fileId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -5109,6 +5181,7 @@ input UserFileCreateManyFileInputEnvelope {
 input UserFileCreateManyFileInput {
   id: Int
   userId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -5596,9 +5669,14 @@ input UserFileUpsertWithWhereUniqueWithoutFileInput {
 }
 
 input UserFileUpdateWithoutFileInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutFilesNestedInput
+}
+
+input EnumActiveStatusFieldUpdateOperationsInput {
+  set: ActiveStatus
 }
 
 input UserUpdateOneRequiredWithoutFilesNestedInput {
@@ -5801,6 +5879,7 @@ input UserAddressUpsertWithWhereUniqueWithoutUserInput {
 }
 
 input UserAddressUpdateWithoutUserInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   address: AddressUpdateOneRequiredWithoutUsersNestedInput
@@ -5925,6 +6004,7 @@ input UserFileUpsertWithWhereUniqueWithoutUserInput {
 }
 
 input UserFileUpdateWithoutUserInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   file: FileUpdateOneRequiredWithoutFilesNestedInput
@@ -6037,6 +6117,7 @@ input UserAddressUpdateManyWithoutAddressNestedInput {
 }
 
 input UserAddressCreateWithoutAddressInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   user: UserCreateNestedOneWithoutAddressesInput!
@@ -6085,6 +6166,7 @@ input UserAddressUpsertWithWhereUniqueWithoutAddressInput {
 }
 
 input UserAddressUpdateWithoutAddressInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutAddressesNestedInput
@@ -6309,6 +6391,7 @@ input UserAddressCreateManyAddressInputEnvelope {
 input UserAddressCreateManyAddressInput {
   id: Int
   userId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -6330,11 +6413,13 @@ input UserAddressScalarWhereInput {
   id: IntFilter
   userId: IntFilter
   addressId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
 
 input UserAddressUpdateManyMutationInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -6392,11 +6477,13 @@ input UserFileScalarWhereInput {
   id: IntFilter
   userId: IntFilter
   fileId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
 
 input UserFileUpdateManyMutationInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -6994,11 +7081,13 @@ input UserAddressCreateManyInput {
   id: Int
   userId: Int!
   addressId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
 
 input UserAddressCreateInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   address: AddressCreateNestedOneWithoutUsersInput!
@@ -7006,6 +7095,7 @@ input UserAddressCreateInput {
 }
 
 input UserAddressUpdateInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   address: AddressUpdateOneRequiredWithoutUsersNestedInput
@@ -7016,11 +7106,13 @@ input UserFileCreateManyInput {
   id: Int
   userId: Int!
   fileId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
 
 input UserFileCreateInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   file: FileCreateNestedOneWithoutFilesInput!
@@ -7028,6 +7120,7 @@ input UserFileCreateInput {
 }
 
 input UserFileUpdateInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   file: FileUpdateOneRequiredWithoutFilesNestedInput

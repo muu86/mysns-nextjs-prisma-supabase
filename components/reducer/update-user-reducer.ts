@@ -1,4 +1,4 @@
-import { UserContextState } from '@/components/context/update-user-context';
+import { UpdateUserContextState } from '@/components/context/update-user-context';
 import { produce } from 'immer';
 
 export type UpdateUserActionType =
@@ -13,13 +13,13 @@ export type UpdateUserActionType =
 export type UpdateUserAction =
   | { type: 'setUsername'; payload: string }
   | { type: 'setContent'; payload: string }
-  | { type: 'setFile'; payload: UserContextState['file'] }
+  | { type: 'setFile'; payload: UpdateUserContextState['newFile'] }
   | { type: 'setIsUploading'; payload: boolean }
-  | { type: 'setBabyBirth'; payload: UserContextState['babyBirth'] }
-  | { type: 'addAddress'; payload: UserContextState['address'][number] }
-  | { type: 'removeAddress'; payload: UserContextState['address'][number] };
+  | { type: 'setBabyBirth'; payload: UpdateUserContextState['babyBirth'] }
+  | { type: 'addAddress'; payload: UpdateUserContextState['address'][number] }
+  | { type: 'removeAddress'; payload: UpdateUserContextState['address'][number] };
 
-export const updateUserReducer = produce((draft: UserContextState, action: UpdateUserAction) => {
+export const updateUserReducer = produce((draft: UpdateUserContextState, action: UpdateUserAction) => {
   switch (action.type) {
     case 'setUsername': {
       draft.username = action.payload;
@@ -30,7 +30,7 @@ export const updateUserReducer = produce((draft: UserContextState, action: Updat
       break;
     }
     case 'setFile': {
-      draft.file = action.payload;
+      draft.newFile = action.payload;
       break;
     }
     case 'setIsUploading': {

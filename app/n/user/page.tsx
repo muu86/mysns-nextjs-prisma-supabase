@@ -1,3 +1,4 @@
+import { getClient } from '@/app/apollo-client';
 import { auth } from '@/auth';
 import UpdateUserContextProvider from '@/components/context/update-user-context';
 import DefaultCardContainer from '@/components/layout/default-card-container';
@@ -8,13 +9,22 @@ import ContentCard from '@/components/user/mutation/content-card';
 import CreateUserTitleAndButtons from '@/components/user/mutation/create-user-title-and-buttons';
 import ImageCard from '@/components/user/mutation/image-card';
 import UsernameCard from '@/components/user/mutation/username-card';
+import { QueryGetUser } from '@/graphql/query/user';
 import { SessionProvider } from 'next-auth/react';
 
 export default async function Page() {
   const session = await auth();
+  const { data } = await getClient().query({
+    query: QueryGetUser,
+    variables: {
+      where: {
+        email: session?.user?.email || '',
+      },
+    },
+  });
   return (
     <SessionProvider session={session}>
-      <UpdateUserContextProvider>
+      <UpdateUserContextProvider user={data.getUser}>
         <DefaultContainer>
           <CreateUserTitleAndButtons />
           <DefaultCardContainer>

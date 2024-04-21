@@ -21,10 +21,9 @@ export default function ImageCard() {
 
       const tempUrl = URL.createObjectURL(file);
       const newFile: ImageFile = { tempUrl, file };
-      dispatch({ type: 'setFile', payload: { tempUrl, file } });
-
       await uploadFile(newFile);
 
+      dispatch({ type: 'setFile', payload: newFile });
       dispatch({ type: 'setIsUploading', payload: false });
     },
     [dispatch]
@@ -47,13 +46,21 @@ export default function ImageCard() {
               className="hidden"
             />
             <label htmlFor="profile-image-upload">
-              {state.file ? (
+              {state.newFile ? (
                 <Image
                   alt="profile image"
                   className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
                   height="300"
                   width="300"
-                  src={`${state.file.tempUrl}`}
+                  src={`${state.newFile.tempUrl}`}
+                />
+              ) : state.before && state.before.files.length > 0 ? (
+                <Image
+                  alt="profile image"
+                  className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
+                  height="300"
+                  width="300"
+                  src={`${state.before.files[0].file.url.md}`}
                 />
               ) : (
                 <Skeleton className="mx-auto w-1/2 rounded-full aspect-square flex items-center justify-center hover:cursor-pointer">
@@ -70,7 +77,6 @@ export default function ImageCard() {
 }
 
 export async function uploadFile(newFile: ImageFile) {
-  console.log(process.env.NEXT_PUBLIC_BASE_URL);
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
     method: 'POST',
     headers: {
@@ -80,18 +86,14 @@ export async function uploadFile(newFile: ImageFile) {
   });
 
   if (response.ok) {
-    const { url, fields, key } = await response.json();
-
-    const formData = new FormData();
-    Object.entries(fields).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-    formData.append('file', newFile.file);
+    const { url, key } = await response.json();
 
     const uploadResponse = await fetch(url, {
-      method: 'POST',
-      body: formData,
+      method: 'PUT',
+      body: await newFile.file.arrayBuffer(),
     });
+
+    console.log(uploadResponse);
 
     newFile.s3Key = key;
   }

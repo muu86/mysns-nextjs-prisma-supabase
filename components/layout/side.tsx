@@ -1,38 +1,18 @@
+import { auth } from '@/auth';
 import { cn } from '@/lib/utils';
 import { Baby, FilePlus, Home, LucideIcon, MessageCircleMore, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import { auth } from '@/auth';
-import { useMemo } from 'react';
-
-// const menus = [
-//   {
-//     name: '홈',
-//     link: '/',
-//     Icon: Home,
-//   },
-//   { name: '새 포스트', link: '/n/post', Icon: FilePlus },
-//   {
-//     name: '메시지',
-//     link: '/chat',
-//     Icon: MessageCircleMore,
-//   },
-//   {
-//     name: '프로필',
-//     link: `/n/user`,
-//     Icon: User,
-//   },
-// ];
 
 export default async function Side() {
   const session = await auth();
-  // console.log(session.user);
+  const profilieLink = session?.user?.email ? `/user/${encodeURIComponent(session.user.email)}` : '/login';
   const menus = [
-    {
-      name: '홈',
-      link: '/',
-      Icon: Home,
-    },
+    // {
+    //   name: '홈',
+    //   link: '/',
+    //   Icon: Home,
+    // },
     { name: '새 포스트', link: '/n/post', Icon: FilePlus },
     {
       name: '메시지',
@@ -41,17 +21,17 @@ export default async function Side() {
     },
     {
       name: '프로필',
-      link: `/user/${encodeURIComponent(session?.user?.email || '')}`,
+      link: profilieLink,
       Icon: User,
     },
   ];
 
   return (
     // <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-    <aside className="fixed bottom-0 sm:left-0 z-10 flex flex-row sm:flex-col w-full sm:w-14 h-14 sm:h-full border-r bg-background">
-      <nav className="flex flex-row sm:flex-col items-center gap-4 px-2 sm:py-5">
+    <aside className="fixed bottom-0 sm:left-0 z-10 flex flex-row sm:flex-col justify-center sm:justify-start w-full sm:w-14 h-14 sm:h-full border-r bg-background">
+      <nav className="flex flex-row sm:flex-col items-center justify-center gap-4 px-2 sm:py-5">
         <Link
-          href="#"
+          href="/"
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primaryv2 text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Baby className="h-6 w-6 transition-all group-hover:scale-110" />
@@ -61,7 +41,7 @@ export default async function Side() {
           <SideOne key={i} menu={m} />
         ))}
       </nav>
-      <nav className="ml-auto sm:mt-auto flex flex-row sm:flex-col items-center gap-4 px-2 sm:py-5">
+      {/* <nav className="ml-auto sm:mt-auto flex flex-row sm:flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -76,7 +56,7 @@ export default async function Side() {
             <TooltipContent side="right">Settings</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </nav>
+      </nav> */}
     </aside>
   );
 }

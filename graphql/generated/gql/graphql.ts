@@ -483,6 +483,11 @@ export type AccountWhereUniqueInput = {
   userId?: InputMaybe<IntFilter>;
 };
 
+export enum ActiveStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
+
 export type Address = {
   __typename?: 'Address';
   _count?: Maybe<AddressCount>;
@@ -2413,6 +2418,27 @@ export type DateTimeWithAggregatesFilter = {
   notIn?: InputMaybe<Array<Scalars['DateTimeISO']['input']>>;
 };
 
+export type EnumActiveStatusFieldUpdateOperationsInput = {
+  set?: InputMaybe<ActiveStatus>;
+};
+
+export type EnumActiveStatusFilter = {
+  equals?: InputMaybe<ActiveStatus>;
+  in?: InputMaybe<Array<ActiveStatus>>;
+  not?: InputMaybe<NestedEnumActiveStatusFilter>;
+  notIn?: InputMaybe<Array<ActiveStatus>>;
+};
+
+export type EnumActiveStatusWithAggregatesFilter = {
+  _count?: InputMaybe<NestedIntFilter>;
+  _max?: InputMaybe<NestedEnumActiveStatusFilter>;
+  _min?: InputMaybe<NestedEnumActiveStatusFilter>;
+  equals?: InputMaybe<ActiveStatus>;
+  in?: InputMaybe<Array<ActiveStatus>>;
+  not?: InputMaybe<NestedEnumActiveStatusWithAggregatesFilter>;
+  notIn?: InputMaybe<Array<ActiveStatus>>;
+};
+
 export type EnumFileStorageTypeFieldUpdateOperationsInput = {
   set?: InputMaybe<FileStorageType>;
 };
@@ -3646,6 +3672,23 @@ export type NestedDateTimeWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['DateTimeISO']['input']>;
   not?: InputMaybe<NestedDateTimeWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['DateTimeISO']['input']>>;
+};
+
+export type NestedEnumActiveStatusFilter = {
+  equals?: InputMaybe<ActiveStatus>;
+  in?: InputMaybe<Array<ActiveStatus>>;
+  not?: InputMaybe<NestedEnumActiveStatusFilter>;
+  notIn?: InputMaybe<Array<ActiveStatus>>;
+};
+
+export type NestedEnumActiveStatusWithAggregatesFilter = {
+  _count?: InputMaybe<NestedIntFilter>;
+  _max?: InputMaybe<NestedEnumActiveStatusFilter>;
+  _min?: InputMaybe<NestedEnumActiveStatusFilter>;
+  equals?: InputMaybe<ActiveStatus>;
+  in?: InputMaybe<Array<ActiveStatus>>;
+  not?: InputMaybe<NestedEnumActiveStatusWithAggregatesFilter>;
+  notIn?: InputMaybe<Array<ActiveStatus>>;
 };
 
 export type NestedEnumFileStorageTypeFilter = {
@@ -6474,6 +6517,7 @@ export type UserAddress = {
   addressId: Scalars['Int']['output'];
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
+  status: ActiveStatus;
   updatedAt: Scalars['DateTimeISO']['output'];
   user: User;
   userId: Scalars['Int']['output'];
@@ -6498,6 +6542,7 @@ export type UserAddressCountAggregate = {
   addressId: Scalars['Int']['output'];
   createdAt: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  status: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
 };
@@ -6506,6 +6551,7 @@ export type UserAddressCountOrderByAggregateInput = {
   addressId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -6513,6 +6559,7 @@ export type UserAddressCountOrderByAggregateInput = {
 export type UserAddressCreateInput = {
   address: AddressCreateNestedOneWithoutUsersInput;
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   user: UserCreateNestedOneWithoutAddressesInput;
 };
@@ -6520,6 +6567,7 @@ export type UserAddressCreateInput = {
 export type UserAddressCreateManyAddressInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   userId: Scalars['Int']['input'];
 };
@@ -6533,6 +6581,7 @@ export type UserAddressCreateManyInput = {
   addressId: Scalars['Int']['input'];
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   userId: Scalars['Int']['input'];
 };
@@ -6541,6 +6590,7 @@ export type UserAddressCreateManyUserInput = {
   addressId: Scalars['Int']['input'];
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
 };
 
@@ -6568,6 +6618,7 @@ export type UserAddressCreateOrConnectWithoutUserInput = {
 
 export type UserAddressCreateWithoutAddressInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   user: UserCreateNestedOneWithoutAddressesInput;
 };
@@ -6575,6 +6626,7 @@ export type UserAddressCreateWithoutAddressInput = {
 export type UserAddressCreateWithoutUserInput = {
   address: AddressCreateNestedOneWithoutUsersInput;
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
 };
 
@@ -6588,6 +6640,7 @@ export type UserAddressGroupBy = {
   addressId: Scalars['Int']['output'];
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['Int']['output'];
+  status: ActiveStatus;
   updatedAt: Scalars['DateTimeISO']['output'];
   userId: Scalars['Int']['output'];
 };
@@ -6603,6 +6656,7 @@ export type UserAddressMaxAggregate = {
   addressId?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['DateTimeISO']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+  status?: Maybe<ActiveStatus>;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   userId?: Maybe<Scalars['Int']['output']>;
 };
@@ -6611,6 +6665,7 @@ export type UserAddressMaxOrderByAggregateInput = {
   addressId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -6620,6 +6675,7 @@ export type UserAddressMinAggregate = {
   addressId?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['DateTimeISO']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+  status?: Maybe<ActiveStatus>;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   userId?: Maybe<Scalars['Int']['output']>;
 };
@@ -6628,6 +6684,7 @@ export type UserAddressMinOrderByAggregateInput = {
   addressId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -6645,6 +6702,7 @@ export type UserAddressOrderByWithAggregationInput = {
   addressId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -6654,6 +6712,7 @@ export type UserAddressOrderByWithRelationInput = {
   addressId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   user?: InputMaybe<UserOrderByWithRelationInput>;
   userId?: InputMaybe<SortOrder>;
@@ -6663,6 +6722,7 @@ export enum UserAddressScalarFieldEnum {
   AddressId = 'addressId',
   CreatedAt = 'createdAt',
   Id = 'id',
+  Status = 'status',
   UpdatedAt = 'updatedAt',
   UserId = 'userId'
 }
@@ -6674,6 +6734,7 @@ export type UserAddressScalarWhereInput = {
   addressId?: InputMaybe<IntFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<IntFilter>;
+  status?: InputMaybe<EnumActiveStatusFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   userId?: InputMaybe<IntFilter>;
 };
@@ -6685,6 +6746,7 @@ export type UserAddressScalarWhereWithAggregatesInput = {
   addressId?: InputMaybe<IntWithAggregatesFilter>;
   createdAt?: InputMaybe<DateTimeWithAggregatesFilter>;
   id?: InputMaybe<IntWithAggregatesFilter>;
+  status?: InputMaybe<EnumActiveStatusWithAggregatesFilter>;
   updatedAt?: InputMaybe<DateTimeWithAggregatesFilter>;
   userId?: InputMaybe<IntWithAggregatesFilter>;
 };
@@ -6705,12 +6767,14 @@ export type UserAddressSumOrderByAggregateInput = {
 export type UserAddressUpdateInput = {
   address?: InputMaybe<AddressUpdateOneRequiredWithoutUsersNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutAddressesNestedInput>;
 };
 
 export type UserAddressUpdateManyMutationInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
 };
 
@@ -6764,6 +6828,7 @@ export type UserAddressUpdateWithWhereUniqueWithoutUserInput = {
 
 export type UserAddressUpdateWithoutAddressInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutAddressesNestedInput>;
 };
@@ -6771,6 +6836,7 @@ export type UserAddressUpdateWithoutAddressInput = {
 export type UserAddressUpdateWithoutUserInput = {
   address?: InputMaybe<AddressUpdateOneRequiredWithoutUsersNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
 };
 
@@ -6794,6 +6860,7 @@ export type UserAddressWhereInput = {
   addressId?: InputMaybe<IntFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<IntFilter>;
+  status?: InputMaybe<EnumActiveStatusFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<IntFilter>;
@@ -6807,6 +6874,7 @@ export type UserAddressWhereUniqueInput = {
   addressId?: InputMaybe<IntFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<EnumActiveStatusFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<IntFilter>;
@@ -7192,6 +7260,7 @@ export type UserFile = {
   file: File;
   fileId: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
+  status: ActiveStatus;
   updatedAt: Scalars['DateTimeISO']['output'];
   user: User;
   userId: Scalars['Int']['output'];
@@ -7216,6 +7285,7 @@ export type UserFileCountAggregate = {
   createdAt: Scalars['Int']['output'];
   fileId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  status: Scalars['Int']['output'];
   updatedAt: Scalars['Int']['output'];
   userId: Scalars['Int']['output'];
 };
@@ -7224,6 +7294,7 @@ export type UserFileCountOrderByAggregateInput = {
   createdAt?: InputMaybe<SortOrder>;
   fileId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -7231,6 +7302,7 @@ export type UserFileCountOrderByAggregateInput = {
 export type UserFileCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   file: FileCreateNestedOneWithoutFilesInput;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   user: UserCreateNestedOneWithoutFilesInput;
 };
@@ -7238,6 +7310,7 @@ export type UserFileCreateInput = {
 export type UserFileCreateManyFileInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   userId: Scalars['Int']['input'];
 };
@@ -7251,6 +7324,7 @@ export type UserFileCreateManyInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   fileId: Scalars['Int']['input'];
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   userId: Scalars['Int']['input'];
 };
@@ -7259,6 +7333,7 @@ export type UserFileCreateManyUserInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   fileId: Scalars['Int']['input'];
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
 };
 
@@ -7293,6 +7368,7 @@ export type UserFileCreateOrConnectWithoutUserInput = {
 
 export type UserFileCreateWithoutFileInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   user: UserCreateNestedOneWithoutFilesInput;
 };
@@ -7300,6 +7376,7 @@ export type UserFileCreateWithoutFileInput = {
 export type UserFileCreateWithoutUserInput = {
   createdAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
   file: FileCreateNestedOneWithoutFilesInput;
+  status?: InputMaybe<ActiveStatus>;
   updatedAt?: InputMaybe<Scalars['DateTimeISO']['input']>;
 };
 
@@ -7313,6 +7390,7 @@ export type UserFileGroupBy = {
   createdAt: Scalars['DateTimeISO']['output'];
   fileId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  status: ActiveStatus;
   updatedAt: Scalars['DateTimeISO']['output'];
   userId: Scalars['Int']['output'];
 };
@@ -7328,6 +7406,7 @@ export type UserFileMaxAggregate = {
   createdAt?: Maybe<Scalars['DateTimeISO']['output']>;
   fileId?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+  status?: Maybe<ActiveStatus>;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   userId?: Maybe<Scalars['Int']['output']>;
 };
@@ -7336,6 +7415,7 @@ export type UserFileMaxOrderByAggregateInput = {
   createdAt?: InputMaybe<SortOrder>;
   fileId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -7345,6 +7425,7 @@ export type UserFileMinAggregate = {
   createdAt?: Maybe<Scalars['DateTimeISO']['output']>;
   fileId?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+  status?: Maybe<ActiveStatus>;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   userId?: Maybe<Scalars['Int']['output']>;
 };
@@ -7353,6 +7434,7 @@ export type UserFileMinOrderByAggregateInput = {
   createdAt?: InputMaybe<SortOrder>;
   fileId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -7370,6 +7452,7 @@ export type UserFileOrderByWithAggregationInput = {
   createdAt?: InputMaybe<SortOrder>;
   fileId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
 };
@@ -7379,6 +7462,7 @@ export type UserFileOrderByWithRelationInput = {
   file?: InputMaybe<FileOrderByWithRelationInput>;
   fileId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  status?: InputMaybe<SortOrder>;
   updatedAt?: InputMaybe<SortOrder>;
   user?: InputMaybe<UserOrderByWithRelationInput>;
   userId?: InputMaybe<SortOrder>;
@@ -7388,6 +7472,7 @@ export enum UserFileScalarFieldEnum {
   CreatedAt = 'createdAt',
   FileId = 'fileId',
   Id = 'id',
+  Status = 'status',
   UpdatedAt = 'updatedAt',
   UserId = 'userId'
 }
@@ -7399,6 +7484,7 @@ export type UserFileScalarWhereInput = {
   createdAt?: InputMaybe<DateTimeFilter>;
   fileId?: InputMaybe<IntFilter>;
   id?: InputMaybe<IntFilter>;
+  status?: InputMaybe<EnumActiveStatusFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   userId?: InputMaybe<IntFilter>;
 };
@@ -7410,6 +7496,7 @@ export type UserFileScalarWhereWithAggregatesInput = {
   createdAt?: InputMaybe<DateTimeWithAggregatesFilter>;
   fileId?: InputMaybe<IntWithAggregatesFilter>;
   id?: InputMaybe<IntWithAggregatesFilter>;
+  status?: InputMaybe<EnumActiveStatusWithAggregatesFilter>;
   updatedAt?: InputMaybe<DateTimeWithAggregatesFilter>;
   userId?: InputMaybe<IntWithAggregatesFilter>;
 };
@@ -7430,12 +7517,14 @@ export type UserFileSumOrderByAggregateInput = {
 export type UserFileUpdateInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   file?: InputMaybe<FileUpdateOneRequiredWithoutFilesNestedInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutFilesNestedInput>;
 };
 
 export type UserFileUpdateManyMutationInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
 };
 
@@ -7489,6 +7578,7 @@ export type UserFileUpdateWithWhereUniqueWithoutUserInput = {
 
 export type UserFileUpdateWithoutFileInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutFilesNestedInput>;
 };
@@ -7496,6 +7586,7 @@ export type UserFileUpdateWithoutFileInput = {
 export type UserFileUpdateWithoutUserInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   file?: InputMaybe<FileUpdateOneRequiredWithoutFilesNestedInput>;
+  status?: InputMaybe<EnumActiveStatusFieldUpdateOperationsInput>;
   updatedAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
 };
 
@@ -7519,6 +7610,7 @@ export type UserFileWhereInput = {
   file?: InputMaybe<FileRelationFilter>;
   fileId?: InputMaybe<IntFilter>;
   id?: InputMaybe<IntFilter>;
+  status?: InputMaybe<EnumActiveStatusFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<IntFilter>;
@@ -7532,6 +7624,7 @@ export type UserFileWhereUniqueInput = {
   file?: InputMaybe<FileRelationFilter>;
   fileId?: InputMaybe<IntFilter>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  status?: InputMaybe<EnumActiveStatusFilter>;
   updatedAt?: InputMaybe<DateTimeFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<IntFilter>;
@@ -8281,7 +8374,7 @@ export type ChatSubscription = { __typename?: 'Subscription', chat: { __typename
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, content: string, updatedAt: any, user: { __typename?: 'User', id: string, username?: string | null, files: Array<{ __typename?: 'UserFile', file: { __typename?: 'File', url: { __typename?: 'CustomFileUrl', raw?: string | null, lg?: string | null, md?: string | null, sm?: string | null } } }>, addresses: Array<{ __typename?: 'UserAddress', address: { __typename?: 'Address', id: string, c1: string, c2?: string | null, c3?: string | null, c4?: string | null } }> }, address: { __typename?: 'Address', id: string, c1: string, c2?: string | null, c3?: string | null, c4?: string | null }, files: Array<{ __typename?: 'PostFile', file: { __typename?: 'File', url: { __typename?: 'CustomFileUrl', raw?: string | null, lg?: string | null, md?: string | null, sm?: string | null } } }> }> };
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, content: string, updatedAt: any, user: { __typename?: 'User', id: string, username?: string | null, files: Array<{ __typename?: 'UserFile', status: ActiveStatus, file: { __typename?: 'File', url: { __typename?: 'CustomFileUrl', raw?: string | null, lg?: string | null, md?: string | null, sm?: string | null } } }>, addresses: Array<{ __typename?: 'UserAddress', address: { __typename?: 'Address', id: string, c1: string, c2?: string | null, c3?: string | null, c4?: string | null } }> }, address: { __typename?: 'Address', id: string, c1: string, c2?: string | null, c3?: string | null, c4?: string | null }, files: Array<{ __typename?: 'PostFile', file: { __typename?: 'File', url: { __typename?: 'CustomFileUrl', raw?: string | null, lg?: string | null, md?: string | null, sm?: string | null } } }> }> };
 
 export type CommentsQueryVariables = Exact<{
   where?: InputMaybe<CommentWhereInput>;
@@ -8311,7 +8404,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, username?: string | null, content?: string | null, babyBirth?: any | null, email: string, updatedAt: any, addresses: Array<{ __typename?: 'UserAddress', address: { __typename?: 'Address', id: string, c1: string, c2?: string | null, c3?: string | null, c4?: string | null } }>, files: Array<{ __typename?: 'UserFile', file: { __typename?: 'File', id: string, url: { __typename?: 'CustomFileUrl', raw?: string | null, lg?: string | null, md?: string | null, sm?: string | null } } }> } | null };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, username?: string | null, content?: string | null, babyBirth?: any | null, email: string, updatedAt: any, addresses: Array<{ __typename?: 'UserAddress', id: string, address: { __typename?: 'Address', id: string, code: string, c1: string, c2?: string | null, c3?: string | null, c4?: string | null } }>, files: Array<{ __typename?: 'UserFile', id: string, status: ActiveStatus, file: { __typename?: 'File', id: string, location: string, url: { __typename?: 'CustomFileUrl', raw?: string | null, lg?: string | null, md?: string | null, sm?: string | null } } }> } | null };
 
 export type UpdateOneUserMutationVariables = Exact<{
   data: UserUpdateInput;
@@ -8329,9 +8422,9 @@ export const ChatMessagesDocument = {"kind":"Document","definitions":[{"kind":"O
 export const CreateOneChatDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOneChat"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChatCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOneChat"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateOneChatMutation, CreateOneChatMutationVariables>;
 export const CreateOneChatMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOneChatMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChatMessageCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOneChatMessage"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"message"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<CreateOneChatMessageMutation, CreateOneChatMessageMutationVariables>;
 export const ChatDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"chat"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"chat"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"chatId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"chatId"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"message"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<ChatSubscription, ChatSubscriptionVariables>;
-export const PostsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"c1"}},{"kind":"Field","name":{"kind":"Name","value":"c2"}},{"kind":"Field","name":{"kind":"Name","value":"c3"}},{"kind":"Field","name":{"kind":"Name","value":"c4"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"c1"}},{"kind":"Field","name":{"kind":"Name","value":"c2"}},{"kind":"Field","name":{"kind":"Name","value":"c3"}},{"kind":"Field","name":{"kind":"Name","value":"c4"}}]}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<PostsQuery, PostsQueryVariables>;
+export const PostsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"c1"}},{"kind":"Field","name":{"kind":"Name","value":"c2"}},{"kind":"Field","name":{"kind":"Name","value":"c3"}},{"kind":"Field","name":{"kind":"Name","value":"c4"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"c1"}},{"kind":"Field","name":{"kind":"Name","value":"c2"}},{"kind":"Field","name":{"kind":"Name","value":"c3"}},{"kind":"Field","name":{"kind":"Name","value":"c4"}}]}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<PostsQuery, PostsQueryVariables>;
 export const CommentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"comments"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CommentWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CommentOrderByWithRelationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<CommentsQuery, CommentsQueryVariables>;
 export const CreatePostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createPost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PostCreateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"strategy"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"RelationLoadStrategy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnePost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"relationLoadStrategy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"strategy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"c3"}}]}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreatePostMutation, CreatePostMutationVariables>;
 export const CreateOneCommentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOneComment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CommentCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOneComment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"post"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<CreateOneCommentMutation, CreateOneCommentMutationVariables>;
-export const GetUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"babyBirth"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"c1"}},{"kind":"Field","name":{"kind":"Name","value":"c2"}},{"kind":"Field","name":{"kind":"Name","value":"c3"}},{"kind":"Field","name":{"kind":"Name","value":"c4"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;
+export const GetUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"babyBirth"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"c1"}},{"kind":"Field","name":{"kind":"Name","value":"c2"}},{"kind":"Field","name":{"kind":"Name","value":"c3"}},{"kind":"Field","name":{"kind":"Name","value":"c4"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;
 export const UpdateOneUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateOneUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserUpdateInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWhereUniqueInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateOneUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"babyBirth"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"c3"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"files"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"file"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"raw"}},{"kind":"Field","name":{"kind":"Name","value":"lg"}},{"kind":"Field","name":{"kind":"Name","value":"md"}},{"kind":"Field","name":{"kind":"Name","value":"sm"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]} as unknown as DocumentNode<UpdateOneUserMutation, UpdateOneUserMutationVariables>;

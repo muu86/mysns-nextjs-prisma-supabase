@@ -10,8 +10,10 @@ export const QueryGetUser = graphql(`
       email
       updatedAt
       addresses {
+        id
         address {
           id
+          code
           c1
           c2
           c3
@@ -19,8 +21,11 @@ export const QueryGetUser = graphql(`
         }
       }
       files {
+        id
+        status
         file {
           id
+          location
           url {
             raw
             lg

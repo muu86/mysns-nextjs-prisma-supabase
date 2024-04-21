@@ -8,7 +8,11 @@ export async function POST(request: Request) {
     const client = new S3Client();
     const key = randomUUID();
 
-    const command = new PutObjectCommand({ Bucket: process.env.AWS_BUCKET_NAME, Key: key, ContentType: contentType });
+    const command = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `raw/${key}`,
+      ContentType: contentType,
+    });
     const url = await getSignedUrl(client, command, { expiresIn: 3600 });
 
     return Response.json({ url, key });

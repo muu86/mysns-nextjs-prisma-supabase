@@ -12,6 +12,7 @@ import { MessageCircleMore } from 'lucide-react';
 import { Session } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ActiveStatus } from '@/graphql/generated/gql/graphql';
 
 export default async function Page({ params }: { params: { email: string } }) {
   const userEmail = decodeURIComponent(params.email);
@@ -29,8 +30,7 @@ export default async function Page({ params }: { params: { email: string } }) {
 
   const isOwner = checkIsOwner(session, userEmail);
 
-  console.log(session);
-  console.log(isOwner);
+  const profileImageSrc = user.files.find((f) => f.status === ActiveStatus.Active)?.file.url.md;
 
   return (
     <DefaultContainer>
@@ -39,13 +39,13 @@ export default async function Page({ params }: { params: { email: string } }) {
         <DefaultCardContainer>
           <Card className="py-4">
             <CardContent>
-              {user.files.length > 0 ? (
+              {profileImageSrc ? (
                 <Image
                   alt="profile image"
                   className="mx-auto aspect-square w-1/2 rounded-full object-cover hover:cursor-pointer"
                   height="300"
                   width="300"
-                  src={`${user.files}`}
+                  src={`${profileImageSrc}`}
                 />
               ) : (
                 <Skeleton className="mx-auto w-1/2 rounded-full aspect-square flex items-center justify-center hover:cursor-pointer">
