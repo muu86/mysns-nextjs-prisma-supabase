@@ -107,7 +107,7 @@ export type MutatePostContextType = {
 };
 
 export async function uploadFile(newFile: ImageFile) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
+  const response = await fetch(`/api/upload`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
