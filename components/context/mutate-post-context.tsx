@@ -128,8 +128,9 @@ export async function uploadFile(newFile: ImageFile) {
   //   newFile.s3Key = key;
   // }
 
-  const { url, key, data } = await getSignedUrlForPut(newFile.file.name, newFile.file.type);
+  const { url, key, data, error } = await getSignedUrlForPut(newFile.file.name, newFile.file.type);
 
+  console.log('error : ', error);
   console.log('data is ', data);
   const uploadResponse = await fetch(url!, {
     method: 'PUT',
