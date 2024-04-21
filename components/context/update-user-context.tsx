@@ -102,7 +102,7 @@ function createVariables({ before, session, username, content, babyBirth, newFil
     ? address.filter((a) => before.addresses.findIndex((ua) => ua.address.id === a.id) === -1)
     : address;
 
-  const fileTobeInactivated = newFile && before && before.files.length > 0 ? before.files[0] : undefined;
+  const fileTobeInactivated = newFile && before ? before.files.filter((bf) => bf.status === ActiveStatus.Active) : [];
 
   const data = {
     username: {
@@ -140,20 +140,16 @@ function createVariables({ before, session, username, content, babyBirth, newFil
       })),
     },
     files: {
-      update: fileTobeInactivated
-        ? [
-            {
-              where: {
-                id: parseInt(fileTobeInactivated.id),
-              },
-              data: {
-                status: {
-                  set: ActiveStatus.Inactive,
-                },
-              },
-            },
-          ]
-        : [],
+      update: fileTobeInactivated.map((f) => ({
+        where: {
+          id: parseInt(f.id),
+        },
+        data: {
+          status: {
+            set: ActiveStatus.Inactive,
+          },
+        },
+      })),
       create:
         newFile && newFile.s3Key
           ? [
