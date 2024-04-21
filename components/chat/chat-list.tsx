@@ -5,7 +5,7 @@ import { ChatsQuery } from '@/graphql/generated/gql/graphql';
 import { cn } from '@/lib/utils';
 import { PanelLeftOpen } from 'lucide-react';
 import { Session } from 'next-auth';
-import { MouseEvent, useContext, useState } from 'react';
+import { Dispatch, MouseEvent, SetStateAction, useContext, useState } from 'react';
 import { ChatContext } from '../context/chat-context';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
@@ -49,7 +49,7 @@ function ChatListOne({
   session,
   chat,
 }: {
-  setOpen: () => void;
+  setOpen: Dispatch<SetStateAction<boolean>>;
   session: Session | null;
   chat: ChatsQuery['chats'][number];
 }) {
