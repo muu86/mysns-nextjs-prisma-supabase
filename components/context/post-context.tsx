@@ -1,11 +1,11 @@
 'use client';
 
-import { GetPostsQuery } from '@/graphql/generated/gql/graphql';
+import { PostsQuery } from '@/graphql/generated/gql/graphql';
 import { Session } from 'next-auth';
 import { PropsWithChildren, createContext, useEffect, useState } from 'react';
 
 export default function PostContextProvider({ session, children }: PropsWithChildren<{ session: Session | null }>) {
-  const [posts, setPosts] = useState<GetPostsQuery['posts']>([]);
+  const [posts, setPosts] = useState<PostsQuery['posts']>([]);
 
   // useEffect(() => {
   //   getNextPosts();
@@ -31,7 +31,7 @@ export const PostContext = createContext<PostContextType>({} as PostContextType)
 
 export type PostContextStates = {
   session: Session | null;
-  posts: GetPostsQuery['posts'];
+  posts: PostsQuery['posts'];
 };
 
 export type PostContextActions = {};
