@@ -1,6 +1,5 @@
 'use client';
 
-import { getPresignedUrlForPut } from '@/actions/file';
 import { UpdateUserContext } from '@/components/context/update-user-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -71,12 +70,29 @@ export default function ImageCard() {
 }
 
 export async function uploadFile(newFile: ImageFile) {
-  const buffer = await newFile.file.arrayBuffer();
-  const { key, signedUrl } = await getPresignedUrlForPut();
-
-  const response = await fetch(signedUrl, {
-    method: 'PUT',
-    body: buffer,
+  console.log(process.env.NEXT_PUBLIC_BASE_URL);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ filename: newFile.file.name, contentType: newFile.file.type }),
   });
-  newFile.s3Key = key;
+
+  if (response.ok) {
+    const { url, fields, key } = await response.json();
+
+    const formData = new FormData();
+    Object.entries(fields).forEach(([key, value]) => {
+      formData.append(key, value as string);
+    });
+    formData.append('file', newFile.file);
+
+    const uploadResponse = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    newFile.s3Key = key;
+  }
 }

@@ -1,29 +1,11 @@
 'use client';
 
-import { getPresignedUrlForPut } from '@/actions/file';
-import { graphql } from '@/graphql/generated/gql';
 import { PostCreateInput } from '@/graphql/generated/gql/graphql';
+import { MutationCreateOnePost } from '@/graphql/query/posts';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
 import { Session } from 'next-auth';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
-
-const MutationCreateOnePost = graphql(`
-  mutation createPost($data: PostCreateInput!, $strategy: RelationLoadStrategy) {
-    createOnePost(data: $data, relationLoadStrategy: $strategy) {
-      id
-      content
-      address {
-        c3
-      }
-      files {
-        file {
-          location
-        }
-      }
-    }
-  }
-`);
 
 export default function MutatePostContextProvider({ session, children }: PropsWithChildren<{ session: Session }>) {
   const [createPost, { data, loading, error }] = useMutation(MutationCreateOnePost);
@@ -124,13 +106,25 @@ export type MutatePostContextType = {
   actions: MutatePostContextActions;
 };
 
-async function uploadFile(newFile: ImageFile) {
-  const buffer = await newFile.file.arrayBuffer();
-  const { key, signedUrl } = await getPresignedUrlForPut();
-
-  const response = await fetch(signedUrl, {
-    method: 'PUT',
-    body: buffer,
+export async function uploadFile(newFile: ImageFile) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ filename: newFile.file.name, contentType: newFile.file.type }),
   });
-  newFile.s3Key = key;
+
+  if (response.ok) {
+    const { url, key } = await response.json();
+
+    const uploadResponse = await fetch(url, {
+      method: 'PUT',
+      body: await newFile.file.arrayBuffer(),
+    });
+
+    console.log(uploadResponse);
+
+    newFile.s3Key = key;
+  }
 }

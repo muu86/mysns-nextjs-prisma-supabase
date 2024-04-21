@@ -21,7 +21,12 @@ export const QueryGetUser = graphql(`
       files {
         file {
           id
-          location
+          url {
+            raw
+            lg
+            md
+            sm
+          }
         }
       }
     }
@@ -42,7 +47,12 @@ export const MutationUpdateOneUser = graphql(`
       }
       files {
         file {
-          location
+          url {
+            raw
+            lg
+            md
+            sm
+          }
         }
       }
       role

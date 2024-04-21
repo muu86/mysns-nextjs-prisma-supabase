@@ -9,7 +9,12 @@ export const QueryPosts = graphql(`
         id
         files {
           file {
-            location
+            url {
+              raw
+              lg
+              md
+              sm
+            }
           }
         }
         username
@@ -32,7 +37,12 @@ export const QueryPosts = graphql(`
       }
       files {
         file {
-          location
+          url {
+            raw
+            lg
+            md
+            sm
+          }
         }
       }
       updatedAt
@@ -50,11 +60,33 @@ export const QueryComments = graphql(`
         username
         files {
           file {
-            location
+            url {
+              raw
+              lg
+              md
+              sm
+            }
           }
         }
       }
       updatedAt
+    }
+  }
+`);
+
+export const MutationCreateOnePost = graphql(`
+  mutation createPost($data: PostCreateInput!, $strategy: RelationLoadStrategy) {
+    createOnePost(data: $data, relationLoadStrategy: $strategy) {
+      id
+      content
+      address {
+        c3
+      }
+      files {
+        file {
+          location
+        }
+      }
     }
   }
 `);
