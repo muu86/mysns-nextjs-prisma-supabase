@@ -7,7 +7,6 @@ import { CircleX } from 'lucide-react';
 import { MouseEvent, useContext } from 'react';
 
 export default function AddressSelectedBadges() {
-  console.log('[AddressSelectedBadges] ', 'rendered');
   const { state, dispatch } = useContext(UpdateUserContext);
 
   return (

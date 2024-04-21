@@ -20,9 +20,7 @@ export default function UsernameInput() {
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>): void {
     const validate = usernameSchema.safeParse(event.target.value);
-    console.log(validate);
     if (!validate.success) {
-      console.log(validate.error.issues);
       setUsernameError(validate.error.issues.map((e) => e.message));
     } else {
       setUsernameError([]);

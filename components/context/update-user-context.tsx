@@ -28,27 +28,19 @@ export default function UpdateUserContextProvider({
   const [updateOneUser] = useMutation(MutationUpdateOneUser);
 
   const initialState = useMemo((): UpdateUserContextState => {
-    if (user) {
-      console.log(user.files);
-      return {
-        before: user,
-        session,
-        username: user.username!,
-        babyBirth: user.babyBirth,
-        isUploading: false,
-        address: produce(
-          user.addresses.map((ua) => ua.address),
+    return {
+      before: user,
+      session,
+      username: user?.username || '',
+      babyBirth: user?.babyBirth,
+      isUploading: false,
+      address:
+        produce(
+          user?.addresses.map((ua) => ua.address),
           (draft) => draft
-        ),
-        content: user.content as string | undefined,
-      };
-    } else {
-      return {
-        session: session,
-        isUploading: false,
-        address: [],
-      };
-    }
+        ) || [],
+      content: user?.content || '',
+    };
   }, [user, session]);
   const [state, dispatch] = useReducer(updateUserReducer, initialState);
 
@@ -110,13 +102,7 @@ function createVariables({ before, session, username, content, babyBirth, newFil
     ? address.filter((a) => before.addresses.findIndex((ua) => ua.address.id === a.id) === -1)
     : address;
 
-  console.log(addressTobeInactivated);
-  console.log(addressTobeCreated);
-
   const fileTobeInactivated = newFile && before && before.files.length > 0 ? before.files[0] : undefined;
-  console.log(fileTobeInactivated);
-
-  console.log(newFile);
 
   const data = {
     username: {

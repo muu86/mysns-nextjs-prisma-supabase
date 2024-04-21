@@ -9,7 +9,7 @@ import { CircleUser } from 'lucide-react';
 export default function PostCardProfile({ post }: { post: PostsQuery['posts'][number] }) {
   const src = post.user.files.find((f) => f.status === ActiveStatus.Active)?.file.url.sm;
   return (
-    <div className="my-2 flex flex-row">
+    <div className="my-2 pt-2 flex flex-row items-center">
       <div className="flex-1 flex flex-row items-center justify-start gap-4">
         {/* <Suspense fallback={<div className="w-full h-full bg-black">hi</div>}>
           <ProfileImageWithFallback className="col-span-8" src={url} />

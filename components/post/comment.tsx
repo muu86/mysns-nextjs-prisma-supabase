@@ -13,11 +13,12 @@ import { PostContext } from '../context/post-context';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 import { Textarea } from '../ui/textarea';
+import { useRouter } from 'next/navigation';
 const CommentList = lazy(() => import('./comment-list'));
 
 export default function Comment({ post }: { post: PostsQuery['posts'][number] }) {
   const [loadComment, queryCommentRef, { refetch }] = useLoadableQuery(QueryComments);
-  const [createOneCommentMutation, mutationResult] = useMutation(MutationCreateOneComment);
+  const [createOneCommentMutation, { data, error }] = useMutation(MutationCreateOneComment);
 
   const { state: postState } = useContext(PostContext);
 
@@ -26,10 +27,16 @@ export default function Comment({ post }: { post: PostsQuery['posts'][number] })
 
   const [isPending, startTransition] = useTransition();
 
+  const route = useRouter();
+
   function submitHandler(event: MouseEvent<HTMLButtonElement>) {
+    if (!postState.session || !postState.session.user?.email || postState.session.user?.role !== 'WRITE') {
+      route.push('/login');
+    }
+
     startTransition(async () => {
       await createOneCommentMutation({
-        variables: createMutationVariables({ session: postState.session, content: message, postId: post.id }),
+        variables: createMutationVariables({ session: postState.session!, content: message, postId: post.id }),
       });
 
       if (!queryCommentRef) {
@@ -52,30 +59,29 @@ export default function Comment({ post }: { post: PostsQuery['posts'][number] })
 
   return (
     <div className="grid gap-2">
-      <div className="flex flex-row w-full gap-2">
+      <div className="flex flex-col w-full gap-2">
         <Textarea
           className="flex-1"
           placeholder="댓글달기."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <Button onClick={submitHandler} variant="ghost" className="self-end">
-          <Send />
-        </Button>
-      </div>
-
-      <div className="">
-        {commentOpen ? (
-          <Button variant="ghost" onClick={hideCommentHandler}>
-            <EyeOff />
-            <span className="ml-2">닫기</span>
+        <div className="flex flex-row justify-between">
+          {commentOpen ? (
+            <Button variant="ghost" onClick={hideCommentHandler}>
+              <EyeOff />
+              <span className="ml-2">닫기</span>
+            </Button>
+          ) : (
+            <Button variant="ghost" onClick={showCommentHandler}>
+              <MessageCircleMore />
+              <span className="ml-2">댓글보기</span>
+            </Button>
+          )}
+          <Button onClick={submitHandler} variant="ghost" className="self-end">
+            <Send />
           </Button>
-        ) : (
-          <Button variant="ghost" onClick={showCommentHandler}>
-            <MessageCircleMore />
-            <span className="ml-2">댓글보기</span>
-          </Button>
-        )}
+        </div>
       </div>
 
       {queryCommentRef && (
@@ -108,24 +114,12 @@ function createQueryVariables({ postId }: { postId: string }): CommentsQueryVari
   };
 }
 
-function createMutationVariables({
-  session,
-  content,
-  postId,
-}: {
-  session: Session | null;
-  content: string;
-  postId: string;
-}) {
-  if (!session || session.user?.role !== 'WRITE' || !session.user?.email) {
-    console.log('[Comment] : ', '댓글 작성 권한 없음');
-  }
-
+function createMutationVariables({ session, content, postId }: { session: Session; content: string; postId: string }) {
   const data = {
     content,
     user: {
       connect: {
-        email: session?.user?.email!,
+        email: session.user!.email!,
       },
     },
     post: {
