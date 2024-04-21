@@ -77,7 +77,7 @@ export default function ImageCard() {
 }
 
 export async function uploadFile(newFile: ImageFile) {
-  const response = await fetch(`/api/upload`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
