@@ -15,6 +15,10 @@ export async function POST(request: Request) {
     });
     const url = await getSignedUrl(client, command, { expiresIn: 3600 });
 
+    console.log(process.env.AWS_ACCESS_KEY_ID);
+    console.log(process.env.AWS_SECRET_ACCESS_KEY);
+    console.log(url);
+
     return Response.json({ url, key });
   } catch (error: any) {
     return Response.json({ error: error.message });

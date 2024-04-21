@@ -10,7 +10,6 @@ import { cn } from '@/lib/utils';
 import { useMutation, useSubscription, useSuspenseQuery } from '@apollo/client';
 import { CircleUser, Send } from 'lucide-react';
 import { Session } from 'next-auth';
-import { redirect } from 'next/navigation';
 import { ChangeEvent, MouseEvent, useContext, useEffect, useState } from 'react';
 
 export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }) {
@@ -87,13 +86,13 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
   }
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col flex-1 gap-2">
       <div className="flex flex-col-reverse max-h-[580px] overflow-y-scroll bg-muted flex-1">
         {messages.map((cm, i) => (
           <Message key={i} session={session} chat={chat} chatMessage={cm} />
         ))}
       </div>
-      <div className="flex flex-row w-full gap-2">
+      <div className="flex flex-col w-full gap-2">
         <Textarea
           className="flex-1"
           placeholder="댓글달기."
