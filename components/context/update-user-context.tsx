@@ -1,16 +1,15 @@
 'use client';
 
-import { graphql } from '@/graphql/generated/gql';
+import { UpdateUserAction, updateUserReducer } from '@/components/reducer/update-user-reducer';
 import { AddressesQuery, Role } from '@/graphql/generated/gql/graphql';
 import { UserUpdateInput, UserWhereUniqueInput } from '@/graphql/generated/type-graphql';
+import { MutationUpdateOneUser, QueryGetUser } from '@/graphql/query/user';
 import { ImageFile } from '@/lib/types';
-import { useLoadableQuery, useMutation, useReadQuery, useSuspenseQuery } from '@apollo/client';
+import { useLoadableQuery, useMutation, useSuspenseQuery } from '@apollo/client';
 import { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { Dispatch, PropsWithChildren, createContext, useEffect, useReducer } from 'react';
-import { UpdateUserAction, updateUserReducer } from '../reducer/update-user-reducer';
-import { useSession } from 'next-auth/react';
-import { MutationUpdateOneUser, QueryGetUser } from '@/graphql/query/user';
 
 export default function UpdateUserContextProvider({ children }: PropsWithChildren) {
   const { data: session, update } = useSession();

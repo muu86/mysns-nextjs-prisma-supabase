@@ -37,7 +37,7 @@ class SSELink extends ApolloLink {
 export const sseLink = new SSELink({
   url:
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-      ? `${process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL}`
+      ? `${process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL}/graphql`
       : 'http://localhost:3000/api/graphql',
   // headers: () => {
   // const session = getSession();
@@ -54,7 +54,7 @@ function makeClient() {
     // this needs to be an absolute url, as relative urls cannot be used in SSR
     uri:
       process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-        ? `${process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL}/api/graphql`
+        ? `${process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL}/graphql`
         : 'http://localhost:3000/api/graphql',
     // you can disable result caching here if you want to
     // (this does not work if you are rendering your page with `export const dynamic = "force-static"`)

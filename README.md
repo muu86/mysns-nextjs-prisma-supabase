@@ -524,9 +524,7 @@ vercel 에 nextjs 를 배포한 뒤에도 실시간 통신이 잘 되는지는 �
 
 vercel 에 배포한 뒤에 graphql 서버가 잘 동작하지 않는 것을 확인했습니다. yoga 의 graphiql 에 직접 접속해서 query 를 하는 것은 가능한데 apollo client 로 yoga 서버에 접속하면 계속 요청이 pending 상태가 되다가 결국 타임아웃으로 컨테이너가 종료됩니다. 
  
-vercel 에서도 serverless 환경에서 graphql 서버까지 구동하는 것은 권하지 않고 있는데 억지로 해보려다가 실패했습니다. 
-
-graphql 백엔드 서버를 따로 구성해야 했습니다. 
+vercel 에서도 serverless 환경에서 graphql 서버까지 구동하는 것은 권하지 않고 있는데 억지로 해보려다가 실패했습니다. 바보같은 짓을 했습니다. 정 serverless 로 개발하고 싶다면 aws `AppSync` 와 `Dynamodb`를 활용하면 좋을 것 같습니다. 그런데 제가 알기로 `Dynamodb`는 spatial 쿼리가 불가능합니다. 제 서비스에서 정확한 위치에 기반한 결과는 크게 필요가 없기 때문에 `AppSync`도 한 번 사용해볼 생각입니다. 일단 지금은 AppSync 를 사용하려면 디비부터 모든 게 다 바뀌기 때문에 express 서버로 graphql 서버를 구성했습니다. 
 
 ### express, yoga, aws fargate
 
@@ -598,6 +596,12 @@ export class GraphQLServerFargate extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
+    const cert = new acm.Certificate(this, 'mysns-cert', {
+      certificateName: 'mysns-cert',
+      domainName: '...',
+      validation: acm.CertificateValidation.fromEmail(),
+    });
+
     const cluster = new ecs.Cluster(this, 'mysns-graphql-server-cluster', {
       clusterName: 'mysns-graphql-server-cluster',
     });
@@ -627,6 +631,7 @@ export class GraphQLServerFargate extends Construct {
         healthCheck: {
           command: ['CMD-SHELL', 'curl -f http://localhost:8000/ || exit 1'],
         },
+        certificate: cert,
       }
     );
   }
