@@ -60,6 +60,7 @@ export const QueryComments = graphql(`
         id
         username
         files {
+          status
           file {
             url {
               raw
@@ -84,6 +85,7 @@ export const MutationCreateOnePost = graphql(`
         c3
       }
       files {
+        status
         file {
           location
         }

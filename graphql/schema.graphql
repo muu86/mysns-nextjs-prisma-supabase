@@ -1086,10 +1086,30 @@ input PostFileWhereInput {
   id: IntFilter
   postId: IntFilter
   fileId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   file: FileRelationFilter
   post: PostRelationFilter
+}
+
+input EnumActiveStatusFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusFilter
+}
+
+enum ActiveStatus {
+  ACTIVE
+  INACTIVE
+}
+
+input NestedEnumActiveStatusFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusFilter
 }
 
 input FileRelationFilter {
@@ -1146,25 +1166,6 @@ input UserFileWhereInput {
   updatedAt: DateTimeFilter
   file: FileRelationFilter
   user: UserRelationFilter
-}
-
-input EnumActiveStatusFilter {
-  equals: ActiveStatus
-  in: [ActiveStatus!]
-  notIn: [ActiveStatus!]
-  not: NestedEnumActiveStatusFilter
-}
-
-enum ActiveStatus {
-  ACTIVE
-  INACTIVE
-}
-
-input NestedEnumActiveStatusFilter {
-  equals: ActiveStatus
-  in: [ActiveStatus!]
-  notIn: [ActiveStatus!]
-  not: NestedEnumActiveStatusFilter
 }
 
 input AddressRelationFilter {
@@ -1703,6 +1704,7 @@ type PostFile {
   id: ID!
   postId: Int!
   fileId: Int!
+  status: ActiveStatus!
   createdAt: DateTimeISO!
   updatedAt: DateTimeISO!
   file: File!
@@ -1744,6 +1746,7 @@ input PostFileOrderByWithRelationInput {
   id: SortOrder
   postId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   file: FileOrderByWithRelationInput
@@ -1767,6 +1770,7 @@ input PostFileWhereUniqueInput {
   NOT: [PostFileWhereInput!]
   postId: IntFilter
   fileId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   file: FileRelationFilter
@@ -1777,6 +1781,7 @@ enum PostFileScalarFieldEnum {
   id
   postId
   fileId
+  status
   createdAt
   updatedAt
 }
@@ -3228,6 +3233,7 @@ type PostFileCountAggregate {
   id: Int!
   postId: Int!
   fileId: Int!
+  status: Int!
   createdAt: Int!
   updatedAt: Int!
   _all: Int!
@@ -3249,6 +3255,7 @@ type PostFileMinAggregate {
   id: Int
   postId: Int
   fileId: Int
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -3257,6 +3264,7 @@ type PostFileMaxAggregate {
   id: Int
   postId: Int
   fileId: Int
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -3265,6 +3273,7 @@ type PostFileGroupBy {
   id: Int!
   postId: Int!
   fileId: Int!
+  status: ActiveStatus!
   createdAt: DateTimeISO!
   updatedAt: DateTimeISO!
   _count: PostFileCountAggregate
@@ -3278,6 +3287,7 @@ input PostFileOrderByWithAggregationInput {
   id: SortOrder
   postId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   _count: PostFileCountOrderByAggregateInput
@@ -3291,6 +3301,7 @@ input PostFileCountOrderByAggregateInput {
   id: SortOrder
   postId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -3305,6 +3316,7 @@ input PostFileMaxOrderByAggregateInput {
   id: SortOrder
   postId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -3313,6 +3325,7 @@ input PostFileMinOrderByAggregateInput {
   id: SortOrder
   postId: SortOrder
   fileId: SortOrder
+  status: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -3330,8 +3343,29 @@ input PostFileScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   postId: IntWithAggregatesFilter
   fileId: IntWithAggregatesFilter
+  status: EnumActiveStatusWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
+}
+
+input EnumActiveStatusWithAggregatesFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedEnumActiveStatusFilter
+  _max: NestedEnumActiveStatusFilter
+}
+
+input NestedEnumActiveStatusWithAggregatesFilter {
+  equals: ActiveStatus
+  in: [ActiveStatus!]
+  notIn: [ActiveStatus!]
+  not: NestedEnumActiveStatusWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedEnumActiveStatusFilter
+  _max: NestedEnumActiveStatusFilter
 }
 
 type AggregateSession {
@@ -3983,26 +4017,6 @@ input UserAddressScalarWhereWithAggregatesInput {
   status: EnumActiveStatusWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
   updatedAt: DateTimeWithAggregatesFilter
-}
-
-input EnumActiveStatusWithAggregatesFilter {
-  equals: ActiveStatus
-  in: [ActiveStatus!]
-  notIn: [ActiveStatus!]
-  not: NestedEnumActiveStatusWithAggregatesFilter
-  _count: NestedIntFilter
-  _min: NestedEnumActiveStatusFilter
-  _max: NestedEnumActiveStatusFilter
-}
-
-input NestedEnumActiveStatusWithAggregatesFilter {
-  equals: ActiveStatus
-  in: [ActiveStatus!]
-  notIn: [ActiveStatus!]
-  not: NestedEnumActiveStatusWithAggregatesFilter
-  _count: NestedIntFilter
-  _min: NestedEnumActiveStatusFilter
-  _max: NestedEnumActiveStatusFilter
 }
 
 type AggregateUserFile {
@@ -4693,6 +4707,7 @@ input PostFileCreateNestedManyWithoutPostInput {
 }
 
 input PostFileCreateWithoutPostInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   file: FileCreateNestedOneWithoutPostsInput!
@@ -4911,6 +4926,7 @@ input PostFileCreateNestedManyWithoutFileInput {
 }
 
 input PostFileCreateWithoutFileInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   post: PostCreateNestedOneWithoutFilesInput!
@@ -5095,6 +5111,7 @@ input PostFileCreateManyFileInputEnvelope {
 input PostFileCreateManyFileInput {
   id: Int
   postId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -5204,6 +5221,7 @@ input PostFileCreateManyPostInputEnvelope {
 input PostFileCreateManyPostInput {
   id: Int
   fileId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
@@ -5617,9 +5635,14 @@ input PostFileUpsertWithWhereUniqueWithoutPostInput {
 }
 
 input PostFileUpdateWithoutPostInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   file: FileUpdateOneRequiredWithoutPostsNestedInput
+}
+
+input EnumActiveStatusFieldUpdateOperationsInput {
+  set: ActiveStatus
 }
 
 input FileUpdateOneRequiredWithoutPostsNestedInput {
@@ -5673,10 +5696,6 @@ input UserFileUpdateWithoutFileInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutFilesNestedInput
-}
-
-input EnumActiveStatusFieldUpdateOperationsInput {
-  set: ActiveStatus
 }
 
 input UserUpdateOneRequiredWithoutFilesNestedInput {
@@ -6053,6 +6072,7 @@ input PostFileUpsertWithWhereUniqueWithoutFileInput {
 }
 
 input PostFileUpdateWithoutFileInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   post: PostUpdateOneRequiredWithoutFilesNestedInput
@@ -6446,11 +6466,13 @@ input PostFileScalarWhereInput {
   id: IntFilter
   postId: IntFilter
   fileId: IntFilter
+  status: EnumActiveStatusFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
 
 input PostFileUpdateManyMutationInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -6856,11 +6878,13 @@ input PostFileCreateManyInput {
   id: Int
   postId: Int!
   fileId: Int!
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
 }
 
 input PostFileCreateInput {
+  status: ActiveStatus
   createdAt: DateTimeISO
   updatedAt: DateTimeISO
   file: FileCreateNestedOneWithoutPostsInput!
@@ -6868,6 +6892,7 @@ input PostFileCreateInput {
 }
 
 input PostFileUpdateInput {
+  status: EnumActiveStatusFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   file: FileUpdateOneRequiredWithoutPostsNestedInput
