@@ -2,14 +2,14 @@
 
 import Image from 'next/image';
 
-import { MutatePostContext } from '@/components/context/mutate-post-context';
+import { UpdatePostContext } from '@/components/context/update-post-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ImageFile } from '@/lib/types';
 import { UploadIcon } from 'lucide-react';
 import { ChangeEvent, useContext } from 'react';
 
 export default function Preview() {
-  const { states, actions } = useContext(MutatePostContext);
+  const { states, actions } = useContext(UpdatePostContext);
 
   function changeEventHandler(event: ChangeEvent<HTMLInputElement>): void {
     event.preventDefault();

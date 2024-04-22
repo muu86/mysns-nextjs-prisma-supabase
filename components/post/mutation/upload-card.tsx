@@ -4,11 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Preview from './preview';
 import { UploadIcon } from 'lucide-react';
 import { ChangeEvent, useContext } from 'react';
-import { MutatePostContext } from '@/components/context/mutate-post-context';
+import { UpdatePostContext } from '@/components/context/update-post-context';
 import { Button } from '@/components/ui/button';
 
 export default function UploadCard() {
-  const { states, actions } = useContext(MutatePostContext);
+  const { states, actions } = useContext(UpdatePostContext);
   function changeEventHandler(event: ChangeEvent<HTMLInputElement>): void {
     event.preventDefault();
 

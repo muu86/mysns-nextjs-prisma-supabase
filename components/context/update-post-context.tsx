@@ -2,23 +2,43 @@
 
 import { getSignedUrlForPut } from '@/actions/file';
 import { PostCreateInput } from '@/graphql/generated/gql/graphql';
-import { MutationCreateOnePost } from '@/graphql/query/posts';
+import { MutationCreateOnePost, QueryPosts } from '@/graphql/query/posts';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
 import { Session } from 'next-auth';
-import { PropsWithChildren, createContext, useCallback, useState } from 'react';
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useCallback, useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import _ from 'lodash';
+import { revalidatePath } from 'next/cache';
 
-export default function MutatePostContextProvider({ session, children }: PropsWithChildren<{ session: Session }>) {
+type SelectedAddress = {
+  id: string;
+  address: {
+    id: string;
+    code: string;
+    c1: string;
+    c2?: string | null | undefined;
+    c3?: string | null | undefined;
+    c4?: string | null | undefined;
+  };
+};
+
+export default function UpdatePostContextProvider({ session, children }: PropsWithChildren<{ session: Session }>) {
   const { toast } = useToast();
-  const [createPost, { data, loading, error }] = useMutation(MutationCreateOnePost);
+  const [createPost, { data, loading, error }] = useMutation(MutationCreateOnePost, {
+    refetchQueries: [
+      {
+        query: QueryPosts,
+      },
+    ],
+  });
 
   const [content, setContent] = useState('');
   const [files, setFiles] = useState<ImageFile[]>([]);
-  const [selectedFile, setSelectedFile] = useState<ImageFile | undefined>();
+  const [selectedFile, setSelectedFile] = useState<ImageFile>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [snapshot, setSnapshot] = useState<MutatePostContextStates>();
+  const [selectedAddress, setSelectedAddress] = useState<SelectedAddress>();
+  const [snapshot, setSnapshot] = useState<UpdatePostContextStates>();
 
   const fileUploadHandler = useCallback(async (file: File) => {
     setIsUploading(true);
@@ -51,7 +71,6 @@ export default function MutatePostContextProvider({ session, children }: PropsWi
       return;
     }
     setIsUploading(true);
-    // if (!session.user?.email) redirect('/login');
     // 임시 주소 코드
     const tempAddressCode = '1111010100';
 
@@ -64,7 +83,7 @@ export default function MutatePostContextProvider({ session, children }: PropsWi
       },
       address: {
         connect: {
-          code: tempAddressCode,
+          id: selectedAddress ? parseInt(selectedAddress.address.id) : 1,
         },
       },
       files: {
@@ -111,58 +130,42 @@ export default function MutatePostContextProvider({ session, children }: PropsWi
       files,
       selectedFile,
       isUploading,
+      selectedAddress,
     },
     actions: {
       setContent,
       fileUploadHandler,
+      setSelectedAddress,
       submit,
     },
   };
 
-  return <MutatePostContext.Provider value={value}>{children}</MutatePostContext.Provider>;
+  return <UpdatePostContext.Provider value={value}>{children}</UpdatePostContext.Provider>;
 }
 
-export const MutatePostContext = createContext<MutatePostContextType>({} as MutatePostContextType);
+export const UpdatePostContext = createContext<UpdatePostContextType>({} as UpdatePostContextType);
 
-export type MutatePostContextStates = {
+export type UpdatePostContextStates = {
   content: string;
   files: ImageFile[];
-  selectedFile: ImageFile | undefined;
+  selectedFile?: ImageFile;
   isUploading: boolean;
+  selectedAddress?: SelectedAddress;
 };
 
-export type MutatePostContextActions = {
+export type UpdatePostContextActions = {
   setContent: (content: string) => void;
   fileUploadHandler: (file: File) => void;
+  setSelectedAddress: Dispatch<SetStateAction<SelectedAddress | undefined>>;
   submit: () => void;
 };
 
-export type MutatePostContextType = {
-  states: MutatePostContextStates;
-  actions: MutatePostContextActions;
+export type UpdatePostContextType = {
+  states: UpdatePostContextStates;
+  actions: UpdatePostContextActions;
 };
 
 export async function uploadFile(newFile: ImageFile) {
-  // const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify({ filename: newFile.file.name, contentType: newFile.file.type }),
-  // });
-  // if (response.ok) {
-  //   const { url, key } = await response.json();
-
-  //   const uploadResponse = await fetch(url, {
-  //     method: 'PUT',
-  //     body: await newFile.file.arrayBuffer(),
-  //   });
-
-  //   console.log(uploadResponse);
-
-  //   newFile.s3Key = key;
-  // }
-
   const { url, key, error } = await getSignedUrlForPut(newFile.file.name, newFile.file.type);
 
   if (url) {

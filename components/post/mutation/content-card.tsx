@@ -1,12 +1,12 @@
 'use client';
 
-import { MutatePostContext } from '@/components/context/mutate-post-context';
+import { UpdatePostContext } from '@/components/context/update-post-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { ChangeEvent, useContext } from 'react';
 
 export default function ContentCard() {
-  const { states, actions } = useContext(MutatePostContext);
+  const { states, actions } = useContext(UpdatePostContext);
 
   function changeEventHandler(event: ChangeEvent<HTMLTextAreaElement>): void {
     actions.setContent(event.target.value);

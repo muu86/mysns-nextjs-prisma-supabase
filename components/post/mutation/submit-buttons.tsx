@@ -1,6 +1,6 @@
 'use client';
 
-import { MutatePostContext } from '@/components/context/mutate-post-context';
+import { UpdatePostContext } from '@/components/context/update-post-context';
 import { Button } from '@/components/ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -8,7 +8,7 @@ import { Context, MouseEvent, useContext } from 'react';
 
 export default function SubmitButtons() {
   const route = useRouter();
-  const { states, actions } = useContext(MutatePostContext);
+  const { states, actions } = useContext(UpdatePostContext);
 
   function saveHandler(event: MouseEvent<HTMLButtonElement>): void {
     event.preventDefault();
