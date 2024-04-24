@@ -3,6 +3,7 @@ import KeyCloak from 'next-auth/providers/keycloak';
 import Kakao from 'next-auth/providers/kakao';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
+import prisma from '@/lib/prisma';
 
 export default {
   providers: [
