@@ -18,7 +18,6 @@ export default function PostCarousel({ post }: { post: PostsQuery['posts'][numbe
 }
 
 function Item({ url }: { url?: string | null }) {
-  console.log(url);
   return (
     <CarouselItem>
       <Card>

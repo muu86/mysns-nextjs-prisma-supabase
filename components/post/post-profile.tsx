@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { dateToString } from '@/lib/utils';
 
 export default function PostCardProfile({ post }: { post: PostsQuery['posts'][number] }) {
   const src = post.user.files.find((f) => f.status === ActiveStatus.Active)?.file.url.sm;
@@ -35,7 +36,7 @@ export default function PostCardProfile({ post }: { post: PostsQuery['posts'][nu
       </div>
       <div className="flex flex-row items-center gap-2">
         <Badge>{post.address.c3}</Badge>
-        <div className="ml-auto font-medium">{dfn.differenceInDays(Date.now(), post.updatedAt)}</div>
+        <div className="ml-auto text-xs text-muted-foreground">{dateToString(post.updatedAt)}</div>
       </div>
     </div>
   );

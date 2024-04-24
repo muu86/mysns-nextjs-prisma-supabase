@@ -11,7 +11,21 @@ const httpLink = new HttpLink({
 
 export const { getClient } = registerApolloClient(() => {
   return new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            postsNear: {
+              merge(existing = [], incoming) {
+                // console.log('exising: ', existing);
+                // console.log('incoming: ', incoming);
+                return [...existing, ...incoming];
+              },
+            },
+          },
+        },
+      },
+    }),
     link: httpLink,
   });
 });

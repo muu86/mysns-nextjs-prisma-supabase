@@ -2,17 +2,21 @@
 
 `supabase`, `prisma`, `nextjs`, `graphql`로 개발한 앱입니다.
 
-- 스프링 백엔드 서버를 두고 개발했었는데 서버리스로 구동하고 싶어서 nextjs 만으로 백엔드를 대체했습니다.
+https://mysns-nextjs-prisma-supabase.vercel.app
+
 - supabase: 상시 가동되는 데이터베이스를 무료로 제공해서 사용했습니다. postgis 확장도 가능합니다.
 - prisma: 스프링, JPA는 서버리스와 어울리지 않기 때문에 nextjs 만으로 앱을 구동하기 위해서 prisma를 사용했습니다.
 - graphql: prisma 와 잘 어울리는 것 같아서 사용해봤습니다. 경험해보니 혼자서 개발하기에 `rest` 보다 `graphql`이 편한 것 같습니다. rest api 로 개발하려면 백엔드 서버에서 api 명세를 정하고 프론트는 그 명세에 따라서 요청 응답을 정의하고 타입까지 신경을 써줘야합니다. qraphql 은 명세를 한번 정해놓으면 클라이언트에서 선택적으로 정보를 가져올 수 있는 것이 장점입니다.
 
+
 ## Prisma
 
-Javascript의 ORM 프레임워크입니다.
+Javascript의 ORM 프레임워크입니다. 데이터베이스는 `supabase`의 postgres를 사용했습니다.
 
-`supabase`도 전용 클라이언트를 제공하므로 `prisma`를 사용할 필요는 없습니다. 그런데 개인적으로 궁금해서 사용해봤습니다.
+https://supabase.com/
 
+### ERD
+![alt text](<notes/images/스크린샷 2024-04-24 오전 7.25.43.png>)
 
 ### 트랜잭션
 

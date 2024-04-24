@@ -676,6 +676,16 @@ type Query {
     take: Int
     skip: Int
   ): [VerificationTokenGroupBy!]!
+  postsNear(
+    where: PostWhereInput
+    orderBy: [PostOrderByWithRelationInput!]
+    cursor: PostWhereUniqueInput
+    take: Int
+    skip: Int
+    distinct: [PostScalarFieldEnum!]
+    relationLoadStrategy: RelationLoadStrategy
+    selectedAddressId: ID!
+  ): [Post!]!
 }
 
 type AggregateAccount {
