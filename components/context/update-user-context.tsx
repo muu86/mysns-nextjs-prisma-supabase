@@ -9,7 +9,7 @@ import {
   UserUpdateInput,
   UserWhereUniqueInput,
 } from '@/graphql/generated/gql/graphql';
-import { MutationUpdateOneUser } from '@/graphql/query/user';
+import { MutationUpdateOneUser, QueryGetUser } from '@/graphql/query/user';
 import { ImageFile } from '@/lib/types';
 import { useMutation } from '@apollo/client';
 import { produce } from 'immer';
@@ -25,7 +25,13 @@ export default function UpdateUserContextProvider({
   children,
 }: PropsWithChildren<{ user: GetUserQuery['getUser'] }>) {
   const { data: session, update } = useSession();
-  const [updateOneUser] = useMutation(MutationUpdateOneUser);
+  const [updateOneUser] = useMutation(MutationUpdateOneUser, {
+    refetchQueries: [
+      {
+        query: QueryGetUser,
+      },
+    ],
+  });
   const [snapshot, setSnapshot] = useState<UpdateUserContextState>();
 
   const initialState = useMemo((): UpdateUserContextState => {

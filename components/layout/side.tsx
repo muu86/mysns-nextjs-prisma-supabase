@@ -1,8 +1,9 @@
-import { auth } from '@/auth';
+import { auth, signOut } from '@/auth';
 import { cn } from '@/lib/utils';
-import { Baby, FilePlus, Home, LucideIcon, MessageCircleMore, Settings, User } from 'lucide-react';
+import { Baby, FilePlus, Home, LogOut, LucideIcon, MessageCircleMore, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { Button } from '../ui/button';
 
 export default async function Side() {
   const session = await auth();
@@ -57,6 +58,22 @@ export default async function Side() {
           </Tooltip>
         </TooltipProvider>
       </nav> */}
+      <nav className="ml-auto sm:ml-0 sm:mt-auto flex flex-row sm:flex-col items-center gap-4 px-2 sm:py-5">
+        <form
+          action={async () => {
+            'use server';
+            await signOut();
+          }}
+        >
+          <Button
+            variant="ghost"
+            type="submit"
+            className="flex h-9 w-9 p-0 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground md:h-8 md:w-8"
+          >
+            <LogOut className="h-5 w-5" />
+          </Button>
+        </form>
+      </nav>
     </aside>
   );
 }

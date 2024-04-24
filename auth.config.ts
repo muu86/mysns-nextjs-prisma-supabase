@@ -2,9 +2,33 @@ import type { NextAuthConfig } from 'next-auth';
 import KeyCloak from 'next-auth/providers/keycloak';
 import Kakao from 'next-auth/providers/kakao';
 import Google from 'next-auth/providers/google';
+import Credentials from 'next-auth/providers/credentials';
 
 export default {
   providers: [
+    Credentials({
+      credentials: {
+        email: {},
+      },
+      authorize: async (credentials) => {
+        if (!credentials.email) return null;
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email as string,
+          },
+        });
+        if (!user) return null;
+
+        return {
+          id: user.id + '',
+          email: user.email,
+          image: user.image,
+          name: user.name,
+          role: user.role,
+          username: user.username || undefined,
+        };
+      },
+    }),
     KeyCloak({
       issuer: process.env.AUTH_KEYCLOAK_ISSUER,
       clientId: process.env.AUTH_KEYCLOAK_ID,
@@ -26,6 +50,7 @@ export default {
   session: { strategy: 'jwt' },
   callbacks: {
     jwt({ token, user, trigger, session }) {
+      // console.log('user', user);
       if (user) {
         token.role = user.role;
         token.username = user.username;
