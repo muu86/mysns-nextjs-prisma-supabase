@@ -8,7 +8,7 @@ export const QueryPosts = graphql(`
     $take: Int
     $skip: Int
   ) {
-    posts(where: $where, orderBy: $orderBy) {
+    posts(where: $where, orderBy: $orderBy, cursor: $cursor, take: $take, skip: $skip) {
       id
       content
       user {
