@@ -6,7 +6,7 @@ import Google from 'next-auth/providers/google';
 export default {
   providers: [
     KeyCloak({
-      issuer: 'http://localhost:3333/realms/master',
+      issuer: process.env.AUTH_KEYCLOAK_ISSUER,
       clientId: process.env.AUTH_KEYCLOAK_ID,
       clientSecret: process.env.AUTH_KEYCLOAK_SECRET,
     }),
