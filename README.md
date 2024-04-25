@@ -6,8 +6,8 @@ https://mysns-nextjs-prisma-supabase.vercel.app
 
 - supabase: 상시 가동되는 데이터베이스를 무료로 제공해서 사용했습니다. postgis 확장도 가능합니다.
 - prisma: 스프링, JPA는 서버리스와 어울리지 않기 때문에 nextjs 만으로 앱을 구동하기 위해서 prisma를 사용했습니다.
-- graphql: prisma 와 잘 어울리는 것 같아서 사용해봤습니다. 경험해보니 혼자서 개발하기에 `rest` 보다 `graphql`이 편한 것 같습니다. rest api 로 개발하려면 백엔드 서버에서 api 명세를 정하고 프론트는 그 명세에 따라서 요청 응답을 정의하고 타입까지 신경을 써줘야합니다. qraphql 은 명세를 한번 정해놓으면 클라이언트에서 선택적으로 정보를 가져올 수 있는 것이 장점입니다.
-
+- graphql: prisma 와 잘 어울리는 것 같아서 사용했습니다. 경험해보니 혼자서 개발하기에 `rest` 보다 `graphql`이 편한 것 같습니다. rest api 로 개발하려면 백엔드 서버에서 api 명세를 정하고 프론트는 그 명세에 따라서 요청 응답을 정의하고 타입까지 신경을 써줘야합니다. qraphql 은 명세를 한번 정해놓으면 클라이언트에서 선택적으로 정보를 가져올 수 있는 것이 장점입니다.
+- spring, jpa 백엔드 버전: https://github.com/muu86/mysns-springboot
 
 ## Prisma
 
