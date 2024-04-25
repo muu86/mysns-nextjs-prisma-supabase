@@ -17,7 +17,7 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
   const [messages, setMessages] = useState<ChatMessagesQuery['chatMessages']>([]);
   const [currentMessage, setCurrent] = useState<string | undefined>();
   const [createOneChatMessage] = useMutation(MutationCreateOneChatMessage, {
-    awaitRefetchQueries: true,
+    // awaitRefetchQueries: true,
     refetchQueries: [
       {
         query: QueryChatMessages,
@@ -71,8 +71,9 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
 
   useEffect(() => {
     if (!chatMessageData?.chat?.message) return;
-    setMessages((prev) => [chatMessageData.chat, ...prev]);
-  }, [chatMessageData]);
+    refetch();
+    // setMessages((prev) => [chatMessageData.chat, ...prev]);
+  }, [chatMessageData, refetch]);
 
   function messageChangeEventHandler(event: ChangeEvent<HTMLTextAreaElement>): void {
     setCurrent(event.target.value);
@@ -114,7 +115,7 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
   return (
     <div className="flex flex-col h-full gap-2">
       <div className="flex flex-col-reverse overflow-y-scroll bg-muted flex-1">
-        {messages.map((cm, i) => (
+        {data.chatMessages.map((cm, i) => (
           <Message key={i} session={session} chat={chat} chatMessage={cm} />
         ))}
       </div>

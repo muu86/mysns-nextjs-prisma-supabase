@@ -51,12 +51,12 @@ export default async function Page() {
             </form>
           </div>
           <div className="grid gap-4">
-            {/* <form action={keycloakAction}>
+            <form action={keycloakAction}>
               <Button type="submit" variant="outline" className="w-full">
                 키클록(테스트) 로그인
               </Button>
             </form>
-            <form action={kakaoAction}>
+            {/* <form action={kakaoAction}>
               <Button type="submit" variant="outline" className="w-full">
                 카카오 로그인
               </Button>
