@@ -16,9 +16,29 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
   const { session, state } = useContext(ChatContext);
   const [messages, setMessages] = useState<ChatMessagesQuery['chatMessages']>([]);
   const [currentMessage, setCurrent] = useState<string | undefined>();
-  const [createOneChatMessage] = useMutation(MutationCreateOneChatMessage);
+  const [createOneChatMessage] = useMutation(MutationCreateOneChatMessage, {
+    awaitRefetchQueries: true,
+    refetchQueries: [
+      {
+        query: QueryChatMessages,
+        variables: {
+          where: {
+            chatId: {
+              equals: parseInt(chat.id),
+            },
+          },
+          orderBy: [
+            {
+              updatedAt: SortOrder.Desc,
+            },
+          ],
+        },
+        fetchPolicy: 'network-only',
+      },
+    ],
+  });
 
-  const { data } = useSuspenseQuery(QueryChatMessages, {
+  const { data, refetch } = useSuspenseQuery(QueryChatMessages, {
     variables: {
       where: {
         chatId: {
@@ -31,18 +51,24 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
         },
       ],
     },
+    fetchPolicy: 'network-only',
   });
-  useEffect(() => {
-    if (data) {
-      setMessages(data.chatMessages);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setMessages(data.chatMessages);
+  //   }
+  // }, [data]);
 
-  const { data: chatMessageData, loading } = useSubscription(SubscriptionChat, {
+  const {
+    data: chatMessageData,
+    loading,
+    error,
+  } = useSubscription(SubscriptionChat, {
     variables: {
       chatId: parseInt(chat.id),
     },
   });
+
   useEffect(() => {
     if (!chatMessageData?.chat?.message) return;
     setMessages((prev) => [chatMessageData.chat, ...prev]);
@@ -94,7 +120,6 @@ export default function ChatRoom({ chat }: { chat: ChatsQuery['chats'][number] }
       </div>
       <div className="flex flex-col w-full gap-2">
         <Textarea className="flex-1" value={currentMessage} onChange={messageChangeEventHandler} />
-        {/* <Test chat={chat} /> */}
         <Button onClick={submitHandler} variant="ghost" className="self-end">
           <Send />
         </Button>
